@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>流程模型设计</title>
+    <link href="../../assets/theme/default/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/theme/default/vendors/base/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/custom/plugins/layui/css/layui.css" rel="stylesheet" type="text/css"  media="all" >
+    <link rel="stylesheet" href="../../assets/custom/plugins/bpmn-js/css/diagram-js.css" />
+    <link rel="stylesheet" href="../../assets/custom/plugins/bpmn-js/vendor/bpmn-font/css/bpmn-embedded.css" />
+    <link rel="stylesheet" href="../../assets/custom/plugins/bpmn-js/css/app.css" />
+
+</head>
+<body>
+<div class="content with-diagram" id="js-drop-zone">
+    <div id="feature-bar" style="margin-top: 10px;margin-left: 20px; z-index: 99; position: fixed;" >
+        <button id="save-flow-model" type="button"  class="btn btn-success m-btn m-btn--icon" data-toggle="m-tooltip" title="保存流程模型">
+            <span>
+                <i class="la la-save"></i>
+                <span>保存</span>
+            </span>
+        </button>
+    </div>
+
+    <div class="canvas" id="js-canvas"></div>
+    <div class="properties-panel-parent" id="js-properties-panel" style="width: 350px"></div>
+</div>
+
+
+<script type="text/javascript" src="../../assets/custom/plugins/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../../assets/theme/default/vendors/base/vendors.bundle.js"></script>
+<script type="text/javascript" src="../../assets/theme/default/vendors/base/scripts.bundle.js"></script>
+<script type="text/javascript" src="../../assets/custom/plugins/jquery/jquery-cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="../../assets/custom/plugins/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src = "../../assets/custom/plugins/jsencrypt/aes.js"></script>
+<script type="text/javascript" src = "../../assets/custom/plugins/jsencrypt/crypto-js.js"></script>
+<script type="text/javascript" src = "../../assets/custom/plugins/jsencrypt/mode-ecb.js"></script>
+<script type="text/javascript" src = "../../assets/custom/plugins/jsencrypt/pad-zeropadding.js"></script>
+<script type="text/javascript" src = "../../assets/custom/plugins/bpmn-js/xmlToJson.js"></script>
+<script type="text/javascript" src = "../../assets/custom/plugins/bpmn-js/jkl-dumper.js"></script>
+<script type="text/javascript" src="../../assets/custom/base/base.utils.js" ></script>
+<script type="text/javascript" src = "../../assets/custom/base/base.ajax.js"></script>
+<script src="../../assets/custom/plugins/bpmn-js/app.js"></script>
+</body>
+</html>
