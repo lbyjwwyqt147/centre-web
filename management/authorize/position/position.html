@@ -1,21 +1,21 @@
-<link rel="stylesheet" href="../../assets/custom/plugins/zTree/css/bootstrapStyle/bootstrapStyle.css" type="text/css">
+<link rel="stylesheet" href="../../../assets/custom/plugins/zTree/css/bootstrapStyle/bootstrapStyle.css" type="text/css">
 
 <style>
-    #dict-page-frame .m-portlet {
+    #position-page-frame .m-portlet {
         margin-bottom: 0px;
     }
-    #dict-page-frame .m-widget1 {
+    #position-page-frame .m-widget1 {
         padding:0px;
     }
-    #dict-page-frame .m-portlet .m-portlet__head {
+    #position-page-frame .m-portlet .m-portlet__head {
         border-bottom: 0px solid #ebedf2;
     }
-    #dict-page-frame .row.m-row--col-separator-xl > div {
+    #position-page-frame .row.m-row--col-separator-xl > div {
         border-bottom: 0;
         border-right: 0px solid #ebedf2;
     }
 
-    #dict-page-frame .ztree {
+    #position-page-frame .ztree {
         margin: 0;
         padding: 5px 5px 5px 21px;
         color: #333;
@@ -23,18 +23,18 @@
 
     /** tree 滚动条样式 开始 */
 
-    #dict-page-frame .m-scroller::-webkit-scrollbar {/*滚动条整体样式*/
+    #position-page-frame .m-scroller::-webkit-scrollbar {/*滚动条整体样式*/
         width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
         height: 4px;
         cursor: pointer;
     }
-    #dict-page-frame .m-scroller::-webkit-scrollbar-thumb {/*滚动条里面线条*/
+    #position-page-frame .m-scroller::-webkit-scrollbar-thumb {/*滚动条里面线条*/
         border-radius: 5px;
         -webkit-box-shadow: inset 0 0 5px rgba(234, 234, 239, 1);
         background: rgba(234, 234, 239, 1);
         cursor: pointer;
     }
-    #dict-page-frame .m-scroller::-webkit-scrollbar-track { /*滚动条里面轨道线条背景*/
+    #position-page-frame .m-scroller::-webkit-scrollbar-track { /*滚动条里面轨道线条背景*/
         -webkit-box-shadow: inset 0 0 5px rgba(234, 234, 239, 0.3);
         border-radius: 0;
         background: rgba(234, 234, 239, 0.3);
@@ -52,7 +52,7 @@
 </style>
 
 
-<div class="row" id="dict-page-frame">
+<div class="row" id="position-page-frame">
     <div class="col-xl-12">
         <div class="m-portlet">
             <div class="m-portlet__body  m-portlet__body--no-padding">
@@ -61,14 +61,14 @@
                         <!--begin:: ztree -->
                         <div class="m-widget1" >
                             <div class="input-group" style="margin-left: 17px; margin-top: 5px; ">
-                                <input type="text" class="form-control form-control-danger" id="dict-mainPage-nodeName-search" placeholder="输入名称搜索" autocomplete="off" style="height: 41px;">
-                                <div class="input-group-append" style="cursor: pointer" id="dict_mainPage_searchNode_btn">
+                                <input type="text" class="form-control form-control-danger" id="position-mainPage-nodeName-search" placeholder="输入名称搜索" autocomplete="off" style="height: 41px;">
+                                <div class="input-group-append" style="cursor: pointer" id="position_mainPage_searchNode_btn">
                             <span class="input-group-text" >
                                 <i class="la la-search"></i>
                             </span>
                                 </div>
                             </div>
-                            <ul id="dict_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px;" ></ul>
+                            <ul id="position_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px;" ></ul>
                         </div>
 
                         <!--end:: ztree -->
@@ -82,27 +82,11 @@
 
                                 </div>
                                 <div class="m-portlet__head-tools">
-                                    <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" id="dict-mainPage-grid-head-tools" role="tablist">
-                                     <!--   <li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增数据字典">
-                                            <a href="javascript:;" class="btn btn-success m-btn m-btn&#45;&#45;icon btn-sm m-btn&#45;&#45;icon-only" id="dict_mainPage_add_btn" >
-                                                <i class="la la-plus"></i>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除数据字典">
-                                            <a href="javascript:;" class="btn btn-danger m-btn m-btn&#45;&#45;icon btn-sm m-btn&#45;&#45;icon-only" id="dict_mainPage_delete_btn">
-                                                <i class="la la-trash-o"></i>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="同步数据">
-                                            <a href="javascript:;" class="btn btn-accent m-btn m-btn&#45;&#45;icon btn-sm m-btn&#45;&#45;icon-only" id="dict_mainPage_sync_btn">
-                                                <i class="la la-rotate-right"></i>
-                                            </a>
-                                        </li>-->
-
+                                    <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" id="position-mainPage-grid-head-tools" role="tablist">
                                     </ul>
                                 </div>
                             </div>
-                            <table class="layui-hide" id="dict_mainPage_grid"  lay-filter="dict_mainPage_grid"></table>
+                            <table class="layui-hide" id="position_mainPage_grid"  lay-filter="position_mainPage_grid"></table>
 
                         </div>
 
@@ -111,9 +95,9 @@
                 </div>
             </div>
 
-            <div id="dict-page-frame-modal-content">
+            <div id="position-page-frame-modal-content">
                 <!-- begin:: Modal -->
-                <div class="modal fade" id="dict_mainPage_dataSubmit_form_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="position_mainPage_dataSubmit_form_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -124,54 +108,49 @@
                             </div>
                             <div class="modal-body">
                                 <!--begin::Form-->
-                                <form class="m-form m-form--state m-form--fit m-form--label-align-right" id="dict_mainPage_dataSubmit_form">
+                                <form class="m-form m-form--state m-form--fit m-form--label-align-right" id="position_mainPage_dataSubmit_form">
                                     <div class="m-portlet__body">
                                         <div class="form-group m-form__group row ">
                                             <label class="col-form-label col-lg-3 col-sm-12">上级:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input  class="form-control m-input m-input--solid" id="dict_mainPage_dataSubmit_form_parent_name"  placeholder="顶级" readonly autocomplete="off" >
+                                                <input  class="form-control m-input m-input--solid" id="position_mainPage_dataSubmit_form_parent_name"  placeholder="顶级" readonly autocomplete="off" >
                                                 <span aria-hidden="true" class="glyphicon glyphicon-remove form-control-feedback" data-pure-clear-button="event" style="cursor: pointer; pointer-events: auto;" data-container="body" data-toggle="m-tooltip" data-placement="bottom" title="清除内容后将默认为顶级"><i class="la la-close"></i></span>
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row ">
-                                            <label class="col-form-label col-lg-3 col-sm-12">字典代码:<span class="has-danger-error">*</span></label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">岗位编号:<span class="has-danger-error">*</span></label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="dictCode" id="dict_mainPage_dataSubmit_form_dict_number"  placeholder="只能输入数字、字母、下划线" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="postNumber" id="position_mainPage_dataSubmit_form_position_number"  placeholder="只能输入数字、字母、下划线" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12">字典名称:<span class="has-danger-error">*</span></label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">岗位名称:<span class="has-danger-error">*</span></label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="dictName" placeholder="只能输入汉字、数字、字母、下划线" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="postName" placeholder="只能输入汉字、数字、字母、下划线" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12">优先级:</label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">排序值:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control bootstrap-touchspin-vertical-btn" id="dict_mainPage_dataSubmit_form_dict_seq"  name="priority" placeholder="默认10 数值越小越靠前展示"  autocomplete="off" >
+                                                <input type="text" class="form-control bootstrap-touchspin-vertical-btn" id="position_mainPage_dataSubmit_form_position_seq"  name="serialNumber" placeholder="默认10 数值越小越靠前展示"  autocomplete="off" >
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
                                             <label class="col-form-label col-lg-3 col-sm-12">描述:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="description" placeholder="描述信息" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="postDescription" placeholder="描述信息" autocomplete="off">
                                             </div>
                                         </div>
                                         <div style="display: none">
-                                            <input type="hidden" class="form-control" name="systemCode" placeholder="systemCode" autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="id" placeholder="id" autocomplete="off">
-                                            <input type="hidden" class="form-control" name="credential" placeholder="credential" autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="status" placeholder="status" value="0" autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="pid" placeholder="pid" value="0" autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="postStatus" placeholder="status" value="0" autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="parentId" placeholder="pid" value="0" autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="createTime" placeholder="createTime"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="createUserId" placeholder="createUserId"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="fullParent" placeholder="fullParent"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="fullParentCode" placeholder="fullParentCode"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="dictLevel" placeholder="dictLevel"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="leaf" placeholder="leaf"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="fullDictCode" placeholder="fullDictCode"  autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="fullPostParent" placeholder="fullPostParent"  autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="fullPostParentCode" placeholder="fullPostParentCode"  autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="postLevel" placeholder="postLevel"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="dataVersion" placeholder="dataVersion"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="lessee" id="lessee-id" placeholder="lessee"  autocomplete="off">
                                         </div>
                                     </div>
                                 </form>
@@ -186,7 +165,7 @@
                                 </span>
                                 </a>
 
-                                <a href="javascript:;" class="btn btn-success m-btn m-btn--icon" id="dict_mainPage_dataSubmit_form_submit">
+                                <a href="javascript:;" class="btn btn-success m-btn m-btn--icon" id="position_mainPage_dataSubmit_form_submit">
                                 <span>
                                     <i class="la la-check"></i>
                                     <span>保存</span>
@@ -203,11 +182,11 @@
     </div>
 </div>
 
-<script type="text/html" id="dict_mainPage_table_toolbar">
+<script type="text/html" id="position_mainPage_table_toolbar">
     <input type="checkbox" name="lock" title="禁用" value="{{d.id}}" dataversion="{{d.dataVersion}}" lay-filter="lock" {{ d.status == 1 ? 'checked' : '' }}>
 </script>
 
-<script type="text/javascript" src="../../assets/custom/plugins/zTree/js/jquery.ztree.core.js"></script>
-<script type="text/javascript" src="../../assets/custom/plugins/bootstrap-pureClearButton/jquery.bootstrap-pureClearButton.js"></script>
+<script type="text/javascript" src="../../../assets/custom/plugins/zTree/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../../../assets/custom/plugins/bootstrap-pureClearButton/jquery.bootstrap-pureClearButton.js"></script>
 
-<script src="../../management/dict/dict.js" type="text/javascript"></script>
+<script src="../../../management/position/position.js" type="text/javascript"></script>

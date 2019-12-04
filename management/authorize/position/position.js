@@ -1,44 +1,44 @@
 /***
- * 数据字典
+ * 岗位
  * @type {{init}}
  */
-var SnippetMainPageDict = function() {
-    var serverUrl = BaseUtils.cloudServerAddress;
-    var dictMainPageTable;
-    var dictMainPageFormModal = $('#dict_mainPage_dataSubmit_form_modal');
-    var dictMainPageSubmitForm = $("#dict_mainPage_dataSubmit_form");
-    var dictMainPageSubmitFormId = "#dict_mainPage_dataSubmit_form";
-    var dictMainPageMark = 1;
-    var dictMainPagePid = 0;
-    var dictMainPageParentName = "";
-    var dictMainPageZtreeNodeList = [];
-    var dictMainPageModuleCode = '1010';
-    var dictPageLeffTree;
+var SnippetMainPagePosition = function() {
+    var serverUrl = BaseUtils.serverAddress;
+    var positionMainPageTable;
+    var positionMainPageFormModal = $('#position_mainPage_dataSubmit_form_modal');
+    var positionMainPageSubmitForm = $("#position_mainPage_dataSubmit_form");
+    var positionMainPageSubmitFormId = "#position_mainPage_dataSubmit_form";
+    var positionMainPageMark = 1;
+    var positionMainPagePid = 0;
+    var positionMainPageParentName = "";
+    var positionMainPageZtreeNodeList = [];
+    var positionMainPageModuleCode = '1061';
+    var positionPageLeffTree;
 
     /**
      * ztree 基础属性
-     * @type {{onClick: callback.onClick, onAdictMainPageSyncDataSuccess: callback.onAdictMainPageSyncDataSuccess}}
+     * @type {{onClick: callback.onClick, onApositionMainPageSyncDataSuccess: callback.onApositionMainPageSyncDataSuccess}}
      */
-    var dictMainPageZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
+    var positionMainPageZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
         "selectedMulti":false,
         "enable":false,
-        "url":serverUrl + "v1/tree/dict/all/z?systemCode=" + BaseUtils.systemCode + "&credential=" +  BaseUtils.credential + "&lessee=" + BaseUtils.lessee,
-        "headers":BaseUtils.cloudHeaders()
+        "url":serverUrl + "v1/tree/position/all/z",
+        "headers":BaseUtils.serverHeaders()
     });
-    dictMainPageZtreeSetting.view = {
+    positionMainPageZtreeSetting.view = {
             selectedMulti:false,
             fontCss: zTreeHighlightFontCss,
             expandSpeed: "slow", //节点展开动画速度
     };
-    dictMainPageZtreeSetting.callback = {
+    positionMainPageZtreeSetting.callback = {
         onClick: function (event, treeId, treeNode) {   //点击节点执行事件
-            dictMainPagePid = treeNode.id;
-            dictMainPageParentName = treeNode.name;
-            dictMainPageRefreshGrid();
+            positionMainPagePid = treeNode.id;
+            positionMainPageParentName = treeNode.name;
+            positionMainPageRefreshGrid();
         },
         onAsyncSuccess:function(event, treeId, msg){ //异步加载完成后执行
-            if ("undefined" == $("#dict_mainPage_tree_1_a").attr("title")) {
-                $("#dict_mainPage_tree_1").remove();
+            if ("undefined" == $("#position_mainPage_tree_1_a").attr("title")) {
+                $("#position_mainPage_tree_1").remove();
             }
         },
         onAsyncError:function(){ //异步加载出现异常执行
@@ -55,9 +55,9 @@ var SnippetMainPageDict = function() {
     /**
      * 初始化ztree 组件
      */
-    var dictMainPageInitTree = function() {
-        $.fn.zTree.init($("#dict_mainPage_tree"), dictMainPageZtreeSetting);
-        dictPageLeffTree = $.fn.zTree.getZTreeObj("dict_mainPage_tree");
+    var positionMainPageInitTree = function() {
+        $.fn.zTree.init($("#position_mainPage_tree"), positionMainPageZtreeSetting);
+        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
     };
 
     /**
@@ -65,17 +65,17 @@ var SnippetMainPageDict = function() {
      * 在指定的节点下面增加子节点之后调用的方法。
      * @param id
      */
-    function dictMainPageRereshExpandNode(id) {
+    function positionMainPageRereshExpandNode(id) {
         if (id == 0) {
-            dictMainPageRereshTree();
+            positionMainPageRereshTree();
             return;
         }
-        dictPageLeffTree = $.fn.zTree.getZTreeObj("dict_mainPage_tree");
-        var nodes = dictPageLeffTree.getNodesByParam("id", id, null);
+        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
+        var nodes = positionPageLeffTree.getNodesByParam("id", id, null);
        if (nodes[0].children == null || nodes[0].children == undefined || nodes[0].children.length == 0) {
-           dictMainPageRereshTreeNode(id);
+           positionMainPageRereshTreeNode(id);
        }
-       BaseUtils.ztree.rereshExpandNode(dictPageLeffTree, id);
+       BaseUtils.ztree.rereshExpandNode(positionPageLeffTree, id);
     }
 
 
@@ -83,31 +83,28 @@ var SnippetMainPageDict = function() {
      *  刷新树
      * @param id
      */
-    function dictMainPageRereshTree(){
-        dictPageLeffTree = $.fn.zTree.getZTreeObj("dict_mainPage_tree");
-        dictPageLeffTree.destroy();
-        dictMainPageInitTree();
+    function positionMainPageRereshTree(){
+        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
+        positionPageLeffTree.destroy();
+        positionMainPageInitTree();
     };
 
     /**
      * 异步加载ztree 数数据
      * @param id
      */
-    function dictMainPageRereshTreeNode(id) {
+    function positionMainPageRereshTreeNode(id) {
         $getAjax({
-            url: serverUrl + "v1/tree/dict/all/z",
+            url: serverUrl + "v1/tree/position/all/z",
             data: {
-                id:id,
-                systemCode:BaseUtils.systemCode,
-                credential:BaseUtils.credential,
-                lessee: BaseUtils.getLesseeId()
+                id:id
             },
-            headers: BaseUtils.cloudHeaders()
+            headers: BaseUtils.serverHeaders()
         }, function (data) {
             //获取指定父节点
-            dictPageLeffTree = $.fn.zTree.getZTreeObj("dict_mainPage_tree");
-            var parentZNode = dictPageLeffTree.getNodeByParam("id", dictMainPagePid, null);
-            dictPageLeffTree.addNodes(parentZNode,data, false);
+            positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
+            var parentZNode = positionPageLeffTree.getNodeByParam("id", positionMainPagePid, null);
+            positionPageLeffTree.addNodes(parentZNode,data, false);
         }, function (response) {
 
         });
@@ -116,37 +113,37 @@ var SnippetMainPageDict = function() {
     /**
      *  搜索节点
      */
-    function dictMainPageSearchZtreeNode() {
-        var searchZtreeValue = $.trim($("#dict-mainPage-nodeName-search").val());
-       dictMainPageZtreeUpdateNodes(dictMainPageZtreeNodeList,false);
+    function positionMainPageSearchZtreeNode() {
+        var searchZtreeValue = $.trim($("#position-mainPage-nodeName-search").val());
+       positionMainPageZtreeUpdateNodes(positionMainPageZtreeNodeList,false);
         if (searchZtreeValue == "") {
             return;
         }
         var keyType = "name";
-        dictPageLeffTree = $.fn.zTree.getZTreeObj("dict_mainPage_tree");
-        dictMainPageZtreeNodeList = dictPageLeffTree.getNodesByParamFuzzy(keyType, searchZtreeValue);
-        dictMainPageZtreeUpdateNodes(dictMainPageZtreeNodeList, true);
+        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
+        positionMainPageZtreeNodeList = positionPageLeffTree.getNodesByParamFuzzy(keyType, searchZtreeValue);
+        positionMainPageZtreeUpdateNodes(positionMainPageZtreeNodeList, true);
     };
 
     /**
      *  更新节点
-     * @param dictMainPageZtreeNodeList
+     * @param positionMainPageZtreeNodeList
      * @param highlight
      */
-    function dictMainPageZtreeUpdateNodes(dictMainPageZtreeNodeList, highlight) {
-        var curDictParentNodes = [];
-        for (var i = 0, l = dictMainPageZtreeNodeList.length; i < l; i++) {
-            var  curNode = dictMainPageZtreeNodeList[i];
+    function positionMainPageZtreeUpdateNodes(positionMainPageZtreeNodeList, highlight) {
+        var curpositionParentNodes = [];
+        for (var i = 0, l = positionMainPageZtreeNodeList.length; i < l; i++) {
+            var  curNode = positionMainPageZtreeNodeList[i];
             curNode.highlight = highlight;
             // 获取父节点
             var pNode = curNode.getParentNode();
-            if (pNode != null && curDictParentNodes.indexOf(pNode.id) == -1) {
-                curDictParentNodes.push(pNode.id);
-                dictPageLeffTree.expandNode(pNode);
+            if (pNode != null && curpositionParentNodes.indexOf(pNode.id) == -1) {
+                curpositionParentNodes.push(pNode.id);
+                positionPageLeffTree.expandNode(pNode);
             }
             //定位到节点并展开
-            dictPageLeffTree.expandNode(curNode);
-            dictPageLeffTree.updateNode(curNode);
+            positionPageLeffTree.expandNode(curNode);
+            positionPageLeffTree.updateNode(curNode);
         }
     };
 
@@ -163,35 +160,35 @@ var SnippetMainPageDict = function() {
     /**
      * 设置 tree 最大高度样式
      */
-    function dictMainPageZtreeMaxHeight() {
+    function positionMainPageZtreeMaxHeight() {
          var layGridHeight = $(".layui-form.layui-border-box.layui-table-view").outerHeight();
-        $("#dict_mainPage_tree").css("max-height", layGridHeight);
+        $("#position_mainPage_tree").css("max-height", layGridHeight);
     }
 
     /**
      * 初始化 功能按钮
      */
-    var dictMainPageInitFunctionButtonGroup = function () {
+    var positionMainPageInitFunctionButtonGroup = function () {
         //初始化 优先级 控件
-        BootstrapTouchspin.initByteTouchSpin("#dict_mainPage_dataSubmit_form_dict_seq");
-        var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(dictMainPageModuleCode);
+        BootstrapTouchspin.initByteTouchSpin("#position_mainPage_dataSubmit_form_position_seq");
+        var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(positionMainPageModuleCode);
         if (functionButtonGroup != null) {
-            var gridHeadToolsHtml = $("#dict-mainPage-grid-head-tools");
-            var tableToolbarHtml = $("#dict_mainPage_table_toolbar");
+            var gridHeadToolsHtml = $("#position-mainPage-grid-head-tools");
+            var tableToolbarHtml = $("#position_mainPage_table_toolbar");
 
             var buttonGroup = functionButtonGroup.split(';');
             //如果arry数组里面存在"指定字符" 这个字符串则返回该字符串的数组下标，否则返回(不包含在数组中) -1
             var save_index = $.inArray("1", buttonGroup);
             if (save_index != -1) {
-                var save_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增数据字典">\n';
-                save_btn_html += '<a href="javascript:;" class="btn btn-success m-btn m-btn--icon btn-sm m-btn--icon-only" id="dict_mainPage_add_btn">\n';
+                var save_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增岗位">\n';
+                save_btn_html += '<a href="javascript:;" class="btn btn-success m-btn m-btn--icon btn-sm m-btn--icon-only" id="position_mainPage_add_btn">\n';
                 save_btn_html += '<i class="la la-plus"></i>\n';
                 save_btn_html += '</a>\n';
                 save_btn_html += '</li>\n';
                 gridHeadToolsHtml.append(save_btn_html);
 
 
-                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改数据字典" lay-event="edit">\n'
+                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改岗位" lay-event="edit">\n'
                 edit_btn_html += '<i class="la la-edit"></i>\n';
                 edit_btn_html += '</a>\n';
                 tableToolbarHtml.append(edit_btn_html);
@@ -199,8 +196,8 @@ var SnippetMainPageDict = function() {
             }
             var delete_index = $.inArray("2", buttonGroup);
             if (delete_index != -1) {
-                var delete_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除数据字典">\n';
-                delete_btn_html += '<a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only" id="dict_mainPage_delete_btn">\n';
+                var delete_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除岗位">\n';
+                delete_btn_html += '<a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only" id="position_mainPage_delete_btn">\n';
                 delete_btn_html += '<i class="la la-trash-o"></i>\n';
                 delete_btn_html += '</a>\n';
                 delete_btn_html += '</li>\n';
@@ -208,7 +205,7 @@ var SnippetMainPageDict = function() {
 
 
 
-                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除数据字典" lay-event="del">\n'
+                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除岗位" lay-event="del">\n'
                 table_del_btn_html += '<i class="la la-trash-o"></i>\n';
                 table_del_btn_html += '</a>\n';
                 tableToolbarHtml.append(table_del_btn_html);
@@ -216,7 +213,7 @@ var SnippetMainPageDict = function() {
             var sync_index = $.inArray("10", buttonGroup);
             if (sync_index != -1) {
                 var sync_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="同步数据">\n';
-                sync_btn_html += '<a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only" id="dict_mainPage_sync_btn">\n';
+                sync_btn_html += '<a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only" id="position_mainPage_sync_btn">\n';
                 sync_btn_html += '<i class="la la-rotate-right"></i>\n';
                 sync_btn_html += '</a>\n';
                 sync_btn_html += '</li>\n';
@@ -230,38 +227,34 @@ var SnippetMainPageDict = function() {
     /**
      *  初始化 dataGrid 组件
      */
-    var dictMainPageInitDataGrid = function () {
+    var positionMainPageInitDataGrid = function () {
         layui.use('table', function(){
-            // dictMainPageTable = layui.table;
             var layuiForm = layui.form;
-            dictMainPageTable =  $initEncrypDataGrid({
-                elem: '#dict_mainPage_grid',
-                url: serverUrl + 'v1/table/dict/g',
+            positionMainPageTable =  $initDataGrid({
+                elem: '#position_mainPage_grid',
+                url: serverUrl + 'v1/table/position/g',
                 method:"get",
                 where: {   //传递额外参数
-                    'pid' : dictMainPagePid,
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode,
-                    'lessee': BaseUtils.getLesseeId()
+                    'pid' : positionMainPagePid
                 },
-                headers: BaseUtils.cloudHeaders(),
-                title: '数据字典列表',
+                headers: BaseUtils.serverHeaders(),
+                title: '岗位列表',
                 height: 'full-150',
                 initSort: {
-                    field: 'priority', //排序字段，对应 cols 设定的各字段名
+                    field: 'serialNumber', //排序字段，对应 cols 设定的各字段名
                     type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
                 },
                 cols: [[
                     {checkbox: true},
                     {field:'id', title:'ID', unresize:true, hide:true },
-                    {field:'dictCode', title:'字典代码'},
-                    {field:'dictName', title:'字段名称'},
-                    {field:'priority', title:'优先级'},
-                    {field:'fullParentCode', title:'完整父级代码'},
-                    {field:'description', title:'描述'},
-                    {field:'status', title:'状态', align: 'center', fixed: 'right', unresize:true,
+                    {field:'postNumber', title:'岗位编号'},
+                    {field:'postName', title:'岗位名称'},
+                    {field:'serialNumber', title:'排序值'},
+                    {field:'postLevel', title:'层级'},
+                    {field:'postDescription', title:'描述'},
+                    {field:'postStatus', title:'状态', align: 'center', fixed: 'right', unresize:true,
                         templet : function (row) {
-                            var value = row.status;
+                            var value = row.postStatus;
                             var spanCss = "m-badge--success";
                             if (value == 1)  {
                                 spanCss = "m-badge--warning";
@@ -270,13 +263,13 @@ var SnippetMainPageDict = function() {
                             return spanHtml;
                         }
                     },
-                    {fixed: 'right', title:'操作', unresize:true, toolbar: '#dict_mainPage_table_toolbar', align: 'center', width:200}
+                    {fixed: 'right', title:'操作', unresize:true, toolbar: '#position_mainPage_table_toolbar', align: 'center', width:200}
                 ]],
                 limit: 20,
                 limits: [20,30,40,50]
             }, function(res, curr, count){
-                dictMainPageZtreeMaxHeight();
-                var curFunctionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(dictMainPageModuleCode);
+                positionMainPageZtreeMaxHeight();
+                var curFunctionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(positionMainPageModuleCode);
                 var status_table_index = $.inArray("3", curFunctionButtonGroup);
                 if (status_table_index != -1) {
                     $(".layui-unselect.layui-form-checkbox").show();
@@ -290,21 +283,21 @@ var SnippetMainPageDict = function() {
             });
 
             //监听行工具事件
-            dictMainPageTable.on('tool(dict_mainPage_grid)', function(obj){
+            positionMainPageTable.on('tool(position_mainPage_grid)', function(obj){
                 if(obj.event === 'del'){
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
-                    dictMainPageDeleteData(obj);
+                    positionMainPageDeleteData(obj);
                 } else if(obj.event === 'edit'){
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
-                    dictMainPageSubmitForm.setForm(obj.data);
-                    $("#dict_mainPage_dataSubmit_form_dict_seq").val(obj.data.priority);
-                    dictMainPageMark = 2;
+                    positionMainPageSubmitForm.setForm(obj.data);
+                    $("#position_mainPage_dataSubmit_form_position_seq").val(obj.data.serialNumber);
+                    positionMainPageMark = 2;
                     // 显示 dialog
-                    dictMainPageFormModal.modal('show');
+                    positionMainPageFormModal.modal('show');
                 }
             });
 
@@ -326,16 +319,16 @@ var SnippetMainPageDict = function() {
                     }
                     return;
                 }
-                dictMainPageUpdateDataStatus(obj, statusValue);
+                positionMainPageUpdateDataStatus(obj, statusValue);
             });
 
             //监听行双击事件
-            dictMainPageTable.on('rowDouble(dict_mainPage_grid)', function(obj){
-                dictMainPageMark = 3;
-                dictMainPageSubmitForm.setForm(obj.data);
-                $("#dict_mainPage_dataSubmit_form_dict_seq").val(obj.data.priority);
-                BaseUtils.readonlyForm(dictMainPageSubmitFormId);
-                dictMainPageFormModal.modal('show');
+            positionMainPageTable.on('rowDouble(position_mainPage_grid)', function(obj){
+                positionMainPageMark = 3;
+                positionMainPageSubmitForm.setForm(obj.data);
+                $("#position_mainPage_dataSubmit_form_position_seq").val(obj.data.serialNumber);
+                BaseUtils.readonlyForm(positionMainPageSubmitFormId);
+                positionMainPageFormModal.modal('show');
             });
         });
     };
@@ -343,12 +336,10 @@ var SnippetMainPageDict = function() {
     /**
      * 刷新grid
      */
-    var dictMainPageRefreshGrid = function () {
-        dictMainPageTable.reload('dict_mainPage_grid',{
+    var positionMainPageRefreshGrid = function () {
+        positionMainPageTable.reload('position_mainPage_grid',{
             where: {   //传递额外参数
-                'pid' : dictMainPagePid,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
+                'pid' : positionMainPagePid
             },
             page: {
                  curr: 1 //重新从第 1 页开始
@@ -359,37 +350,37 @@ var SnippetMainPageDict = function() {
     /**
      * 刷新grid和tree
      */
-    var dictMainPageRefreshGridAndTree = function () {
-        dictMainPageRefreshGrid();
+    var positionMainPageRefreshGridAndTree = function () {
+        positionMainPageRefreshGrid();
         //刷新树
-        dictMainPageRereshExpandNode(dictMainPagePid);
+        positionMainPageRereshExpandNode(positionMainPagePid);
     };
 
     /**
      * 初始化表单提交
      */
-    var dictMainPageFormSubmitHandle = function() {
-        $('#dict_mainPage_dataSubmit_form_submit').click(function(e) {
+    var positionMainPageFormSubmitHandle = function() {
+        $('#position_mainPage_dataSubmit_form_submit').click(function(e) {
             e.preventDefault();
-            BaseUtils.formInputTrim(dictMainPageSubmitFormId);
-            if ($("#dict_mainPage_dataSubmit_form_parent_name").val() == "") {
-                dictMainPagePid = 0;
-                dictMainPageParentName = "";
+            BaseUtils.formInputTrim(positionMainPageSubmitFormId);
+            if ($("#position_mainPage_dataSubmit_form_parent_name").val() == "") {
+                positionMainPagePid = 0;
+                positionMainPageParentName = "";
             }
-            dictMainPageSubmitForm.validate({
+            positionMainPageSubmitForm.validate({
                 rules: {
-                    dictCode: {
+                    postNumber: {
                         required: true,
                         alnumCode:true,
-                        maxlength: 32
+                        maxlength: 15
                     },
-                    dictName: {
+                    postName: {
                         required: true,
                         alnumName:true,
                         maxlength: 32
                     },
-                    priority: {
-                        range: [0,999]
+                    serialNumber: {
+                        range: [0,127]
                     },
                     description: {
                         illegitmacy:true,
@@ -421,35 +412,31 @@ var SnippetMainPageDict = function() {
 
                 },
             });
-            if (!dictMainPageSubmitForm.valid()) {
+            if (!positionMainPageSubmitForm.valid()) {
                 return;
             }
             if (BaseUtils.checkLoginTimeoutStatus()) {
                 return;
             }
-            BaseUtils.modalBlock("#dict_mainPage_dataSubmit_form_modal");
-            $("#dict_mainPage_dataSubmit_form input[name='systemCode']").val(BaseUtils.systemCode);
-            $("#dict_mainPage_dataSubmit_form input[name='credential']").val(BaseUtils.credential);
-            $("#dict_mainPage_dataSubmit_form input[name='pid']").val(dictMainPagePid);
-            $("#dict_mainPage_dataSubmit_form input[name='lessee']").val(BaseUtils.lessee);
-            $("#lessee-id").val(BaseUtils.lessee);
-            $encryptPostAjax({
-                url:serverUrl + "v1/verify/dict/s",
-                data:dictMainPageSubmitForm.serializeJSON(),
-                headers: BaseUtils.cloudHeaders()
+            BaseUtils.modalBlock("#position_mainPage_dataSubmit_form_modal");
+            $("#position_mainPage_dataSubmit_form input[name='parentId']").val(positionMainPagePid);
+            $postAjax({
+                url:serverUrl + "v1/verify/position/s",
+                data:positionMainPageSubmitForm.serializeJSON(),
+                headers: BaseUtils.serverHeaders()
             }, function (response) {
-                BaseUtils.modalUnblock("#dict_mainPage_dataSubmit_form_modal");
+                BaseUtils.modalUnblock("#position_mainPage_dataSubmit_form_modal");
                 if (response.success) {
                     // toastr.success(BaseUtils.saveSuccessMsg);
                     // 刷新表格
-                    dictMainPageRefreshGridAndTree();
+                    positionMainPageRefreshGridAndTree();
                     // 关闭 dialog
-                    dictMainPageFormModal.modal('hide');
+                    positionMainPageFormModal.modal('hide');
                 } else if (response.status == 409) {
-                    dictMainPageRefreshGridAndTree();
+                    positionMainPageRefreshGridAndTree();
                 }
             }, function (data) {
-                BaseUtils.modalUnblock("#dict_mainPage_dataSubmit_form_modal");
+                BaseUtils.modalUnblock("#position_mainPage_dataSubmit_form_modal");
             });
             return false;
         });
@@ -458,42 +445,35 @@ var SnippetMainPageDict = function() {
     /**
      *  清空表单数据和样式
      */
-    var dictMainPageCleanForm = function () {
-        BaseUtils.cleanFormData(dictMainPageSubmitForm);
+    var positionMainPageCleanForm = function () {
+        BaseUtils.cleanFormData(positionMainPageSubmitForm);
     };
 
     /**
      * 删除
      */
-    var dictMainPageDeleteData = function(obj) {
+    var positionMainPageDeleteData = function(obj) {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxDelUrl = serverUrl + "v1/verify/dict/d";
+        var  ajaxDelUrl = serverUrl + "v1/verify/position/d/b";
         var delData = null;
+        var idsArray = [];
         if (obj != null) {
-            delData = {
-                'id' : obj.data.id,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
-            }
+            idsArray.push(obj.data.id);
         } else {
-            var idsArray = [];
             // 获取选中的数据对象
-            var checkRows = dictMainPageTable.checkStatus('dict_mainPage_grid');
+            var checkRows = positionMainPageTable.checkStatus('position_mainPage_grid');
             //获取选中行的数据
             var checkData = checkRows.data;
             if (checkData.length > 0) {
                 $.each(checkData, function(index,element){
                     idsArray.push(element.id);
                 });
-                ajaxDelUrl = serverUrl + "v1/verify/dict/d/b";
-                delData = {
-                    'ids' : JSON.stringify(idsArray),
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode
-                }
             }
+        }
+        delData = {
+            'ids' : JSON.stringify(idsArray)
         }
         if (delData != null) {
             //询问框
@@ -503,17 +483,17 @@ var SnippetMainPageDict = function() {
             }, function(index, layero){   //按钮【按钮一】的回调
                 layer.close(index);
                 BaseUtils.pageMsgBlock();
-                $encrypDeleteAjax({
+                $deleteAjax({
                     url:ajaxDelUrl,
                     data: delData,
-                    headers: BaseUtils.cloudHeaders()
+                    headers: BaseUtils.serverHeaders()()
                 }, function (response) {
                     if (response.success) {
                         if (obj != null) {
                             obj.del();
-                            dictMainPageRereshExpandNode(dictMainPagePid);
+                            positionMainPageRereshExpandNode(positionMainPagePid);
                         } else {
-                            dictMainPageRefreshGridAndTree();
+                            positionMainPageRefreshGridAndTree();
                         }
                     }
                 }, function (data) {
@@ -528,57 +508,39 @@ var SnippetMainPageDict = function() {
     /**
      *  修改状态
      */
-    var dictMainPageUpdateDataStatus = function(obj,status) {
+    var positionMainPageUpdateDataStatus = function(obj,status) {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxPutUrl = serverUrl + "v1/verify/dict/p";
+        var ajaxPutUrl = serverUrl + "v1/verify/position/p/b";
         var putData = null;
+        var idsArray = [];
         if (obj != null) {
-            var dataVersion = $(obj.elem.outerHTML).attr("dataversion");
-            putData = {
-                'id' : obj.value,
-                'status' : status,
-                'dataVersion':dataVersion,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
-            }
+            idsArray.push(obj.value);
         } else {
-            var idsArray = [];
-            var putParams = [];
             // 获取选中的数据对象
-            var checkRows = dictMainPageTable.checkStatus('dict_mainPage_grid');
+            var checkRows = positionMainPageTable.checkStatus('position_mainPage_grid');
             //获取选中行的数据
             var checkData = checkRows.data;
             if (checkData.length > 0) {
                 $.each(checkData, function(index,element){
-                    var curDataParam = {
-                        "id":element.id,
-                        "dataVersion":element.dataVersion
-                    }
-                    putParams.push(curDataParam);
                     idsArray.push(element.id);
                 });
-
-                ajaxPutUrl = serverUrl + "v1/verify/dict/p/b";
-                putData = {
-                    'putParams' : JSON.stringify(idsArray),
-                    'ids': JSON.stringify(idsArray),
-                    'status' : status,
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode
-                }
             }
+        }
+        putData = {
+            'ids': JSON.stringify(idsArray),
+            'status' : status
         }
         if (putData != null) {
             BaseUtils.pageMsgBlock();
-            $encrypPutAjax({
+            $putAjax({
                 url: ajaxPutUrl,
                 data: putData,
-                headers: BaseUtils.cloudHeaders()
+                headers: BaseUtils.serverHeaders()
             }, function (response) {
                   if (response.success) {
-                    dictMainPageRefreshGridAndTree();
+                    positionMainPageRefreshGridAndTree();
                   }  else if (response.status == 202) {
                     if (status == 1) {
                         obj.othis.removeClass("layui-form-checked");
@@ -589,7 +551,7 @@ var SnippetMainPageDict = function() {
                         tips: [4, '#f4516c']
                     });
                   } else if (response.status == 409) {
-                      dictMainPageRefreshGrid();
+                      positionMainPageRefreshGrid();
                   } else {
                      if (status == 1) {
                         obj.othis.removeClass("layui-form-checked");
@@ -615,20 +577,20 @@ var SnippetMainPageDict = function() {
     /**
      *  同步数据
      */
-    var dictMainPageSyncData = function() {
+    var positionMainPageSyncData = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
         BaseUtils.pageMsgBlock();
         $postAjax({
-            url: serverUrl + "v1/verify/dict/sync?lessee="+ BaseUtils.getLesseeId(),
-            headers: BaseUtils.cloudHeaders()
+            url: serverUrl + "v1/verify/position/sync",
+            headers: BaseUtils.serverHeaders()
         }, function (response) {
             BaseUtils.htmPageUnblock();
             if (response.success) {
-                dictMainPagePid = 0;
-                dictMainPageZtreeNodeList = [];
-                dictMainPageRefreshGridAndTree();
+                positionMainPagePid = 0;
+                positionMainPageZtreeNodeList = [];
+                positionMainPageRefreshGridAndTree();
             }
         },function (response) {
             BaseUtils.htmPageUnblock();
@@ -637,54 +599,54 @@ var SnippetMainPageDict = function() {
 
 
 
-    var dictMainPageInitModalDialog = function() {
+    var positionMainPageInitModalDialog = function() {
         // 在调用 show 方法后触发。
-        $('#dict_mainPage_dataSubmit_form_modal').on('show.bs.modal', function (event) {
-            var selectedNodes = dictPageLeffTree.getSelectedNodes();
+        $('#position_mainPage_dataSubmit_form_modal').on('show.bs.modal', function (event) {
+            var selectedNodes = positionPageLeffTree.getSelectedNodes();
             if (selectedNodes.length > 0) {
                 var selectedNode = selectedNodes[0];
-                dictMainPageParentName = selectedNode.name;
-                dictMainPagePid = selectedNode.id;
+                positionMainPageParentName = selectedNode.name;
+                positionMainPagePid = selectedNode.id;
             }
-            var modalDialogTitle = "新增数据字典";
-            if (dictMainPageMark == 1) {
-                BaseUtils.cleanFormReadonly(dictMainPageSubmitFormId);
+            var modalDialogTitle = "新增岗位";
+            if (positionMainPageMark == 1) {
+                BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
-            $("#dict_mainPage_dataSubmit_form_parent_name").val(dictMainPageParentName);
-            if (dictMainPageMark == 2) {
-                modalDialogTitle = "修改数据字典";
-                BaseUtils.cleanFormReadonly(dictMainPageSubmitFormId);
-                $("#dict_mainPage_dataSubmit_form_dict_number").addClass("m-input--solid");
-                $("#dict_mainPage_dataSubmit_form_dict_number").attr("readonly", "readonly");
+            $("#position_mainPage_dataSubmit_form_parent_name").val(positionMainPageParentName);
+            if (positionMainPageMark == 2) {
+                modalDialogTitle = "修改岗位";
+                BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
+                $("#position_mainPage_dataSubmit_form_position_number").addClass("m-input--solid");
+                $("#position_mainPage_dataSubmit_form_position_number").attr("readonly", "readonly");
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
             }
             $(".has-danger-error").show();
-            $("#dict_mainPage_dataSubmit_form_submit").show();
-            $("#dict_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
-            $("#dict_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
-            if (dictMainPageMark == 3) {
-                modalDialogTitle = "数据字典信息";
+            $("#position_mainPage_dataSubmit_form_submit").show();
+            $("#position_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
+            $("#position_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
+            if (positionMainPageMark == 3) {
+                modalDialogTitle = "岗位信息";
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
                 $(".has-danger-error").hide();
-                $("#dict_mainPage_dataSubmit_form_submit").hide();
+                $("#position_mainPage_dataSubmit_form_submit").hide();
             }
             var modalDialog = $(this);
             modalDialog.find('.modal-title').text(modalDialogTitle);
             // 剧中显示
             $(this).css('display', 'block');
-            var modalHeight = $(window).height() / 2 - $('#dict_mainPage_dataSubmit_form_modal .modal-dialog').height() / 2;
+            var modalHeight = $(window).height() / 2 - $('#position_mainPage_dataSubmit_form_modal .modal-dialog').height() / 2;
             $(this).find('.modal-dialog').css({
                 'margin-top': modalHeight - 120
             });
         });
 
         // 当调用 hide 实例方法时触发。
-        $('#dict_mainPage_dataSubmit_form_modal').on('hide.bs.modal', function (event) {
+        $('#position_mainPage_dataSubmit_form_modal').on('hide.bs.modal', function (event) {
             // 清空form 表单数据
-            dictMainPageCleanForm();
+            positionMainPageCleanForm();
             $(".modal-backdrop").remove();
-            BaseUtils.modalUnblock("#dict_mainPage_dataSubmit_form_modal");
+            BaseUtils.modalUnblock("#position_mainPage_dataSubmit_form_modal");
         });
     };
 
@@ -692,50 +654,50 @@ var SnippetMainPageDict = function() {
     return {
         // public functions
         init: function() {
-            dictMainPageInitFunctionButtonGroup();
-            dictMainPageInitTree();
-            dictMainPageInitDataGrid();
-            dictMainPageInitModalDialog();
-            dictMainPageFormSubmitHandle();
-            $('#dict_mainPage_delete_btn').click(function(e) {
+            positionMainPageInitFunctionButtonGroup();
+            positionMainPageInitTree();
+            positionMainPageInitDataGrid();
+            positionMainPageInitModalDialog();
+            positionMainPageFormSubmitHandle();
+            $('#position_mainPage_delete_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                dictMainPageDeleteData(null);
+                positionMainPageDeleteData(null);
                 return false;
             });
-            $('#dict_mainPage_add_btn').click(function(e) {
+            $('#position_mainPage_add_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                dictMainPageMark = 1;
+                positionMainPageMark = 1;
                 // 显示 dialog
-                dictMainPageFormModal.modal('show');
+                positionMainPageFormModal.modal('show');
                 return false;
             });
-            $('#dict_mainPage_searchNode_btn').click(function(e) {
+            $('#position_mainPage_searchNode_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                dictMainPageSearchZtreeNode();
+                positionMainPageSearchZtreeNode();
                 return false;
             });
 
-            $('#dict_mainPage_sync_btn').click(function(e) {
+            $('#position_mainPage_sync_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                dictMainPageSyncData();
+                positionMainPageSyncData();
                 return false;
             });
 
             window.onresize = function(){
-                dictMainPageTable.resize("dict_mainPage_grid");
-                dictMainPageZtreeMaxHeight();
+                positionMainPageTable.resize("position_mainPage_grid");
+                positionMainPageZtreeMaxHeight();
             }
 
         }
@@ -744,5 +706,5 @@ var SnippetMainPageDict = function() {
 
 //== Class Initialization
 jQuery(document).ready(function() {
-    SnippetMainPageDict.init();
+    SnippetMainPagePosition.init();
 });

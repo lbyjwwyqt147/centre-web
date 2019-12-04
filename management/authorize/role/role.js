@@ -1,44 +1,44 @@
 /***
- * 岗位
+ * 角色
  * @type {{init}}
  */
-var SnippetMainPagePosition = function() {
+var SnippetMainPageRole = function() {
     var serverUrl = BaseUtils.serverAddress;
-    var positionMainPageTable;
-    var positionMainPageFormModal = $('#position_mainPage_dataSubmit_form_modal');
-    var positionMainPageSubmitForm = $("#position_mainPage_dataSubmit_form");
-    var positionMainPageSubmitFormId = "#position_mainPage_dataSubmit_form";
-    var positionMainPageMark = 1;
-    var positionMainPagePid = 0;
-    var positionMainPageParentName = "";
-    var positionMainPageZtreeNodeList = [];
-    var positionMainPageModuleCode = '1010';
-    var positionPageLeffTree;
+    var roleMainPageTable;
+    var roleMainPageFormModal = $('#role_mainPage_dataSubmit_form_modal');
+    var roleMainPageSubmitForm = $("#role_mainPage_dataSubmit_form");
+    var roleMainPageSubmitFormId = "#role_mainPage_dataSubmit_form";
+    var roleMainPageMark = 1;
+    var roleMainPagePid = 0;
+    var roleMainPageParentName = "";
+    var roleMainPageZtreeNodeList = [];
+    var roleMainPageModuleCode = '1060';
+    var rolePageLeffTree;
 
     /**
      * ztree 基础属性
-     * @type {{onClick: callback.onClick, onApositionMainPageSyncDataSuccess: callback.onApositionMainPageSyncDataSuccess}}
+     * @type {{onClick: callback.onClick, onAroleMainPageSyncDataSuccess: callback.onAroleMainPageSyncDataSuccess}}
      */
-    var positionMainPageZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
+    var roleMainPageZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
         "selectedMulti":false,
         "enable":false,
-        "url":serverUrl + "v1/tree/position/all/z",
-        "headers":BaseUtils.cloudHeaders()
+        "url":serverUrl + "v1/tree/role/all/z?id=0",
+        "headers":BaseUtils.serverHeaders()
     });
-    positionMainPageZtreeSetting.view = {
+    roleMainPageZtreeSetting.view = {
             selectedMulti:false,
             fontCss: zTreeHighlightFontCss,
             expandSpeed: "slow", //节点展开动画速度
     };
-    positionMainPageZtreeSetting.callback = {
+    roleMainPageZtreeSetting.callback = {
         onClick: function (event, treeId, treeNode) {   //点击节点执行事件
-            positionMainPagePid = treeNode.id;
-            positionMainPageParentName = treeNode.name;
-            positionMainPageRefreshGrid();
+            roleMainPagePid = treeNode.id;
+            roleMainPageParentName = treeNode.name;
+            roleMainPageRefreshGrid();
         },
         onAsyncSuccess:function(event, treeId, msg){ //异步加载完成后执行
-            if ("undefined" == $("#position_mainPage_tree_1_a").attr("title")) {
-                $("#position_mainPage_tree_1").remove();
+            if ("undefined" == $("#role_mainPage_tree_1_a").attr("title")) {
+                $("#role_mainPage_tree_1").remove();
             }
         },
         onAsyncError:function(){ //异步加载出现异常执行
@@ -55,9 +55,9 @@ var SnippetMainPagePosition = function() {
     /**
      * 初始化ztree 组件
      */
-    var positionMainPageInitTree = function() {
-        $.fn.zTree.init($("#position_mainPage_tree"), positionMainPageZtreeSetting);
-        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
+    var roleMainPageInitTree = function() {
+        $.fn.zTree.init($("#role_mainPage_tree"), roleMainPageZtreeSetting);
+        rolePageLeffTree = $.fn.zTree.getZTreeObj("role_mainPage_tree");
     };
 
     /**
@@ -65,17 +65,17 @@ var SnippetMainPagePosition = function() {
      * 在指定的节点下面增加子节点之后调用的方法。
      * @param id
      */
-    function positionMainPageRereshExpandNode(id) {
+    function roleMainPageRereshExpandNode(id) {
         if (id == 0) {
-            positionMainPageRereshTree();
+            roleMainPageRereshTree();
             return;
         }
-        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
-        var nodes = positionPageLeffTree.getNodesByParam("id", id, null);
+        rolePageLeffTree = $.fn.zTree.getZTreeObj("role_mainPage_tree");
+        var nodes = rolePageLeffTree.getNodesByParam("id", id, null);
        if (nodes[0].children == null || nodes[0].children == undefined || nodes[0].children.length == 0) {
-           positionMainPageRereshTreeNode(id);
+           roleMainPageRereshTreeNode(id);
        }
-       BaseUtils.ztree.rereshExpandNode(positionPageLeffTree, id);
+       BaseUtils.ztree.rereshExpandNode(rolePageLeffTree, id);
     }
 
 
@@ -83,28 +83,28 @@ var SnippetMainPagePosition = function() {
      *  刷新树
      * @param id
      */
-    function positionMainPageRereshTree(){
-        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
-        positionPageLeffTree.destroy();
-        positionMainPageInitTree();
+    function roleMainPageRereshTree(){
+        rolePageLeffTree = $.fn.zTree.getZTreeObj("role_mainPage_tree");
+        rolePageLeffTree.destroy();
+        roleMainPageInitTree();
     };
 
     /**
      * 异步加载ztree 数数据
      * @param id
      */
-    function positionMainPageRereshTreeNode(id) {
+    function roleMainPageRereshTreeNode(id) {
         $getAjax({
-            url: serverUrl + "v1/tree/position/all/z",
+            url: serverUrl + "v1/tree/role/all/z",
             data: {
                 id:id
             },
-            headers: BaseUtils.cloudHeaders()
+            headers: BaseUtils.serverHeaders()
         }, function (data) {
             //获取指定父节点
-            positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
-            var parentZNode = positionPageLeffTree.getNodeByParam("id", positionMainPagePid, null);
-            positionPageLeffTree.addNodes(parentZNode,data, false);
+            rolePageLeffTree = $.fn.zTree.getZTreeObj("role_mainPage_tree");
+            var parentZNode = rolePageLeffTree.getNodeByParam("id", roleMainPagePid, null);
+            rolePageLeffTree.addNodes(parentZNode,data, false);
         }, function (response) {
 
         });
@@ -113,37 +113,37 @@ var SnippetMainPagePosition = function() {
     /**
      *  搜索节点
      */
-    function positionMainPageSearchZtreeNode() {
-        var searchZtreeValue = $.trim($("#position-mainPage-nodeName-search").val());
-       positionMainPageZtreeUpdateNodes(positionMainPageZtreeNodeList,false);
+    function roleMainPageSearchZtreeNode() {
+        var searchZtreeValue = $.trim($("#role-mainPage-nodeName-search").val());
+       roleMainPageZtreeUpdateNodes(roleMainPageZtreeNodeList,false);
         if (searchZtreeValue == "") {
             return;
         }
         var keyType = "name";
-        positionPageLeffTree = $.fn.zTree.getZTreeObj("position_mainPage_tree");
-        positionMainPageZtreeNodeList = positionPageLeffTree.getNodesByParamFuzzy(keyType, searchZtreeValue);
-        positionMainPageZtreeUpdateNodes(positionMainPageZtreeNodeList, true);
+        rolePageLeffTree = $.fn.zTree.getZTreeObj("role_mainPage_tree");
+        roleMainPageZtreeNodeList = rolePageLeffTree.getNodesByParamFuzzy(keyType, searchZtreeValue);
+        roleMainPageZtreeUpdateNodes(roleMainPageZtreeNodeList, true);
     };
 
     /**
      *  更新节点
-     * @param positionMainPageZtreeNodeList
+     * @param roleMainPageZtreeNodeList
      * @param highlight
      */
-    function positionMainPageZtreeUpdateNodes(positionMainPageZtreeNodeList, highlight) {
-        var curpositionParentNodes = [];
-        for (var i = 0, l = positionMainPageZtreeNodeList.length; i < l; i++) {
-            var  curNode = positionMainPageZtreeNodeList[i];
+    function roleMainPageZtreeUpdateNodes(roleMainPageZtreeNodeList, highlight) {
+        var curroleParentNodes = [];
+        for (var i = 0, l = roleMainPageZtreeNodeList.length; i < l; i++) {
+            var  curNode = roleMainPageZtreeNodeList[i];
             curNode.highlight = highlight;
             // 获取父节点
             var pNode = curNode.getParentNode();
-            if (pNode != null && curpositionParentNodes.indexOf(pNode.id) == -1) {
-                curpositionParentNodes.push(pNode.id);
-                positionPageLeffTree.expandNode(pNode);
+            if (pNode != null && curroleParentNodes.indexOf(pNode.id) == -1) {
+                curroleParentNodes.push(pNode.id);
+                rolePageLeffTree.expandNode(pNode);
             }
             //定位到节点并展开
-            positionPageLeffTree.expandNode(curNode);
-            positionPageLeffTree.updateNode(curNode);
+            rolePageLeffTree.expandNode(curNode);
+            rolePageLeffTree.updateNode(curNode);
         }
     };
 
@@ -160,35 +160,33 @@ var SnippetMainPagePosition = function() {
     /**
      * 设置 tree 最大高度样式
      */
-    function positionMainPageZtreeMaxHeight() {
+    function roleMainPageZtreeMaxHeight() {
          var layGridHeight = $(".layui-form.layui-border-box.layui-table-view").outerHeight();
-        $("#position_mainPage_tree").css("max-height", layGridHeight);
+        $("#role_mainPage_tree").css("max-height", layGridHeight);
     }
 
     /**
      * 初始化 功能按钮
      */
-    var positionMainPageInitFunctionButtonGroup = function () {
-        //初始化 优先级 控件
-        BootstrapTouchspin.initByteTouchSpin("#position_mainPage_dataSubmit_form_position_seq");
-        var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(positionMainPageModuleCode);
+    var roleMainPageInitFunctionButtonGroup = function () {
+        var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(roleMainPageModuleCode);
         if (functionButtonGroup != null) {
-            var gridHeadToolsHtml = $("#position-mainPage-grid-head-tools");
-            var tableToolbarHtml = $("#position_mainPage_table_toolbar");
+            var gridHeadToolsHtml = $("#role-mainPage-grid-head-tools");
+            var tableToolbarHtml = $("#role_mainPage_table_toolbar");
 
             var buttonGroup = functionButtonGroup.split(';');
             //如果arry数组里面存在"指定字符" 这个字符串则返回该字符串的数组下标，否则返回(不包含在数组中) -1
             var save_index = $.inArray("1", buttonGroup);
             if (save_index != -1) {
-                var save_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增岗位">\n';
-                save_btn_html += '<a href="javascript:;" class="btn btn-success m-btn m-btn--icon btn-sm m-btn--icon-only" id="position_mainPage_add_btn">\n';
+                var save_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增角色">\n';
+                save_btn_html += '<a href="javascript:;" class="btn btn-success m-btn m-btn--icon btn-sm m-btn--icon-only" id="role_mainPage_add_btn">\n';
                 save_btn_html += '<i class="la la-plus"></i>\n';
                 save_btn_html += '</a>\n';
                 save_btn_html += '</li>\n';
                 gridHeadToolsHtml.append(save_btn_html);
 
 
-                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改岗位" lay-event="edit">\n'
+                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改角色" lay-event="edit">\n'
                 edit_btn_html += '<i class="la la-edit"></i>\n';
                 edit_btn_html += '</a>\n';
                 tableToolbarHtml.append(edit_btn_html);
@@ -196,8 +194,8 @@ var SnippetMainPagePosition = function() {
             }
             var delete_index = $.inArray("2", buttonGroup);
             if (delete_index != -1) {
-                var delete_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除岗位">\n';
-                delete_btn_html += '<a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only" id="position_mainPage_delete_btn">\n';
+                var delete_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除角色">\n';
+                delete_btn_html += '<a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only" id="role_mainPage_delete_btn">\n';
                 delete_btn_html += '<i class="la la-trash-o"></i>\n';
                 delete_btn_html += '</a>\n';
                 delete_btn_html += '</li>\n';
@@ -205,7 +203,7 @@ var SnippetMainPagePosition = function() {
 
 
 
-                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除岗位" lay-event="del">\n'
+                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除角色" lay-event="del">\n'
                 table_del_btn_html += '<i class="la la-trash-o"></i>\n';
                 table_del_btn_html += '</a>\n';
                 tableToolbarHtml.append(table_del_btn_html);
@@ -213,7 +211,7 @@ var SnippetMainPagePosition = function() {
             var sync_index = $.inArray("10", buttonGroup);
             if (sync_index != -1) {
                 var sync_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="同步数据">\n';
-                sync_btn_html += '<a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only" id="position_mainPage_sync_btn">\n';
+                sync_btn_html += '<a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only" id="role_mainPage_sync_btn">\n';
                 sync_btn_html += '<i class="la la-rotate-right"></i>\n';
                 sync_btn_html += '</a>\n';
                 sync_btn_html += '</li>\n';
@@ -227,35 +225,34 @@ var SnippetMainPagePosition = function() {
     /**
      *  初始化 dataGrid 组件
      */
-    var positionMainPageInitDataGrid = function () {
+    var roleMainPageInitDataGrid = function () {
         layui.use('table', function(){
-            // positionMainPageTable = layui.table;
+            // roleMainPageTable = layui.table;
             var layuiForm = layui.form;
-            positionMainPageTable =  $initEncrypDataGrid({
-                elem: '#position_mainPage_grid',
-                url: serverUrl + 'v1/table/position/g',
+            roleMainPageTable =  $initDataGrid({
+                elem: '#role_mainPage_grid',
+                url: serverUrl + 'v1/table/role/g',
                 method:"get",
                 where: {   //传递额外参数
-                    'pid' : positionMainPagePid
+                    'pid' : roleMainPagePid
                 },
-                headers: BaseUtils.cloudHeaders(),
-                title: '岗位列表',
+                headers: BaseUtils.serverHeaders(),
+                title: '角色列表',
                 height: 'full-150',
                 initSort: {
-                    field: 'serialNumber', //排序字段，对应 cols 设定的各字段名
+                    field: 'id', //排序字段，对应 cols 设定的各字段名
                     type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
                 },
                 cols: [[
                     {checkbox: true},
                     {field:'id', title:'ID', unresize:true, hide:true },
-                    {field:'postNumber', title:'岗位编号'},
-                    {field:'postName', title:'岗位名称'},
-                    {field:'serialNumber', title:'排序值'},
-                    {field:'postLevel', title:'层级'},
-                    {field:'postDescription', title:'描述'},
-                    {field:'postStatus', title:'状态', align: 'center', fixed: 'right', unresize:true,
+                    {field:'roleNumber', title:'角色编号'},
+                    {field:'roleName', title:'角色名称'},
+                    {field:'roleAuthorizationCode', title:'授权代码'},
+                    {field:'roleDescription', title:'描述'},
+                    {field:'roleStatus', title:'状态', align: 'center', fixed: 'right', unresize:true,
                         templet : function (row) {
-                            var value = row.postStatus;
+                            var value = row.roleStatus;
                             var spanCss = "m-badge--success";
                             if (value == 1)  {
                                 spanCss = "m-badge--warning";
@@ -264,13 +261,13 @@ var SnippetMainPagePosition = function() {
                             return spanHtml;
                         }
                     },
-                    {fixed: 'right', title:'操作', unresize:true, toolbar: '#position_mainPage_table_toolbar', align: 'center', width:200}
+                    {fixed: 'right', title:'操作', unresize:true, toolbar: '#role_mainPage_table_toolbar', align: 'center', width:200}
                 ]],
                 limit: 20,
                 limits: [20,30,40,50]
             }, function(res, curr, count){
-                positionMainPageZtreeMaxHeight();
-                var curFunctionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(positionMainPageModuleCode);
+                roleMainPageZtreeMaxHeight();
+                var curFunctionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(roleMainPageModuleCode);
                 var status_table_index = $.inArray("3", curFunctionButtonGroup);
                 if (status_table_index != -1) {
                     $(".layui-unselect.layui-form-checkbox").show();
@@ -284,21 +281,20 @@ var SnippetMainPagePosition = function() {
             });
 
             //监听行工具事件
-            positionMainPageTable.on('tool(position_mainPage_grid)', function(obj){
+            roleMainPageTable.on('tool(role_mainPage_grid)', function(obj){
                 if(obj.event === 'del'){
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
-                    positionMainPageDeleteData(obj);
+                    roleMainPageDeleteData(obj);
                 } else if(obj.event === 'edit'){
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
-                    positionMainPageSubmitForm.setForm(obj.data);
-                    $("#position_mainPage_dataSubmit_form_position_seq").val(obj.data.serialNumber);
-                    positionMainPageMark = 2;
+                    roleMainPageSubmitForm.setForm(obj.data);
+                    roleMainPageMark = 2;
                     // 显示 dialog
-                    positionMainPageFormModal.modal('show');
+                    roleMainPageFormModal.modal('show');
                 }
             });
 
@@ -320,16 +316,15 @@ var SnippetMainPagePosition = function() {
                     }
                     return;
                 }
-                positionMainPageUpdateDataStatus(obj, statusValue);
+                roleMainPageUpdateDataStatus(obj, statusValue);
             });
 
             //监听行双击事件
-            positionMainPageTable.on('rowDouble(position_mainPage_grid)', function(obj){
-                positionMainPageMark = 3;
-                positionMainPageSubmitForm.setForm(obj.data);
-                $("#position_mainPage_dataSubmit_form_position_seq").val(obj.data.serialNumber);
-                BaseUtils.readonlyForm(positionMainPageSubmitFormId);
-                positionMainPageFormModal.modal('show');
+            roleMainPageTable.on('rowDouble(role_mainPage_grid)', function(obj){
+                roleMainPageMark = 3;
+                roleMainPageSubmitForm.setForm(obj.data);
+                BaseUtils.readonlyForm(roleMainPageSubmitFormId);
+                roleMainPageFormModal.modal('show');
             });
         });
     };
@@ -337,10 +332,10 @@ var SnippetMainPagePosition = function() {
     /**
      * 刷新grid
      */
-    var positionMainPageRefreshGrid = function () {
-        positionMainPageTable.reload('position_mainPage_grid',{
+    var roleMainPageRefreshGrid = function () {
+        roleMainPageTable.reload('role_mainPage_grid',{
             where: {   //传递额外参数
-                'pid' : positionMainPagePid
+                'pid' : roleMainPagePid
             },
             page: {
                  curr: 1 //重新从第 1 页开始
@@ -351,37 +346,39 @@ var SnippetMainPagePosition = function() {
     /**
      * 刷新grid和tree
      */
-    var positionMainPageRefreshGridAndTree = function () {
-        positionMainPageRefreshGrid();
+    var roleMainPageRefreshGridAndTree = function () {
+        roleMainPageRefreshGrid();
         //刷新树
-        positionMainPageRereshExpandNode(positionMainPagePid);
+        roleMainPageRereshExpandNode(roleMainPagePid);
     };
 
     /**
      * 初始化表单提交
      */
-    var positionMainPageFormSubmitHandle = function() {
-        $('#position_mainPage_dataSubmit_form_submit').click(function(e) {
+    var roleMainPageFormSubmitHandle = function() {
+        $('#role_mainPage_dataSubmit_form_submit').click(function(e) {
             e.preventDefault();
-            BaseUtils.formInputTrim(positionMainPageSubmitFormId);
-            if ($("#position_mainPage_dataSubmit_form_parent_name").val() == "") {
-                positionMainPagePid = 0;
-                positionMainPageParentName = "";
+            BaseUtils.formInputTrim(roleMainPageSubmitFormId);
+            if ($("#role_mainPage_dataSubmit_form_parent_name").val() == "") {
+                roleMainPagePid = 0;
+                roleMainPageParentName = "";
             }
-            positionMainPageSubmitForm.validate({
+            roleMainPageSubmitForm.validate({
                 rules: {
-                    postNumber: {
+                    roleNumber: {
                         required: true,
                         alnumCode:true,
                         maxlength: 15
                     },
-                    postName: {
+                    roleName: {
                         required: true,
                         alnumName:true,
                         maxlength: 32
                     },
-                    serialNumber: {
-                        range: [0,127]
+                    roleAuthorizationCode: {
+                        required: true,
+                        englishLetter:true,
+                        maxlength: 15
                     },
                     description: {
                         illegitmacy:true,
@@ -413,31 +410,31 @@ var SnippetMainPagePosition = function() {
 
                 },
             });
-            if (!positionMainPageSubmitForm.valid()) {
+            if (!roleMainPageSubmitForm.valid()) {
                 return;
             }
             if (BaseUtils.checkLoginTimeoutStatus()) {
                 return;
             }
-            BaseUtils.modalBlock("#position_mainPage_dataSubmit_form_modal");
-            $("#position_mainPage_dataSubmit_form input[name='pid']").val(positionMainPagePid);
-            $encryptPostAjax({
-                url:serverUrl + "v1/verify/position/s",
-                data:positionMainPageSubmitForm.serializeJSON(),
-                headers: BaseUtils.cloudHeaders()
+            BaseUtils.modalBlock("#role_mainPage_dataSubmit_form_modal");
+            $("#role_mainPage_dataSubmit_form input[name='parentId']").val(roleMainPagePid);
+            $postAjax({
+                url:serverUrl + "v1/verify/role/s",
+                data:roleMainPageSubmitForm.serializeJSON(),
+                headers: BaseUtils.serverHeaders()
             }, function (response) {
-                BaseUtils.modalUnblock("#position_mainPage_dataSubmit_form_modal");
+                BaseUtils.modalUnblock("#role_mainPage_dataSubmit_form_modal");
                 if (response.success) {
                     // toastr.success(BaseUtils.saveSuccessMsg);
                     // 刷新表格
-                    positionMainPageRefreshGridAndTree();
+                    roleMainPageRefreshGridAndTree();
                     // 关闭 dialog
-                    positionMainPageFormModal.modal('hide');
+                    roleMainPageFormModal.modal('hide');
                 } else if (response.status == 409) {
-                    positionMainPageRefreshGridAndTree();
+                    roleMainPageRefreshGridAndTree();
                 }
             }, function (data) {
-                BaseUtils.modalUnblock("#position_mainPage_dataSubmit_form_modal");
+                BaseUtils.modalUnblock("#role_mainPage_dataSubmit_form_modal");
             });
             return false;
         });
@@ -446,25 +443,25 @@ var SnippetMainPagePosition = function() {
     /**
      *  清空表单数据和样式
      */
-    var positionMainPageCleanForm = function () {
-        BaseUtils.cleanFormData(positionMainPageSubmitForm);
+    var roleMainPageCleanForm = function () {
+        BaseUtils.cleanFormData(roleMainPageSubmitForm);
     };
 
     /**
      * 删除
      */
-    var positionMainPageDeleteData = function(obj) {
+    var roleMainPageDeleteData = function(obj) {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var  ajaxDelUrl = serverUrl + "v1/verify/position/d/b";
+        var  ajaxDelUrl = serverUrl + "v1/verify/role/d/b";
         var delData = null;
         var idsArray = [];
         if (obj != null) {
             idsArray.push(obj.data.id);
         } else {
             // 获取选中的数据对象
-            var checkRows = positionMainPageTable.checkStatus('position_mainPage_grid');
+            var checkRows = roleMainPageTable.checkStatus('role_mainPage_grid');
             //获取选中行的数据
             var checkData = checkRows.data;
             if (checkData.length > 0) {
@@ -487,14 +484,14 @@ var SnippetMainPagePosition = function() {
                 $deleteAjax({
                     url:ajaxDelUrl,
                     data: delData,
-                    headers: BaseUtils.serverHeaders()()
+                    headers: BaseUtils.serverHeaders()
                 }, function (response) {
                     if (response.success) {
                         if (obj != null) {
                             obj.del();
-                            positionMainPageRereshExpandNode(positionMainPagePid);
+                            roleMainPageRereshExpandNode(roleMainPagePid);
                         } else {
-                            positionMainPageRefreshGridAndTree();
+                            roleMainPageRefreshGridAndTree();
                         }
                     }
                 }, function (data) {
@@ -509,18 +506,18 @@ var SnippetMainPagePosition = function() {
     /**
      *  修改状态
      */
-    var positionMainPageUpdateDataStatus = function(obj,status) {
+    var roleMainPageUpdateDataStatus = function(obj,status) {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxPutUrl = serverUrl + "v1/verify/position/p/b";
+        var ajaxPutUrl = serverUrl + "v1/verify/role/p/b";
         var putData = null;
         var idsArray = [];
         if (obj != null) {
             idsArray.push(obj.value);
         } else {
             // 获取选中的数据对象
-            var checkRows = positionMainPageTable.checkStatus('position_mainPage_grid');
+            var checkRows = roleMainPageTable.checkStatus('role_mainPage_grid');
             //获取选中行的数据
             var checkData = checkRows.data;
             if (checkData.length > 0) {
@@ -541,7 +538,7 @@ var SnippetMainPagePosition = function() {
                 headers: BaseUtils.serverHeaders()
             }, function (response) {
                   if (response.success) {
-                    positionMainPageRefreshGridAndTree();
+                    roleMainPageRefreshGridAndTree();
                   }  else if (response.status == 202) {
                     if (status == 1) {
                         obj.othis.removeClass("layui-form-checked");
@@ -552,7 +549,7 @@ var SnippetMainPagePosition = function() {
                         tips: [4, '#f4516c']
                     });
                   } else if (response.status == 409) {
-                      positionMainPageRefreshGrid();
+                      roleMainPageRefreshGrid();
                   } else {
                      if (status == 1) {
                         obj.othis.removeClass("layui-form-checked");
@@ -578,20 +575,20 @@ var SnippetMainPagePosition = function() {
     /**
      *  同步数据
      */
-    var positionMainPageSyncData = function() {
+    var roleMainPageSyncData = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
         BaseUtils.pageMsgBlock();
         $postAjax({
-            url: serverUrl + "v1/verify/position/sync",
-            headers: BaseUtils.cloudHeaders()
+            url: serverUrl + "v1/verify/role/sync",
+            headers: BaseUtils.serverHeaders()
         }, function (response) {
             BaseUtils.htmPageUnblock();
             if (response.success) {
-                positionMainPagePid = 0;
-                positionMainPageZtreeNodeList = [];
-                positionMainPageRefreshGridAndTree();
+                roleMainPagePid = 0;
+                roleMainPageZtreeNodeList = [];
+                roleMainPageRefreshGridAndTree();
             }
         },function (response) {
             BaseUtils.htmPageUnblock();
@@ -600,54 +597,54 @@ var SnippetMainPagePosition = function() {
 
 
 
-    var positionMainPageInitModalDialog = function() {
+    var roleMainPageInitModalDialog = function() {
         // 在调用 show 方法后触发。
-        $('#position_mainPage_dataSubmit_form_modal').on('show.bs.modal', function (event) {
-            var selectedNodes = positionPageLeffTree.getSelectedNodes();
+        $('#role_mainPage_dataSubmit_form_modal').on('show.bs.modal', function (event) {
+            var selectedNodes = rolePageLeffTree.getSelectedNodes();
             if (selectedNodes.length > 0) {
                 var selectedNode = selectedNodes[0];
-                positionMainPageParentName = selectedNode.name;
-                positionMainPagePid = selectedNode.id;
+                roleMainPageParentName = selectedNode.name;
+                roleMainPagePid = selectedNode.id;
             }
-            var modalDialogTitle = "新增岗位";
-            if (positionMainPageMark == 1) {
-                BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
+            var modalDialogTitle = "新增角色";
+            if (roleMainPageMark == 1) {
+                BaseUtils.cleanFormReadonly(roleMainPageSubmitFormId);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
-            $("#position_mainPage_dataSubmit_form_parent_name").val(positionMainPageParentName);
-            if (positionMainPageMark == 2) {
-                modalDialogTitle = "修改岗位";
-                BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
-                $("#position_mainPage_dataSubmit_form_position_number").addClass("m-input--solid");
-                $("#position_mainPage_dataSubmit_form_position_number").attr("readonly", "readonly");
+            $("#role_mainPage_dataSubmit_form_parent_name").val(roleMainPageParentName);
+            if (roleMainPageMark == 2) {
+                modalDialogTitle = "修改角色";
+                BaseUtils.cleanFormReadonly(roleMainPageSubmitFormId);
+                $("#role_mainPage_dataSubmit_form_role_number").addClass("m-input--solid");
+                $("#role_mainPage_dataSubmit_form_role_number").attr("readonly", "readonly");
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
             }
             $(".has-danger-error").show();
-            $("#position_mainPage_dataSubmit_form_submit").show();
-            $("#position_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
-            $("#position_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
-            if (positionMainPageMark == 3) {
-                modalDialogTitle = "岗位信息";
+            $("#role_mainPage_dataSubmit_form_submit").show();
+            $("#role_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
+            $("#role_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
+            if (roleMainPageMark == 3) {
+                modalDialogTitle = "角色信息";
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
                 $(".has-danger-error").hide();
-                $("#position_mainPage_dataSubmit_form_submit").hide();
+                $("#role_mainPage_dataSubmit_form_submit").hide();
             }
             var modalDialog = $(this);
             modalDialog.find('.modal-title').text(modalDialogTitle);
             // 剧中显示
             $(this).css('display', 'block');
-            var modalHeight = $(window).height() / 2 - $('#position_mainPage_dataSubmit_form_modal .modal-dialog').height() / 2;
+            var modalHeight = $(window).height() / 2 - $('#role_mainPage_dataSubmit_form_modal .modal-dialog').height() / 2;
             $(this).find('.modal-dialog').css({
                 'margin-top': modalHeight - 120
             });
         });
 
         // 当调用 hide 实例方法时触发。
-        $('#position_mainPage_dataSubmit_form_modal').on('hide.bs.modal', function (event) {
+        $('#role_mainPage_dataSubmit_form_modal').on('hide.bs.modal', function (event) {
             // 清空form 表单数据
-            positionMainPageCleanForm();
+            roleMainPageCleanForm();
             $(".modal-backdrop").remove();
-            BaseUtils.modalUnblock("#position_mainPage_dataSubmit_form_modal");
+            BaseUtils.modalUnblock("#role_mainPage_dataSubmit_form_modal");
         });
     };
 
@@ -655,50 +652,50 @@ var SnippetMainPagePosition = function() {
     return {
         // public functions
         init: function() {
-            positionMainPageInitFunctionButtonGroup();
-            positionMainPageInitTree();
-            positionMainPageInitDataGrid();
-            positionMainPageInitModalDialog();
-            positionMainPageFormSubmitHandle();
-            $('#position_mainPage_delete_btn').click(function(e) {
+            roleMainPageInitFunctionButtonGroup();
+            roleMainPageInitTree();
+            roleMainPageInitDataGrid();
+            roleMainPageInitModalDialog();
+            roleMainPageFormSubmitHandle();
+            $('#role_mainPage_delete_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                positionMainPageDeleteData(null);
+                roleMainPageDeleteData(null);
                 return false;
             });
-            $('#position_mainPage_add_btn').click(function(e) {
+            $('#role_mainPage_add_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                positionMainPageMark = 1;
+                roleMainPageMark = 1;
                 // 显示 dialog
-                positionMainPageFormModal.modal('show');
+                roleMainPageFormModal.modal('show');
                 return false;
             });
-            $('#position_mainPage_searchNode_btn').click(function(e) {
+            $('#role_mainPage_searchNode_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                positionMainPageSearchZtreeNode();
+                roleMainPageSearchZtreeNode();
                 return false;
             });
 
-            $('#position_mainPage_sync_btn').click(function(e) {
+            $('#role_mainPage_sync_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                positionMainPageSyncData();
+                roleMainPageSyncData();
                 return false;
             });
 
             window.onresize = function(){
-                positionMainPageTable.resize("position_mainPage_grid");
-                positionMainPageZtreeMaxHeight();
+                roleMainPageTable.resize("role_mainPage_grid");
+                roleMainPageZtreeMaxHeight();
             }
 
         }
@@ -707,5 +704,5 @@ var SnippetMainPagePosition = function() {
 
 //== Class Initialization
 jQuery(document).ready(function() {
-    SnippetMainPagePosition.init();
+    SnippetMainPageRole.init();
 });
