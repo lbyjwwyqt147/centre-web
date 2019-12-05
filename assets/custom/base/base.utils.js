@@ -160,7 +160,7 @@ var BaseUtils = {
     checkLoginTimeoutStatus:function() {
         var timeOut = BaseUtils.checkLoginTimeout();
         if (timeOut) {
-            this.LoginTimeOutHandler();
+            BaseUtils.LoginTimeOutHandler();
             return true;
         }
         return false;
@@ -172,7 +172,7 @@ var BaseUtils = {
      */
     checkIsLoginTimeOut:function(status) {
         if (status == 504) {
-            this.LoginTimeOutHandler();
+            BaseUtils.LoginTimeOutHandler();
             return true;
         }
         return false;

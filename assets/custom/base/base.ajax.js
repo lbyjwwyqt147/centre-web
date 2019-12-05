@@ -522,7 +522,16 @@ jQuery(document).ready(function() {
             },
             headers: params.headers,
             parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
-                if (res.status != 200) {
+                if (res.status == 504) {
+                    BaseUtils.checkIsLoginTimeOut(res.status);
+                } else if (res.status == 200 && res.data.length == 0) {
+                    return {
+                        "code": 201,
+                        "msg": '暂无相关数据',
+                        "count": res.total,
+                        "data": res.data
+                    };
+                } else if (res.status != 200) {
                     toastr.error(res.message);
                 }
                 return {
@@ -583,19 +592,28 @@ jQuery(document).ready(function() {
             headers: params.headers,
             parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
                 var tableData = [];
-                if (res.status == 200) {
+                if (res.status == 504) {
+                    BaseUtils.checkIsLoginTimeOut(res.status);
+                } else if (res.status == 200) {
                     if (isJsonObject(res.data)){
                         tableData = res.data;
                     } else {
                         var decryptData = BaseUtils.dataDecrypt(res.data.replace("\"",""));
                         tableData = JSON.parse(decryptData);
                     }
-                } else {
+                    if (tableData.length == 0) {
+                        return {
+                            "code": 201,
+                            "msg": '暂无相关数据',
+                            "count": res.total,
+                            "data": tableData
+                        };
+                    }
+                } else if (res.status != 200) {
                     if ($.trim(res.message) != '') {
                         toastr.error(res.message);
                     }
                 }
-
                 return {
                     "code": res.status, //解析接口状态
                     "msg": res.message, //解析提示文本

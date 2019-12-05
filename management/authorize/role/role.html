@@ -62,10 +62,15 @@
                         <div class="m-widget1" >
                             <div class="input-group" style="margin-left: 17px; margin-top: 5px; ">
                                 <input type="text" class="form-control form-control-danger" id="role-mainPage-nodeName-search" placeholder="输入名称搜索" autocomplete="off" style="height: 41px;">
-                                <div class="input-group-append" style="cursor: pointer" id="role_mainPage_searchNode_btn">
-                            <span class="input-group-text" >
-                                <i class="la la-search"></i>
-                            </span>
+                                <div class="input-group-append" style="cursor: pointer" id="role_mainPage_searchNode_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="搜索节点">
+                                    <span class="btn btn-secondary" >
+                                        <i class="la la-search"></i>
+                                    </span>
+                                </div>
+                                <div class="input-group-append" style="cursor: pointer" id="role_mainPage_reload_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="重新加载数据">
+                                    <span class="btn btn-secondary" >
+                                        <i class="la la-refresh"></i>
+                                    </span>
                                 </div>
                             </div>
                             <ul id="role_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px;" ></ul>

@@ -22,7 +22,7 @@ var SnippetMainPageRole = function() {
     var roleMainPageZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
         "selectedMulti":false,
         "enable":false,
-        "url":serverUrl + "v1/tree/role/all/z?id=0",
+        "url":serverUrl + "v1/tree/role/all/z",
         "headers":BaseUtils.serverHeaders()
     });
     roleMainPageZtreeSetting.view = {
@@ -186,7 +186,7 @@ var SnippetMainPageRole = function() {
                 gridHeadToolsHtml.append(save_btn_html);
 
 
-                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改角色" lay-event="edit">\n'
+                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" title="修改角色" lay-event="edit">\n'
                 edit_btn_html += '<i class="la la-edit"></i>\n';
                 edit_btn_html += '</a>\n';
                 tableToolbarHtml.append(edit_btn_html);
@@ -203,7 +203,7 @@ var SnippetMainPageRole = function() {
 
 
 
-                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除角色" lay-event="del">\n'
+                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" title=" 删除角色" lay-event="del">\n'
                 table_del_btn_html += '<i class="la la-trash-o"></i>\n';
                 table_del_btn_html += '</a>\n';
                 tableToolbarHtml.append(table_del_btn_html);
@@ -234,7 +234,7 @@ var SnippetMainPageRole = function() {
                 url: serverUrl + 'v1/table/role/g',
                 method:"get",
                 where: {   //传递额外参数
-                    'pid' : roleMainPagePid
+                    'parentId' : roleMainPagePid
                 },
                 headers: BaseUtils.serverHeaders(),
                 title: '角色列表',
@@ -277,7 +277,6 @@ var SnippetMainPageRole = function() {
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                BaseUtils.checkIsLoginTimeOut(res.status);
             });
 
             //监听行工具事件
@@ -335,7 +334,7 @@ var SnippetMainPageRole = function() {
     var roleMainPageRefreshGrid = function () {
         roleMainPageTable.reload('role_mainPage_grid',{
             where: {   //传递额外参数
-                'pid' : roleMainPagePid
+                'parentId' : roleMainPagePid
             },
             page: {
                  curr: 1 //重新从第 1 页开始
@@ -557,9 +556,9 @@ var SnippetMainPageRole = function() {
                      } else {
                         obj.othis.addClass("layui-form-checked");
                      }
-                     if (response.status == 504) {
-                         BaseUtils.LoginTimeOutHandler();
-                     } else {
+                      if (response.status == 504 || response.status == 401) {
+                          BaseUtils.LoginTimeOutHandler();
+                      }else {
                          layer.tips(response.message, obj.othis,  {
                              tips: [4, '#f4516c']
                          });
@@ -683,7 +682,15 @@ var SnippetMainPageRole = function() {
                 roleMainPageSearchZtreeNode();
                 return false;
             });
-
+            $('#role_mainPage_reload_btn').click(function(e) {
+                e.preventDefault();
+                if (BaseUtils.checkLoginTimeoutStatus()) {
+                    return;
+                }
+                roleMainPagePid = 0;
+                roleMainPageRefreshGridAndTree();
+                return false;
+            });
             $('#role_mainPage_sync_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
