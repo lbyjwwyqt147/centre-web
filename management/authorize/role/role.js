@@ -371,7 +371,7 @@ var SnippetMainPageRole = function() {
                     },
                     roleName: {
                         required: true,
-                        alnumName:true,
+                        chcharacter:true,
                         maxlength: 32
                     },
                     roleAuthorizationCode: {

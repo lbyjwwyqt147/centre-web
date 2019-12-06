@@ -131,7 +131,7 @@
                                         <div class="form-group m-form__group row">
                                             <label class="col-form-label col-lg-3 col-sm-12">岗位名称:<span class="has-danger-error">*</span></label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="postName" placeholder="只能输入汉字、数字、字母、下划线" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="postName" placeholder="只能输入汉字" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
@@ -188,7 +188,7 @@
 </div>
 
 <script type="text/html" id="position_mainPage_table_toolbar">
-    <input type="checkbox" name="lock" title="禁用" value="{{d.id}}" dataversion="{{d.dataVersion}}" lay-filter="lock" {{ d.status == 1 ? 'checked' : '' }}>
+    <input type="checkbox" name="lock" title="禁用" value="{{d.id}}" dataversion="{{d.dataVersion}}" lay-filter="lock" {{ d.postStatus == 1 ? 'checked' : '' }}>
 </script>
 
 <script type="text/javascript" src="../../assets/custom/plugins/zTree/js/jquery.ztree.core.js"></script>

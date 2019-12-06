@@ -171,6 +171,9 @@ var SnippetMainPageMenu = function() {
     var menuMainPageInitFunctionButtonGroup = function () {
         //初始化 优先级 控件
         BootstrapTouchspin.initByteTouchSpin("#menu_mainPage_dataSubmit_form_menu_seq");
+        $('.m_selectpicker').selectpicker({
+            noneSelectedText : '请选择'
+        });
         var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(menuMainPageModuleCode);
         if (functionButtonGroup != null) {
             var gridHeadToolsHtml = $("#menu-mainPage-grid-head-tools");
@@ -188,7 +191,7 @@ var SnippetMainPageMenu = function() {
                 gridHeadToolsHtml.append(save_btn_html);
 
 
-                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改资源" lay-event="edit">\n'
+                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only"  data-toggle="tooltip" title="修改资源" lay-event="edit">\n'
                 edit_btn_html += '<i class="la la-edit"></i>\n';
                 edit_btn_html += '</a>\n';
                 tableToolbarHtml.append(edit_btn_html);
@@ -205,7 +208,7 @@ var SnippetMainPageMenu = function() {
 
 
 
-                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除资源" lay-event="del">\n'
+                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-toggle="tooltip"  title=" 删除资源" lay-event="del">\n'
                 table_del_btn_html += '<i class="la la-trash-o"></i>\n';
                 table_del_btn_html += '</a>\n';
                 tableToolbarHtml.append(table_del_btn_html);
@@ -236,7 +239,7 @@ var SnippetMainPageMenu = function() {
                 url: serverUrl + 'v1/table/menu/g',
                 method:"get",
                 where: {   //传递额外参数
-                    'pid' : menuMainPagePid
+                    'parentId' : menuMainPagePid
                 },
                 headers: BaseUtils.serverHeaders(),
                 title: '资源列表',
@@ -283,7 +286,6 @@ var SnippetMainPageMenu = function() {
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                BaseUtils.checkIsLoginTimeOut(res.status);
             });
 
             //监听行工具事件
@@ -343,7 +345,7 @@ var SnippetMainPageMenu = function() {
     var menuMainPageRefreshGrid = function () {
         menuMainPageTable.reload('menu_mainPage_grid',{
             where: {   //传递额外参数
-                'pid' : menuMainPagePid
+                'parentId' : menuMainPagePid
             },
             page: {
                  curr: 1 //重新从第 1 页开始
@@ -380,7 +382,7 @@ var SnippetMainPageMenu = function() {
                     },
                     menuName: {
                         required: true,
-                        alnumName:true,
+                        chcharacter:true,
                         maxlength: 32
                     },
                     menuPath: {
@@ -388,7 +390,7 @@ var SnippetMainPageMenu = function() {
                     },
                     menuAuthorizationCode: {
                         required: true,
-                        alnumCode:true,
+                        englishLetter:true,
                         maxlength: 15
                     },
                     menuDescription: {
@@ -495,7 +497,7 @@ var SnippetMainPageMenu = function() {
                 $deleteAjax({
                     url:ajaxDelUrl,
                     data: delData,
-                    headers: BaseUtils.serverHeaders()()
+                    headers: BaseUtils.serverHeaders()
                 }, function (response) {
                     if (response.success) {
                         if (obj != null) {
@@ -568,7 +570,7 @@ var SnippetMainPageMenu = function() {
                      } else {
                         obj.othis.addClass("layui-form-checked");
                      }
-                     if (response.status == 504) {
+                     if (response.status == 504 || response.status == 401) {
                          BaseUtils.LoginTimeOutHandler();
                      } else {
                          layer.tips(response.message, obj.othis,  {
@@ -620,6 +622,7 @@ var SnippetMainPageMenu = function() {
             var modalDialogTitle = "新增资源";
             if (menuMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(menuMainPageSubmitFormId);
+                $("#menu_mainPage_dataSubmit_form_position_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $("#menu_mainPage_dataSubmit_form_parent_name").val(menuMainPageParentName);
@@ -694,7 +697,15 @@ var SnippetMainPageMenu = function() {
                 menuMainPageSearchZtreeNode();
                 return false;
             });
-
+            $('#menu_mainPage_reload_btn').click(function(e) {
+                e.preventDefault();
+                if (BaseUtils.checkLoginTimeoutStatus()) {
+                    return;
+                }
+                menuMainPagePid = 0;
+                menuMainPageRefreshGridAndTree();
+                return false;
+            });
             $('#menu_mainPage_sync_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {

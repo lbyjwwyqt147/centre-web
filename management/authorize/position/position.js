@@ -250,7 +250,7 @@ var SnippetMainPagePosition = function() {
                     {field:'postNumber', title:'岗位编号'},
                     {field:'postName', title:'岗位名称'},
                     {field:'serialNumber', title:'排序值'},
-                    {field:'postLevel', title:'层级'},
+                    /*{field:'postLevel', title:'层级'},*/
                     {field:'postDescription', title:'描述'},
                     {field:'postStatus', title:'状态', align: 'center', fixed: 'right', unresize:true,
                         templet : function (row) {
@@ -338,7 +338,7 @@ var SnippetMainPagePosition = function() {
     var positionMainPageRefreshGrid = function () {
         positionMainPageTable.reload('position_mainPage_grid',{
             where: {   //传递额外参数
-                'pid' : positionMainPagePid
+                'parentId' : positionMainPagePid
             },
             page: {
                  curr: 1 //重新从第 1 页开始
@@ -375,7 +375,7 @@ var SnippetMainPagePosition = function() {
                     },
                     postName: {
                         required: true,
-                        alnumName:true,
+                        chcharacter:true,
                         maxlength: 32
                     },
                     serialNumber: {
@@ -485,7 +485,7 @@ var SnippetMainPagePosition = function() {
                 $deleteAjax({
                     url:ajaxDelUrl,
                     data: delData,
-                    headers: BaseUtils.serverHeaders()()
+                    headers: BaseUtils.serverHeaders()
                 }, function (response) {
                     if (response.success) {
                         if (obj != null) {
@@ -610,6 +610,7 @@ var SnippetMainPagePosition = function() {
             var modalDialogTitle = "新增岗位";
             if (positionMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
+                $("#position_mainPage_dataSubmit_form_position_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $("#position_mainPage_dataSubmit_form_parent_name").val(positionMainPageParentName);
