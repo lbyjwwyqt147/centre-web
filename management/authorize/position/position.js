@@ -12,7 +12,7 @@ var SnippetMainPagePosition = function() {
     var positionMainPagePid = 0;
     var positionMainPageParentName = "";
     var positionMainPageZtreeNodeList = [];
-    var positionMainPageModuleCode = '1061';
+    var positionMainPageModuleCode = '10022';
     var positionPageLeffTree;
 
     /**
@@ -607,13 +607,14 @@ var SnippetMainPagePosition = function() {
                 positionMainPageParentName = selectedNode.name;
                 positionMainPagePid = selectedNode.id;
             }
+            var $positionParentName = $("#position_mainPage_dataSubmit_form_parent_name");
             var modalDialogTitle = "新增岗位";
             if (positionMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
                 $("#position_mainPage_dataSubmit_form_position_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
-            $("#position_mainPage_dataSubmit_form_parent_name").val(positionMainPageParentName);
+            $positionParentName.val(positionMainPageParentName);
             if (positionMainPageMark == 2) {
                 modalDialogTitle = "修改岗位";
                 BaseUtils.cleanFormReadonly(positionMainPageSubmitFormId);
@@ -623,8 +624,8 @@ var SnippetMainPagePosition = function() {
             }
             $(".has-danger-error").show();
             $("#position_mainPage_dataSubmit_form_submit").show();
-            $("#position_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
-            $("#position_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
+            $positionParentName.addClass("m-input--solid");
+            $positionParentName.attr("readonly", "readonly");
             if (positionMainPageMark == 3) {
                 modalDialogTitle = "岗位信息";
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
@@ -691,6 +692,7 @@ var SnippetMainPagePosition = function() {
                     return;
                 }
                 positionMainPagePid = 0;
+                $("#position_mainPage_dataSubmit_form_parent_name").val("");
                 positionMainPageRefreshGridAndTree();
                 return false;
             });

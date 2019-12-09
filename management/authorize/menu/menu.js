@@ -12,8 +12,12 @@ var SnippetMainPageMenu = function() {
     var menuMainPagePid = 0;
     var menuMainPageParentName = "";
     var menuMainPageZtreeNodeList = [];
-    var menuMainPageModuleCode = '1062';
+    var menuMainPageModuleCode = '10023';
     var menuPageLeffTree;
+    var $menuPathDiv = $("#menu-path-div");
+    var $menuAuthorizationCodeDiv = $("#menu-authorization-code-div");
+    var $menuIconDiv = $("#menu-icon-div");
+    var $menuIcon = $("#menu-icon");
 
     /**
      * ztree 基础属性
@@ -171,8 +175,12 @@ var SnippetMainPageMenu = function() {
     var menuMainPageInitFunctionButtonGroup = function () {
         //初始化 优先级 控件
         BootstrapTouchspin.initByteTouchSpin("#menu_mainPage_dataSubmit_form_menu_seq");
-        $('.m_selectpicker').selectpicker({
+        $(".m_selectpicker").selectpicker({
             noneSelectedText : '请选择'
+        });
+        $("#menu-classify").on("changed.bs.select",function(e){
+            var curSelectedValue = e.target.value;
+            initMenuSelected(curSelectedValue);
         });
         var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(menuMainPageModuleCode);
         if (functionButtonGroup != null) {
@@ -227,6 +235,28 @@ var SnippetMainPageMenu = function() {
         $('[data-toggle="m-tooltip"]').tooltip();
     };
 
+    var initMenuSelected = function(curSelectedValue) {
+        if (curSelectedValue == 1 )  {
+            $menuPathDiv.hide();
+            $("#menu-path").val("");
+            $menuAuthorizationCodeDiv.hide();
+            $("#menu-authorization-code").val("");
+            $menuIconDiv.show();
+            $menuIcon.removeAttr("readonly");
+        } else if (curSelectedValue == 3) {
+            $menuIconDiv.hide();
+            $menuIcon.val("");
+            $menuPathDiv.show();
+            $menuAuthorizationCodeDiv.show();
+        } else if (curSelectedValue == 2) {
+            $menuIconDiv.show();
+            $menuIcon.val("la-outdent");
+            $menuIcon.attr("readonly", "readonly");
+            $menuPathDiv.show();
+            $menuAuthorizationCodeDiv.show();
+        }
+    }
+
     /**
      *  初始化 dataGrid 组件
      */
@@ -254,7 +284,6 @@ var SnippetMainPageMenu = function() {
                     {field:'menuNumber', title:'资源编号'},
                     {field:'menuName', title:'资源名称'},
                     {field:'menuClassify', title:'资源类型'},
-                    {field:'menuIcon', title:'图标'},
                     {field:'menuPath', title:'资源路径'},
                     {field:'serialNumber', title:'排序值'},
                     {field:'menuAuthorizationCode', title:'授权代码'},
@@ -388,8 +417,10 @@ var SnippetMainPageMenu = function() {
                     menuPath: {
                         maxlength: 255
                     },
+                    menuIcon: {
+                        maxlength: 32
+                    },
                     menuAuthorizationCode: {
-                        required: true,
                         englishLetter:true,
                         maxlength: 15
                     },
@@ -619,29 +650,30 @@ var SnippetMainPageMenu = function() {
                 menuMainPageParentName = selectedNode.name;
                 menuMainPagePid = selectedNode.id;
             }
+            var $menuParentName = $("#menu_mainPage_dataSubmit_form_parent_name");
             var modalDialogTitle = "新增资源";
             if (menuMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(menuMainPageSubmitFormId);
                 $("#menu_mainPage_dataSubmit_form_position_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
-            $("#menu_mainPage_dataSubmit_form_parent_name").val(menuMainPageParentName);
+            $menuParentName.val(menuMainPageParentName);
             if (menuMainPageMark == 2) {
                 modalDialogTitle = "修改资源";
                 BaseUtils.cleanFormReadonly(menuMainPageSubmitFormId);
-                $("#menu_mainPage_dataSubmit_form_menu_number").addClass("m-input--solid");
-                $("#menu_mainPage_dataSubmit_form_menu_number").attr("readonly", "readonly");
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
+                initMenuSelected($("#menu-classify").val());
             }
             $(".has-danger-error").show();
             $("#menu_mainPage_dataSubmit_form_submit").show();
-            $("#menu_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
-            $("#menu_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
+            $menuParentName.addClass("m-input--solid");
+            $menuParentName.attr("readonly", "readonly");
             if (menuMainPageMark == 3) {
                 modalDialogTitle = "资源信息";
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
                 $(".has-danger-error").hide();
                 $("#menu_mainPage_dataSubmit_form_submit").hide();
+                initMenuSelected($("#menu-classify").val());
             }
             var modalDialog = $(this);
             modalDialog.find('.modal-title').text(modalDialogTitle);
@@ -659,6 +691,9 @@ var SnippetMainPageMenu = function() {
             menuMainPageCleanForm();
             $(".modal-backdrop").remove();
             BaseUtils.modalUnblock("#menu_mainPage_dataSubmit_form_modal");
+            $menuIcon.show();
+            $menuPathDiv.hide();
+            $menuAuthorizationCodeDiv.hide();
         });
     };
 
@@ -703,6 +738,7 @@ var SnippetMainPageMenu = function() {
                     return;
                 }
                 menuMainPagePid = 0;
+                $("#menu_mainPage_dataSubmit_form_parent_name").val("");
                 menuMainPageRefreshGridAndTree();
                 return false;
             });

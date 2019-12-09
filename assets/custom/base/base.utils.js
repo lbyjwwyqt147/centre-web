@@ -131,7 +131,7 @@ var BaseUtils = {
         if (item == null || typeof(item) == undefined || undefined == item  || 'undefined' == item) {
             curUser = {
                 'id' : 1,
-                'name' : '管理员'
+                'name' : '超级管理员'
             }
         } else {
             curUser =  $.parseJSON(item);

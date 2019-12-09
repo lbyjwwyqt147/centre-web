@@ -122,7 +122,7 @@ jQuery.validator.addMethod("domain", function (value, element) {
  * 汉字
  */
 jQuery.validator.addMethod("chcharacter", function(value, element) {
-    var tel = /^[u4e00-u9fa5]+$/;
+    var tel = /^[\u4e00-\u9fa5]{0,}$/;
     return this.optional(element) || (tel.test(value));
 }, "请输入汉字");
 

@@ -137,14 +137,14 @@
                                         <div class="form-group m-form__group row">
                                             <label class="col-form-label col-lg-3 col-sm-12">资源类型:<span class="has-danger-error">*</span></label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <select class="form-control m-bootstrap-select m_selectpicker" name="menuClassify" id="menu-classify"  placeholder="折扣" autocomplete="off">
+                                                <select class="form-control m-bootstrap-select m_selectpicker" name="menuClassify" id="menu-classify"  placeholder="资源类型" autocomplete="off">
                                                     <option value="1" >目录</option>
                                                     <option value="2" >界面</option>
                                                     <option value="3" >按钮</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group m-form__group row ">
+                                        <div class="form-group m-form__group row " id="menu-icon-div">
                                             <label class="col-form-label col-lg-3 col-sm-12">资源图标:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12 input-group">
                                                 <input type="text" class="form-control m-input" name="menuIcon" id="menu-icon"  placeholder="图标" autocomplete="off">
@@ -155,10 +155,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group m-form__group row ">
+                                        <div class="form-group m-form__group row " id="menu-path-div" style="display: none">
                                             <label class="col-form-label col-lg-3 col-sm-12">资源路径:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="menuPath"  placeholder="资源路径" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="menuPath" id="menu-path"  placeholder="资源路径" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
@@ -167,10 +167,10 @@
                                                 <input type="text" class="form-control bootstrap-touchspin-vertical-btn" id="menu_mainPage_dataSubmit_form_position_seq"  name="serialNumber" placeholder="默认10 数值越小越靠前展示"  autocomplete="off" >
                                             </div>
                                         </div>
-                                        <div class="form-group m-form__group row">
+                                        <div class="form-group m-form__group row" id="menu-authorization-code-div"  style="display: none">
                                             <label class="col-form-label col-lg-3 col-sm-12">授权代码:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="menuAuthorizationCode" placeholder="只能输入字母" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="menuAuthorizationCode" id="menu-authorization-code" placeholder="只能输入字母" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">

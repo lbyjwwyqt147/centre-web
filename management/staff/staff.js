@@ -10,7 +10,7 @@ var SnippetMainPageStaff = function() {
     var staffMainPageSubmitFormId = "#staff_mainPage_dataSubmit_form";
     var staffMainPageMark = 1;
     var staffMainPageZtreeNodeList = [];
-    var staffMainPageModuleCode = '1030';
+    var staffMainPageModuleCode = '10031';
 
     /**
      * ztree 基础属性

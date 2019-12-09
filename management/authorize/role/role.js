@@ -12,7 +12,7 @@ var SnippetMainPageRole = function() {
     var roleMainPagePid = 0;
     var roleMainPageParentName = "";
     var roleMainPageZtreeNodeList = [];
-    var roleMainPageModuleCode = '1060';
+    var roleMainPageModuleCode = '10021';
     var rolePageLeffTree;
 
     /**
@@ -605,12 +605,13 @@ var SnippetMainPageRole = function() {
                 roleMainPageParentName = selectedNode.name;
                 roleMainPagePid = selectedNode.id;
             }
+            var $roleParentName = $("#role_mainPage_dataSubmit_form_parent_name");
             var modalDialogTitle = "新增角色";
             if (roleMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(roleMainPageSubmitFormId);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
-            $("#role_mainPage_dataSubmit_form_parent_name").val(roleMainPageParentName);
+            $roleParentName.val(roleMainPageParentName);
             if (roleMainPageMark == 2) {
                 modalDialogTitle = "修改角色";
                 BaseUtils.cleanFormReadonly(roleMainPageSubmitFormId);
@@ -620,8 +621,8 @@ var SnippetMainPageRole = function() {
             }
             $(".has-danger-error").show();
             $("#role_mainPage_dataSubmit_form_submit").show();
-            $("#role_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
-            $("#role_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
+            $roleParentName.addClass("m-input--solid");
+            $roleParentName.attr("readonly", "readonly");
             if (roleMainPageMark == 3) {
                 modalDialogTitle = "角色信息";
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
@@ -688,6 +689,7 @@ var SnippetMainPageRole = function() {
                     return;
                 }
                 roleMainPagePid = 0;
+                $("#role_mainPage_dataSubmit_form_parent_name").val("");
                 roleMainPageRefreshGridAndTree();
                 return false;
             });
