@@ -684,6 +684,10 @@ var BaseUtils = {
             $(this).removeClass("m-input--solid");
             $(this).removeAttr("readonly", "readonly");
         });
+        $(form + " select").each(function () {
+            $(this).parent(".bootstrap-select").removeAttr("disabled");
+            $(this).removeAttr("disabled");
+        });
     },
 
     tipsFormat: function (msg) {

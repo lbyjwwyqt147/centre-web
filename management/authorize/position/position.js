@@ -474,7 +474,7 @@ var SnippetMainPagePosition = function() {
         delData = {
             'ids' : JSON.stringify(idsArray)
         }
-        if (delData != null) {
+        if (idsArray.length > 0) {
             //询问框
             layer.confirm('你确定要删除?', {
                 shade: [0.3, 'rgb(230, 230, 230)'],
@@ -531,7 +531,7 @@ var SnippetMainPagePosition = function() {
             'ids': JSON.stringify(idsArray),
             'status' : status
         }
-        if (putData != null) {
+        if (idsArray.length > 0) {
             BaseUtils.pageMsgBlock();
             $putAjax({
                 url: ajaxPutUrl,

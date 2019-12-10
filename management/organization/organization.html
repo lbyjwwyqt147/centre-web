@@ -62,10 +62,15 @@
                         <div class="m-widget1" >
                             <div class="input-group" style="margin-left: 17px; margin-top: 5px;">
                                 <input type="text" class="form-control form-control-danger" id="organization-mainPage-nodeName-search" placeholder="输入名称搜索" style="height: 41px;">
-                                <div class="input-group-append" style="cursor: pointer" id="organization_mainPage_searchNode_btn">
-                            <span class="input-group-text" >
-                                <i class="la la-search"></i>
-                            </span>
+                                <div class="input-group-append" style="cursor: pointer" id="organization_mainPage_searchNode_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="搜索节点">
+                                    <span class="btn btn-secondary" >
+                                        <i class="la la-search"></i>
+                                    </span>
+                                </div>
+                                <div class="input-group-append" style="cursor: pointer" id="organization_mainPage_reload_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="重新加载数据">
+                                    <span class="btn btn-secondary" >
+                                        <i class="la la-refresh"></i>
+                                    </span>
                                 </div>
                             </div>
                             <ul id="organization_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px;" ></ul>
@@ -112,33 +117,33 @@
                                 <form class="m-form m-form--state m-form--fit m-form--label-align-right" id="organization_mainPage_dataSubmit_form">
                                     <div class="m-portlet__body">
                                         <div class="form-group m-form__group row ">
-                                            <label class="col-form-label col-lg-3 col-sm-12">上级机构</label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">上级结构</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input  class="form-control m-input m-input--solid" id="organization_mainPage_dataSubmit_form_parent_name" name="organizationParentName" placeholder="一级机构" readonly autocomplete="off" >
-                                                <span aria-hidden="true" class="glyphicon glyphicon-remove form-control-feedback" data-pure-clear-button="event" style="cursor: pointer; pointer-events: auto;" data-container="body" data-toggle="m-tooltip" data-placement="bottom" title="清除内容后将默认为一级机构"><i class="la la-close"></i></span>
+                                                <input  class="form-control m-input m-input--solid" id="organization_mainPage_dataSubmit_form_parent_name" name="organizationParentName" placeholder="一级结构" readonly autocomplete="off" >
+                                                <span aria-hidden="true" class="glyphicon glyphicon-remove form-control-feedback" data-pure-clear-button="event" style="cursor: pointer; pointer-events: auto;" data-container="body" data-toggle="m-tooltip" data-placement="bottom" title="清除内容后将默认为一级结构"><i class="la la-close"></i></span>
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row ">
-                                            <label class="col-form-label col-lg-3 col-sm-12">机构代码:<span class="has-danger-error">*</span></label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">结构代码:<span class="has-danger-error">*</span></label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
                                                 <input type="text" class="form-control m-input" name="orgNumber" id="organization_mainPage_dataSubmit_form_org_number"  placeholder="只能输入数字、字母、下划线" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12">机构名称:<span class="has-danger-error">*</span></label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">结构名称:<span class="has-danger-error">*</span></label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
                                                 <input type="text" class="form-control m-input" name="orgName" placeholder="只能输入汉字、数字、字母、下划线" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row" id="org-fullName-form-div" style="display: none">
-                                            <label class="col-form-label col-lg-3 col-sm-12">机构全名称:</label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">结构全名称:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
-                                                <input type="text" class="form-control m-input" name="fullName" placeholder="机构全名称" autocomplete="off">
+                                                <input type="text" class="form-control m-input" name="fullName" placeholder="结构全名称" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="form-group m-form__group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12">优先级:</label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">排序值:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
                                                 <input type="text" class="form-control bootstrap-touchspin-vertical-btn" id="organization_mainPage_dataSubmit_form_org_seq"  name="seq" placeholder="默认10 数值越小越靠前展示" autocomplete="off" >
                                             </div>
@@ -158,7 +163,6 @@
                                             <input type="hidden" class="form-control  m-input" name="fullParent" placeholder="fullParent"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="fullParentCode" placeholder="fullParentCode"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="dataVersion" placeholder="dataVersion"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="lessee" placeholder="lessee"  autocomplete="off">
                                         </div>
                                     </div>
                                 </form>

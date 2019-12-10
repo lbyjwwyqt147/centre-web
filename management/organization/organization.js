@@ -1,5 +1,5 @@
 /***
- * 组织机构
+ * 组织结构
  * @type {{init}}
  */
 var SnippetMainPageOrganization = function() {
@@ -12,7 +12,7 @@ var SnippetMainPageOrganization = function() {
     var organizationMainPagePid = 0;
     var organizationMainPageParentName = "";
     var organizationMainPageZtreeNodeList = [];
-    var organizationMainPageModuleCode = '1011';
+    var organizationMainPageModuleCode = '10024';
     var organizationPageLeffTree;
 
     /**
@@ -180,7 +180,7 @@ var SnippetMainPageOrganization = function() {
             //如果arry数组里面存在"指定字符" 这个字符串则返回该字符串的数组下标，否则返回(不包含在数组中) -1
             var save_index = $.inArray("1", buttonGroup);
             if (save_index != -1) {
-                var save_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增组织机构">\n';
+                var save_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增组织结构">\n';
                 save_btn_html += '<a href="javascript:;" class="btn btn-success m-btn m-btn--icon btn-sm m-btn--icon-only" id="organization_mainPage_add_btn">\n';
                 save_btn_html += '<i class="la la-plus"></i>\n';
                 save_btn_html += '</a>\n';
@@ -188,7 +188,7 @@ var SnippetMainPageOrganization = function() {
                 gridHeadToolsHtml.append(save_btn_html);
 
 
-                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改组织机构" lay-event="edit">\n'
+                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改组织结构" lay-event="edit">\n'
                 edit_btn_html += '<i class="la la-edit"></i>\n';
                 edit_btn_html += '</a>\n';
                 tableToolbarHtml.append(edit_btn_html);
@@ -196,7 +196,7 @@ var SnippetMainPageOrganization = function() {
             }
             var delete_index = $.inArray("2", buttonGroup);
             if (delete_index != -1) {
-                var delete_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除组织机构">\n';
+                var delete_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除组织结构">\n';
                 delete_btn_html += '<a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only" id="organization_mainPage_delete_btn">\n';
                 delete_btn_html += '<i class="la la-trash-o"></i>\n';
                 delete_btn_html += '</a>\n';
@@ -205,7 +205,7 @@ var SnippetMainPageOrganization = function() {
 
 
 
-                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除组织机构" lay-event="del">\n'
+                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除组织结构" lay-event="del">\n'
                 table_del_btn_html += '<i class="la la-trash-o"></i>\n';
                 table_del_btn_html += '</a>\n';
                 tableToolbarHtml.append(table_del_btn_html);
@@ -238,7 +238,7 @@ var SnippetMainPageOrganization = function() {
                     'parentId' : organizationMainPagePid
                 },
                 headers: BaseUtils.serverHeaders(),
-                title: '组织机构列表',
+                title: '组织结构列表',
                 height: 'full-150',
                 initSort: {
                     field: 'seq', //排序字段，对应 cols 设定的各字段名
@@ -247,11 +247,11 @@ var SnippetMainPageOrganization = function() {
                 cols: [[
                     {checkbox: true},
                     {field:'id', title:'ID', unresize:true, hide:true },
-                    {field:'orgNumber', title:'机构代码'},
-                    {field:'orgName', title:'机构名称'},
-                    {field:'fullName', title:'机构全名称'},
-                    {field:'fullParentCode', title:'上级机构代码'},
-                    {field:'seq', title:'优先级'},
+                    {field:'orgNumber', title:'结构代码'},
+                    {field:'orgName', title:'结构名称'},
+                    {field:'fullName', title:'结构全名称'},
+                    {field:'fullParentCode', title:'上级结构代码'},
+                    {field:'seq', title:'排序值'},
                     {field:'description', title:'描述', hide:true},
                     {field:'orgStatus', title:'状态', align: 'center', fixed: 'right', unresize:true,
                         templet : function (row) {
@@ -280,7 +280,6 @@ var SnippetMainPageOrganization = function() {
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                BaseUtils.checkIsLoginTimeOut(res.status);
             });
 
             //监听行工具事件
@@ -294,6 +293,7 @@ var SnippetMainPageOrganization = function() {
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
+                    console.log(obj.data);
                     organizationMainPageSubmitForm.setForm(obj.data);
                     $("#organization_mainPage_dataSubmit_form_org_seq").val(obj.data.seq)
                     organizationMainPageMark = 2;
@@ -455,16 +455,12 @@ var SnippetMainPageOrganization = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxDelUrl = serverUrl + "v1/verify/organization/d";
+        var  ajaxDelUrl = serverUrl + "v1/verify/organization/d/b";
         var delData = null;
+        var idsArray = [];
         if (obj != null) {
-            delData = {
-                'id' : obj.data.id,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
-            }
+            idsArray.push(obj.data.id);
         } else {
-            var idsArray = [];
             // 获取选中的数据对象
             var checkRows = organizationMainPageTable.checkStatus('organization_mainPage_grid');
             //获取选中行的数据
@@ -473,15 +469,12 @@ var SnippetMainPageOrganization = function() {
                 $.each(checkData, function(index,element){
                     idsArray.push(element.id);
                 });
-                ajaxDelUrl = serverUrl + "v1/verify/organization/d/b";
-                delData = {
-                    'ids' : JSON.stringify(idsArray),
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode
-                }
             }
         }
-        if (delData != null) {
+        delData = {
+            'ids' : JSON.stringify(idsArray)
+        }
+        if (idsArray.length > 0) {
             //询问框
             layer.confirm('你确定要删除?', {
                 shade: [0.3, 'rgb(230, 230, 230)'],
@@ -518,18 +511,19 @@ var SnippetMainPageOrganization = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxPutUrl = serverUrl + "v1/verify/organization/p";
+        var ajaxPutUrl = serverUrl + "v1/verify/organization/p/b";
         var putData = null;
+        var idsArray = [];
+        var putParams = [];
         if (obj != null) {
             var dataVersion = $(obj.elem.outerHTML).attr("dataversion");
-            putData = {
-                'id' : obj.value,
-                'status' : status,
-                'dataVersion':dataVersion
+            var curDataParam = {
+                "id":obj.value,
+                "dataVersion":dataVersion
             }
+            putParams.push(curDataParam);
+            idsArray.push(obj.value);
         } else {
-            var idsArray = [];
-            var putParams = [];
             // 获取选中的数据对象
             var checkRows = organizationMainPageTable.checkStatus('organization_mainPage_grid');
             //获取选中行的数据
@@ -543,15 +537,15 @@ var SnippetMainPageOrganization = function() {
                     putParams.push(curDataParam);
                     idsArray.push(element.id);
                 });
-                ajaxPutUrl = serverUrl + "v1/verify/organization/p/b";
-                putData = {
-                    'ids' : JSON.stringify(idsArray),
-                    'putParams' : JSON.stringify(idsArray),
-                    'status' : status
-                }
+
             }
         }
-        if (putData != null) {
+        putData = {
+            'ids' : JSON.stringify(idsArray),
+            'putParams' : JSON.stringify(putParams),
+            'status' : status
+        };
+        if (idsArray.length > 0) {
             BaseUtils.pageMsgBlock();
             $encrypPutAjax({
                 url: ajaxPutUrl,
@@ -578,7 +572,7 @@ var SnippetMainPageOrganization = function() {
                     } else {
                         obj.othis.addClass("layui-form-checked");
                     }
-                    if (response.status == 504) {
+                    if (response.status == 504 || response.status == 401) {
                         BaseUtils.LoginTimeOutHandler();
                     } else {
                         layer.tips(response.message, obj.othis,  {
@@ -626,14 +620,15 @@ var SnippetMainPageOrganization = function() {
                 organizationMainPageParentName = selectedNode.name;
                 organizationMainPagePid = selectedNode.id;
             }
-            var modalDialogTitle = "新增组织机构";
+            var modalDialogTitle = "新增组织结构";
             if (organizationMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(organizationMainPageSubmitFormId);
+                $("#organization_mainPage_dataSubmit_form_org_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $("#organization_mainPage_dataSubmit_form_parent_name").val(organizationMainPageParentName);
             if (organizationMainPageMark == 2) {
-                modalDialogTitle = "修改组织机构";
+                modalDialogTitle = "修改组织结构";
                 BaseUtils.cleanFormReadonly(organizationMainPageSubmitFormId);
                 $("#organization_mainPage_dataSubmit_form_org_number").addClass("m-input--solid");
                 $("#organization_mainPage_dataSubmit_form_org_number").attr("readonly", "readonly");
@@ -645,7 +640,7 @@ var SnippetMainPageOrganization = function() {
             $("#organization_mainPage_dataSubmit_form_parent_name").addClass("m-input--solid");
             $("#organization_mainPage_dataSubmit_form_parent_name").attr("readonly", "readonly");
             if (organizationMainPageMark == 3) {
-                modalDialogTitle = "组织机构信息";
+                modalDialogTitle = "组织结构信息";
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
                 $("#org-fullName-form-div").show();
                 $(".has-danger-error").hide();
@@ -706,7 +701,16 @@ var SnippetMainPageOrganization = function() {
                 organizationMainPageSearchZtreeNode();
                 return false;
             });
-
+            $('#organization_mainPage_reload_btn').click(function(e) {
+                e.preventDefault();
+                if (BaseUtils.checkLoginTimeoutStatus()) {
+                    return;
+                }
+                organizationMainPagePid = 0;
+                $("#organization_mainPage_dataSubmit_form_parent_name").val("");
+                organizationMainPageRefreshGridAndTree();
+                return false;
+            });
             $('#organization_mainPage_sync_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {

@@ -472,7 +472,7 @@ var SnippetMainPageRole = function() {
         delData = {
             'ids' : JSON.stringify(idsArray)
         }
-        if (delData != null) {
+        if (idsArray.length > 0) {
             //询问框
             layer.confirm('你确定要删除?', {
                 shade: [0.3, 'rgb(230, 230, 230)'],
@@ -529,7 +529,7 @@ var SnippetMainPageRole = function() {
             'ids': JSON.stringify(idsArray),
             'status' : status
         }
-        if (putData != null) {
+        if (idsArray.length > 0) {
             BaseUtils.pageMsgBlock();
             $putAjax({
                 url: ajaxPutUrl,
@@ -609,6 +609,7 @@ var SnippetMainPageRole = function() {
             var modalDialogTitle = "新增角色";
             if (roleMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(roleMainPageSubmitFormId);
+                $("#role_mainPage_dataSubmit_form_position_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $roleParentName.val(roleMainPageParentName);

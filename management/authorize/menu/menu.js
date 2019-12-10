@@ -11,6 +11,7 @@ var SnippetMainPageMenu = function() {
     var menuMainPageMark = 1;
     var menuMainPagePid = 0;
     var menuMainPageParentName = "";
+    var $menuNodeClassify = "";
     var menuMainPageZtreeNodeList = [];
     var menuMainPageModuleCode = '10023';
     var menuPageLeffTree;
@@ -18,6 +19,8 @@ var SnippetMainPageMenu = function() {
     var $menuAuthorizationCodeDiv = $("#menu-authorization-code-div");
     var $menuIconDiv = $("#menu-icon-div");
     var $menuIcon = $("#menu-icon");
+    var $buttonCategoryDiv = $("#button-category-div");
+    var $menuNumberDiv = $('#menu-number-div');
 
     /**
      * ztree 基础属性
@@ -38,6 +41,7 @@ var SnippetMainPageMenu = function() {
         onClick: function (event, treeId, treeNode) {   //点击节点执行事件
             menuMainPagePid = treeNode.id;
             menuMainPageParentName = treeNode.name;
+            $menuNodeClassify = treeNode.otherAttributes.menuClassify;
             menuMainPageRefreshGrid();
         },
         onAsyncSuccess:function(event, treeId, msg){ //异步加载完成后执行
@@ -243,19 +247,34 @@ var SnippetMainPageMenu = function() {
             $("#menu-authorization-code").val("");
             $menuIconDiv.show();
             $menuIcon.removeAttr("readonly");
+            $buttonCategoryDiv.hide();
+            $menuNumberDiv.show();
         } else if (curSelectedValue == 3) {
             $menuIconDiv.hide();
             $menuIcon.val("");
             $menuPathDiv.show();
             $menuAuthorizationCodeDiv.show();
+            $buttonCategoryDiv.show();
+            $menuNumberDiv.hide();
         } else if (curSelectedValue == 2) {
             $menuIconDiv.show();
             $menuIcon.val("la-outdent");
             $menuIcon.attr("readonly", "readonly");
             $menuPathDiv.show();
-            $menuAuthorizationCodeDiv.show();
+            $menuAuthorizationCodeDiv.hide();
+            $buttonCategoryDiv.hide();
+            $menuNumberDiv.show();
         }
-    }
+    };
+
+    /**
+     * select 控件回显值
+     */
+    var initStaffSelected = function (obj) {
+        $('#button-category').selectpicker('val', obj.buttonCategory);
+        $('#menu-classify').selectpicker('val', obj.menuClassify);
+        $("#menu_mainPage_dataSubmit_form_position_seq").val(obj.serialNumber);
+    };
 
     /**
      *  初始化 dataGrid 组件
@@ -283,7 +302,20 @@ var SnippetMainPageMenu = function() {
                     {field:'id', title:'ID', unresize:true, hide:true },
                     {field:'menuNumber', title:'资源编号'},
                     {field:'menuName', title:'资源名称'},
-                    {field:'menuClassify', title:'资源类型'},
+                    {field:'menuClassify', title:'资源类型',
+                        templet : function (row) {
+                            var clasValue = row.menuClassify;
+                            var vtext = "";
+                            if (clasValue == 2)  {
+                                vtext = "界面";
+                            } else if (clasValue == 3) {
+                                vtext = "按钮";
+                            } else if (clasValue == 1) {
+                                vtext = "目录";
+                            }
+                            return vtext;
+                        }
+                     },
                     {field:'menuPath', title:'资源路径'},
                     {field:'serialNumber', title:'排序值'},
                     {field:'menuAuthorizationCode', title:'授权代码'},
@@ -330,7 +362,7 @@ var SnippetMainPageMenu = function() {
                     }
                     menuMainPageSubmitForm.setForm(obj.data);
                     menuMainPageMark = 2;
-                    $("#menu_mainPage_dataSubmit_form_position_seq").val(obj.data.serialNumber);
+                    initStaffSelected(obj.data);
                     // 显示 dialog
                     menuMainPageFormModal.modal('show');
                 }
@@ -362,7 +394,7 @@ var SnippetMainPageMenu = function() {
                 menuMainPageMark = 3;
                 menuMainPageSubmitForm.setForm(obj.data);
                 BaseUtils.readonlyForm(menuMainPageSubmitFormId);
-                $("#menu_mainPage_dataSubmit_form_position_seq").val(obj.data.serialNumber);
+                initStaffSelected(obj);
                 menuMainPageFormModal.modal('show');
             });
         });
@@ -462,6 +494,9 @@ var SnippetMainPageMenu = function() {
             }
             BaseUtils.modalBlock("#menu_mainPage_dataSubmit_form_modal");
             $("#menu_mainPage_dataSubmit_form input[name='parentId']").val(menuMainPagePid);
+            if ($("#menu-classify").val() == 3) {
+                $("#menu_mainPage_dataSubmit_form_menu_number").val($("#button-category").val());
+            }
             $postAjax({
                 url:serverUrl + "v1/verify/menu/s",
                 data:menuMainPageSubmitForm.serializeJSON(),
@@ -516,8 +551,8 @@ var SnippetMainPageMenu = function() {
         }
         delData = {
             'ids' : JSON.stringify(idsArray)
-        }
-        if (delData != null) {
+        };
+        if (idsArray.length > 0) {
             //询问框
             layer.confirm('你确定要删除?', {
                 shade: [0.3, 'rgb(230, 230, 230)'],
@@ -574,7 +609,7 @@ var SnippetMainPageMenu = function() {
             'ids': JSON.stringify(idsArray),
             'status' : status
         }
-        if (putData != null) {
+        if (idsArray.length > 0) {
             BaseUtils.pageMsgBlock();
             $putAjax({
                 url: ajaxPutUrl,
@@ -649,6 +684,13 @@ var SnippetMainPageMenu = function() {
                 var selectedNode = selectedNodes[0];
                 menuMainPageParentName = selectedNode.name;
                 menuMainPagePid = selectedNode.id;
+                $menuNodeClassify = selectedNode.otherAttributes.menuClassify;
+            }
+            var $menuClassify = $('#menu-classify');
+            if ($menuNodeClassify == 1) {
+                $menuClassify.selectpicker('val', 2);
+            } else if ($menuNodeClassify == 2) {
+                $menuClassify.selectpicker('val', 3);
             }
             var $menuParentName = $("#menu_mainPage_dataSubmit_form_parent_name");
             var modalDialogTitle = "新增资源";
@@ -661,8 +703,9 @@ var SnippetMainPageMenu = function() {
             if (menuMainPageMark == 2) {
                 modalDialogTitle = "修改资源";
                 BaseUtils.cleanFormReadonly(menuMainPageSubmitFormId);
+                $menuClassify.parent(".bootstrap-select").attr("disabled", "true");
+                $menuClassify.attr("readonly", "true");
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
-                initMenuSelected($("#menu-classify").val());
             }
             $(".has-danger-error").show();
             $("#menu_mainPage_dataSubmit_form_submit").show();
@@ -673,8 +716,8 @@ var SnippetMainPageMenu = function() {
                 $(".glyphicon.glyphicon-remove.form-control-feedback").hide();
                 $(".has-danger-error").hide();
                 $("#menu_mainPage_dataSubmit_form_submit").hide();
-                initMenuSelected($("#menu-classify").val());
             }
+            initMenuSelected($("#menu-classify").val());
             var modalDialog = $(this);
             modalDialog.find('.modal-title').text(modalDialogTitle);
             // 剧中显示
@@ -719,6 +762,10 @@ var SnippetMainPageMenu = function() {
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
+                if ($menuNodeClassify == 3) {
+                    toastr.warning("你选择的按钮资源不符合新增要,请重新选择!");
+                    return;
+                }
                 menuMainPageMark = 1;
                 // 显示 dialog
                 menuMainPageFormModal.modal('show');
@@ -738,6 +785,7 @@ var SnippetMainPageMenu = function() {
                     return;
                 }
                 menuMainPagePid = 0;
+                $menuNodeClassify = "";
                 $("#menu_mainPage_dataSubmit_form_parent_name").val("");
                 menuMainPageRefreshGridAndTree();
                 return false;
