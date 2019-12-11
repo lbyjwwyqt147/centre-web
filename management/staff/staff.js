@@ -9,17 +9,16 @@ var SnippetMainPageStaff = function() {
     var staffMainPageSubmitForm = $("#staff_mainPage_dataSubmit_form");
     var staffMainPageSubmitFormId = "#staff_mainPage_dataSubmit_form";
     var staffMainPageMark = 1;
-    var staffMainPageZtreeNodeList = [];
     var staffMainPageModuleCode = '10031';
 
     /**
-     * ztree 基础属性
+     * 部门 ztree 基础属性
      * @type {{onClick: callback.onClick, onAstaffMainPageSyncDataSuccess: callback.onAstaffMainPageSyncDataSuccess}}
      */
     var staffOrgZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
         "selectedMulti":false,
         "enable":false,
-        "url":serverUrl + "v1/tree/organization/all/z",
+        "url":serverUrl + "v1/tree/organization/z",
         "headers":BaseUtils.serverHeaders()
     });
     staffOrgZtreeSetting.view = {
@@ -36,10 +35,11 @@ var SnippetMainPageStaff = function() {
             $("#staff_full_parent").attr("value", otherAttributes.fullParent);
             $("#staff_org_number").attr("value", otherAttributes.orgNumber);
         },
-        onAsyncSuccess:function(event, treeId, msg){ //异步加载完成后执行
+        onAsyncSuccess:function(event, treeId, treeNode, msg){ //异步加载完成后执行
             if ("undefined" == $("#staffOrgTree_1_a").attr("title")) {
                 $("#staffOrgTree_1").remove();
-            }
+            };
+            zTreeOnAsyncSuccess(event, treeId, treeNode, msg);
         },
         onAsyncError:function(){ //异步加载出现异常执行
 
@@ -53,44 +53,62 @@ var SnippetMainPageStaff = function() {
 
 
     /**
+     * 职位 ztree 基础属性
+     * @type {{onClick: callback.onClick, onAstaffMainPageSyncDataSuccess: callback.onAstaffMainPageSyncDataSuccess}}
+     */
+    var staffPositionZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
+        "selectedMulti":false,
+        "enable":false,
+        "url":serverUrl + "v1/tree/position/z",
+        "headers":BaseUtils.serverHeaders()
+    });
+    staffPositionZtreeSetting.view = {
+        selectedMulti:false,
+        fontCss: zTreeHighlightFontCss,
+        expandSpeed: "slow", //节点展开动画速度
+    };
+    staffPositionZtreeSetting.callback = {
+        onClick: function (event, treeId, treeNode) {   //点击节点执行事件
+            var $userPositionName = $("#userPositionName");
+            $userPositionName.attr("value", treeNode.name);
+            $("#staffPosition").attr("value", treeNode.id);
+        },
+        onAsyncSuccess:function(event, treeId, treeNode, msg){ //异步加载完成后执行
+            if ("undefined" == $("#staffPositionTreeForm_1_a").attr("title")) {
+                $("#staffPositionTreeForm_1").remove();
+            }
+            zTreeOnAsyncSuccess(event, treeId, treeNode, msg);
+        },
+        onAsyncError:function(){ //异步加载出现异常执行
+
+        },
+        beforeAsync:function () { //异步加载之前执行
+            if (BaseUtils.checkLoginTimeoutStatus()) {
+                return;
+            }
+        }
+    };
+
+    //用于捕获异步加载正常结束的事件回调函数
+    function zTreeOnAsyncSuccess(event, treeId, treeNode, msg){
+        var treeObj = $.fn.zTree.getZTreeObj(treeId);
+        var nodes = treeObj.getNodes();
+        if (nodes.length>0) {
+            for(var i=0;i<nodes.length;i++){
+                treeObj.expandNode(nodes[i], true, false, false);//默认展开第一级节点
+            }
+        }
+    }
+
+    /**
      * 初始化ztree 组件
      */
     var staffOrgMainPageInitTree = function() {
         $.fn.zTree.init($("#staffOrgTree"), staffOrgZtreeSetting);
+        $.fn.zTree.init($("#staffPositionTreeForm"), staffPositionZtreeSetting);
     };
 
 
-
-
-    /**
-     *  搜索节点
-     */
-    function staffMainPageSearchZtreeNode() {
-        var searchZtreeValue = $.trim($("#staff-mainPage-nodeName-search").val());
-       staffMainPageZtreeUpdateNodes(staffMainPageZtreeNodeList,false);
-        if (searchZtreeValue == "") {
-            return;
-        }
-        var zTree = $.fn.zTree.getZTreeObj("staffOrgTree");
-        var keyType = "name";
-       staffMainPageZtreeNodeList = zTree.getNodesByParamFuzzy(keyType, searchZtreeValue);
-        staffMainPageZtreeUpdateNodes(staffMainPageZtreeNodeList, true);
-    };
-
-    /**
-     *  更新节点
-     * @param staffMainPageZtreeNodeList
-     * @param highlight
-     */
-    function staffMainPageZtreeUpdateNodes(staffMainPageZtreeNodeList, highlight) {
-        var zTree = $.fn.zTree.getZTreeObj("staffOrgTree");
-        for (var i = 0, l = staffMainPageZtreeNodeList.length; i < l; i++) {
-            staffMainPageZtreeNodeList[i].highlight = highlight;
-            //定位到节点并展开
-            zTree.expandNode(staffMainPageZtreeNodeList[i]);
-            zTree.updateNode(staffMainPageZtreeNodeList[i]);
-        }
-    };
 
     /**
      * 设置 ztree 高亮时的css
@@ -115,47 +133,50 @@ var SnippetMainPageStaff = function() {
     }
 
     /**
-     * 下拉树节点点击事件
-     * @param treeId
-     * @param treeNode
-     * @returns {*|boolean}
+     * 显示部门下拉树
      */
-    function onClick(e, treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("staffOrgTree"),
-            nodes = zTree.getSelectedNodes(),
-            v = "";
-        nodes.sort(function compare(a,b){return a.id-b.id;});
-        for (var i=0, l=nodes.length; i<l; i++) {
-            v += nodes[i].name + ",";
-        }
-        if (v.length > 0 ) v = v.substring(0, v.length-1);
+    function showDeptMenu() {
         var staffOrgObj = $("#staffOrgName");
-        staffOrgObj.attr("value", v);
+        var staffOrgOffset = staffOrgObj.offset();
+        $("#orgTreeContent").css({left: staffOrgObj.outerWidth() - $(".col-lg-2").width()+30 + "px", top:staffOrgOffset.top /2 + 40 + "px", width:staffOrgObj.outerWidth() + "px"}).slideDown("fast");
+
+        $("body").bind("mousedown", onBodyDeptDown);
     }
-
     /**
-     * 显示下拉树
+     * 显示职位下拉树
      */
-    function showMenu() {
-        var staffOrgObj = $("#staffOrgName");
-        var staffOrgOffset = $("#staffOrgName").offset();
-        $("#orgTreeContent").css({left: staffOrgObj.outerWidth() - $(".col-lg-2").width()+30 + "px", top:staffOrgOffset.top - staffOrgObj.outerHeight() - 1 + "px", width:staffOrgObj.outerWidth() + "px"}).slideDown("fast");
+    function showPositionMenu() {
+        var userPositionNameObj = $("#userPositionName");
+        var userPositionOffset = userPositionNameObj.offset();
+        $("#positionTreeFormContent").css({left: userPositionNameObj.outerWidth() + $(".col-lg-2").width()*2 -15 + "px", top:userPositionOffset.top /2 + 40  + "px", width:userPositionNameObj.outerWidth() + "px"}).slideDown("fast");
 
-        $("body").bind("mousedown", onBodyDown);
+        $("body").bind("mousedown", onBodyPositionDown);
+    }
+    /**
+     * 隐藏下拉树
+     */
+    function hidePositionMenu() {
+        $("#positionTreeFormContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyPositionDown);
     }
 
     /**
      * 隐藏下拉树
      */
-    function hideMenu() {
+    function hideDeptMenu() {
         $("#orgTreeContent").fadeOut("fast");
-        $("body").unbind("mousedown", onBodyDown);
+        $("body").unbind("mousedown", onBodyDeptDown);
     }
 
+    function onBodyDeptDown(event) {
+       if (!(event.target.id == "menuBtn" || event.target.id == "orgTreeContent" || $(event.target).parents("#orgTreeContent").length>0)) {
+           hideDeptMenu();
+        }
+    }
 
-    function onBodyDown(event) {
-        if (!(event.target.id == "menuBtn" || event.target.id == "orgTreeContent" || $(event.target).parents("#orgTreeContent").length>0)) {
-            hideMenu();
+    function onBodyPositionDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "positionTreeFormContent" || $(event.target).parents("#positionTreeFormContent").length>0)) {
+            hidePositionMenu();
         }
     }
 
@@ -179,29 +200,7 @@ var SnippetMainPageStaff = function() {
                 save_btn_html += '</li>\n';
                 gridHeadToolsHtml.append(save_btn_html);
 
-
-                var show_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="展示员工在官网">\n';
-                show_btn_html += '<a href="javascript:;" class="btn btn-primary m-btn m-btn--icon btn-sm m-btn--icon-only" id="staff_mainPage_show_btn">\n';
-                show_btn_html += '<i class="la la-bookmark"></i>\n';
-                show_btn_html += '</a>\n';
-                show_btn_html += '</li>\n';
-                gridHeadToolsHtml.append(show_btn_html);
-
-
-                var hiden_btn_html = '<li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="取消员工展示在官网">\n';
-                hiden_btn_html += '<a href="javascript:;" class="btn btn-warning m-btn m-btn--icon btn-sm m-btn--icon-only" id="staff_mainPage_hiden_btn">\n';
-                hiden_btn_html += '<i class="la la-eye-slash"></i>\n';
-                hiden_btn_html += '</a>\n';
-                hiden_btn_html += '</li>\n';
-                gridHeadToolsHtml.append(hiden_btn_html);
-
-                /*var table_ejection_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="m-tooltip" data-placement="top" title=" 员工离职操作" lay-event="ejection">\n'
-                table_ejection_btn_html += '<i class="la la-user-times"></i>\n';
-                table_ejection_btn_html += '</a>\n';
-                tableToolbarHtml.append(table_ejection_btn_html);*/
-
-
-                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title="修改员工信息" lay-event="edit">\n'
+                var edit_btn_html = '<a href="javascript:;" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" data-placement="top" title="修改员工信息" lay-event="edit">\n'
                 edit_btn_html += '<i class="la la-edit"></i>\n';
                 edit_btn_html += '</a>\n';
                 tableToolbarHtml.append(edit_btn_html);
@@ -218,7 +217,7 @@ var SnippetMainPageStaff = function() {
 
 
 
-                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 删除员工信息" lay-event="del">\n'
+                var table_del_btn_html = '<a href="javascript:;" class="btn btn-outline-danger m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" data-placement="top" title=" 删除员工信息" lay-event="del">\n'
                 table_del_btn_html += '<i class="la la-trash-o"></i>\n';
                 table_del_btn_html += '</a>\n';
                 tableToolbarHtml.append(table_del_btn_html);
@@ -234,7 +233,7 @@ var SnippetMainPageStaff = function() {
                 gridHeadToolsHtml.append(sync_btn_html);
             }
 
-            var table_look_btn_html = '<a href="javascript:;" class="btn btn-outline-accent m-btn m-btn--icon m-btn--icon-only"  data-offset="-20px -20px" data-container="body" data-toggle="tooltip" data-placement="top" title=" 查看员工信息" lay-event="look">\n'
+            var table_look_btn_html = '<a href="javascript:;" class="btn btn-outline-accent m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" data-placement="top" title=" 查看员工信息" lay-event="look">\n'
             table_look_btn_html += '<i class="la la-eye"></i>\n';
             table_look_btn_html += '</a>\n';
             tableToolbarHtml.append(table_look_btn_html);
@@ -265,11 +264,11 @@ var SnippetMainPageStaff = function() {
                 cols: [[
                     {checkbox: true},
                     {field:'id', title:'ID', unresize:true, hide:true },
-                    {field:'staffNumber', title:'工号'},
-                    {field:'staffName', title:'姓名'},
-                    {field:'staffPortrait', title:'照片', unresize:true,  align: 'center', width:60,
+                    {field:'userNumber', title:'工号'},
+                    {field:'userFullName', title:'姓名'},
+                    {field:'userPortrait', title:'照片', unresize:true,  align: 'center', width:60,
                         templet : function (row) {
-                            var value = row.staffPortrait;
+                            var value = row.userPortrait;
                             if (value == null || value == '' ) {
                                 value = "../../assets/custom/images/user/user_0.png";
                             }
@@ -279,11 +278,11 @@ var SnippetMainPageStaff = function() {
                             return spanHtml;
                         }
                     },
-                    {field:'staffNickName', title:'昵称'},
+                    {field:'userNickName', title:'昵称'},
                     {field:'mobilePhone', title:'手机号'},
-                    {field:'staffPositionText', title:'职务'},
+                    {field:'userPositionText', title:'职位'},
                     {field:'entryDate', title:'入职日期', sort:true},
-                    {field:'staffSex', title:'性别',
+                    {field:'userSex', title:'性别',
                         templet : function (row) {
                             var value = row.staffSex;
                             var curSexText = "男";
@@ -297,10 +296,10 @@ var SnippetMainPageStaff = function() {
                             return curSexText;
                         }
                     },
-                    {field:'staffEmail', title:'电子邮箱'},
+                    {field:'userEmail', title:'电子邮箱'},
                     {field:'staffOrgName', title:'组织机构'},
                     {field:'workingYears', title:'在职年限', sort:true, unresize:true},
-                    {field:'staffStatus', title:'状态', align: 'center',  unresize:true,
+                    {field:'userStatus', title:'状态', align: 'center',  unresize:true,
                         templet : function (row) {
                             var value = row.staffStatus;
                             var spanCss = "m-badge--success";
@@ -313,23 +312,6 @@ var SnippetMainPageStaff = function() {
                                 case 2:
                                     curStatusText = "离职";
                                     spanCss = "m-badge--danger";
-                                    break;
-                                default:
-                                    break;
-                            }
-                            var spanHtml =  '<span class="m-badge ' + spanCss + ' m-badge--wide">' + curStatusText + '</span>';
-                            return spanHtml;
-                        }
-                    },
-                    {field:'display', title:'是否展示在官网', align: 'center',  fixed: 'right', unresize:true,
-                        templet : function (row) {
-                            var value = row.display;
-                            var spanCss = "m-badge--warning";
-                            var curStatusText = "否";
-                            switch (value) {
-                                case 0:
-                                    curStatusText = "是";
-                                    spanCss = "m-badge--success";
                                     break;
                                 default:
                                     break;
@@ -456,53 +438,8 @@ var SnippetMainPageStaff = function() {
             laydate.render({
                 elem: '#birthday'
             });
-            //离职日期控件
-            laydate.render({
-                elem: '#dimissionDate'
-            });
         });
-        $('#dimissionReason').selectpicker('refresh');
-        // 职务 select
-        BaseUtils.dictDataSelect("staff_position", function (data) {
-            var $staffPosition = $("#staffPosition");
-            var $queryStaffPosition = $("#query_staffPosition");
-            $queryStaffPosition.append("<option value=''>--请选择--</option>");
-            Object.keys(data).forEach(function(key){
-                $staffPosition.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
-                $queryStaffPosition.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
-            });
-            //必须加，刷新select
-            $staffPosition .selectpicker('refresh');
-            $queryStaffPosition.selectpicker('refresh');
-            $queryStaffPosition.change(function () {
-               queryStaffPositionSelectOnchang();
-            });
-        });
-        // 技能(特长)  multi select
-        BaseUtils.dictDataSelect("staff_skill", function (data) {
-            var $skill = $("#skill");
-            Object.keys(data).forEach(function(key){
-                var curId = data[key].id;
-                if (curId == 0 || curId == 1)  {
-                    $skill.append("<option value=" + curId + " selected>" + data[key].text + "</option>");
-                } else {
-                    $skill.append("<option value=" + curId + ">" + data[key].text + "</option>");
-                }
-            });
-            $skill.select2({
-                placeholder: "技能(特长)",
-            });
-        });
-        // 职务选择事件绑定
-        $("#staffPosition").on("changed.bs.select",function(e){
-            // e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取
-            var curSelectedValue = e.target.value;
-            if (curSelectedValue == 1 || curSelectedValue == 2)  {
-                $('#skill').val([0,1]).trigger("change");
-            } else if (curSelectedValue == 3) {
-                $('#skill').val([2]).trigger("change");
-            }
-        });
+
         // 省市区 select
         BaseUtils.distDataSelect("510000", function (data) {
             var $city = $("#city");
@@ -554,7 +491,11 @@ var SnippetMainPageStaff = function() {
         });
         
         $("#staffOrgName").click(function() {
-            showMenu();
+            showDeptMenu();
+            return false;
+        });
+        $("#userPositionName").click(function() {
+            showPositionMenu();
             return false;
         });
         $("#query-staffStatus").change(function () {
@@ -585,15 +526,13 @@ var SnippetMainPageStaff = function() {
      */
     var initStaffSelected = function (obj) {
         $('#probationStatus').selectpicker('val', obj.probationStatus);
-        $('#staffPosition').selectpicker('val', obj.staffPosition);
+        $('#staffPosition').selectpicker('val', obj.userPosition);
         $('#province').selectpicker('val', obj.province);
         $('#city').selectpicker('val', obj.city);
         $('#district').selectpicker('val', obj.district);
         $('#dimissionReason').selectpicker('val', obj.dimissionReason);
-        $("#skill").val(obj.skill.split(",")).trigger("change");
-        $("input:radio[name=\"tempStaffSex\"][value='"+obj.staffSex+"']").click();
-        $("#staffIntro-text").val(BaseUtils.toTextarea(obj.staffIntro));
-        $("#staffEquipment-text").val(BaseUtils.toTextarea( obj.staffEquipment));
+        $("input:radio[name=\"tempStaffSex\"][value='"+obj.userSex+"']").click();
+        $("#staffIntro-text").val(BaseUtils.toTextarea(obj.userIntro));
     };
 
     /**
@@ -626,17 +565,17 @@ var SnippetMainPageStaff = function() {
             $("#staff-lessee").val(BaseUtils.lessee);
             staffMainPageSubmitForm.validate({
                 rules: {
-                    staffNumber: {
+                    userNumber: {
                         required: true,
                         alnum:true,
                         maxlength: 20
                     },
-                    staffName: {
+                    userFullName: {
                         required: true,
                         chcharacterNum:true,
                         maxlength: 32
                     },
-                    staffNickName: {
+                    userNickName: {
                         required: true,
                         alnumName:true,
                         maxlength: 32
@@ -645,42 +584,24 @@ var SnippetMainPageStaff = function() {
                         required: true,
                         isMobile:true
                     },
-                    staffIdentiyCard: {
+                    userIdentiyCard: {
                         required: false,
                         idCardNo:true
                     },
-                    staffEmail: {
+                    userEmail: {
                         required: true,
                         email:true,
-                        maxlength: 60
+                        maxlength: 65
                     },
                     entryDate: {
                         required: true
-                    },
-                    staffQq: {
-                        required: false,
-                        isQq:true,
-                        maxlength: 13
-                    },
-                    staffWechat: {
-                        required: false,
-                        alnum:true,
-                        maxlength: 20
-                    },
-                    staffWeiBo: {
-                        required: false,
-                        url:true,
-                        maxlength: 200
                     },
                     street: {
                         chcharacterNum:true,
                         maxlength: 50
                     },
-                    staffEquipment: {
-                        maxlength: 200
-                    },
-                    staffIntro: {
-                        maxlength: 350
+                    userIntro: {
+                        maxlength: 500
                     },
                     birthday : {
                         required: true,
@@ -717,8 +638,6 @@ var SnippetMainPageStaff = function() {
             if (BaseUtils.checkLoginTimeoutStatus()) {
                 return;
             }
-            var skillOptions = $("#skill").select2("val");
-            $("#staff-skill").val(skillOptions.join(','));
             if ($("#staff-id").val() == null || $("#staff-id").val() == "") {
                 $("#staffCategory").val(1);
             }
@@ -791,16 +710,14 @@ var SnippetMainPageStaff = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxDelUrl = serverUrl + "v1/verify/staff/d";
+        var ajaxDelUrl = serverUrl + "v1/verify/staff/d/b";
         var delData = null;
+        var idsArray = [];
+        var userIdsArray = [];
         if (obj != null) {
-            delData = {
-                'id' : obj.data.id,
-                'userId' : obj.data.userId
-            }
+            idsArray.push(obj.data.id);
+            userIdsArray.push(obj.data.userId);
         } else {
-            var idsArray = [];
-            var userIdsArray = [];
             // 获取选中的数据对象
             var checkRows = staffMainPageTable.checkStatus('staff_mainPage_grid');
             //获取选中行的数据
@@ -810,14 +727,13 @@ var SnippetMainPageStaff = function() {
                     idsArray.push(element.id);
                     userIdsArray.push(element.userId);
                 });
-                ajaxDelUrl = serverUrl + "v1/verify/staff/d/b";
-                delData = {
-                    'ids' : JSON.stringify(idsArray),
-                    'otherIds': JSON.stringify(userIdsArray)
-                }
             }
         }
-        if (delData != null) {
+        delData = {
+            'ids' : JSON.stringify(idsArray),
+            'otherIds': JSON.stringify(userIdsArray)
+        }
+        if (idsArray.length > 0) {
             //询问框
             layer.confirm('你确定要删除?', {
                 shade: [0.3, 'rgb(230, 230, 230)'],
@@ -853,7 +769,7 @@ var SnippetMainPageStaff = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxPutUrl = serverUrl + "v1/verify/staff/p";
+        var ajaxPutUrl = serverUrl + "v1/verify/staff/p/b";
         var putData = null;
         var userIdsArray = [];
         var idsArray = [];
@@ -918,7 +834,7 @@ var SnippetMainPageStaff = function() {
                      } else {
                         obj.othis.addClass("layui-form-checked");
                      }
-                     if (response.status == 504) {
+                     if (response.status == 504 || response.status == 401 ) {
                          BaseUtils.LoginTimeOutHandler();
                      } else {
                          layer.tips(response.message, obj.othis,  {
@@ -928,59 +844,6 @@ var SnippetMainPageStaff = function() {
 
                 }
             }, function (data) {
-
-            });
-        }
-    };
-
-    /**
-     *  修改数据是否在官网展示字段
-     */
-    var staffMainPageUpdateDataShowStatus = function(status) {
-        if (BaseUtils.checkLoginTimeoutStatus()) {
-            return;
-        }
-        var ajaxPutUrl = serverUrl + "v1/verify/staff/show/p";
-        var putData = null;
-        var idsArray = [];
-        var putParams = [];
-        // 获取选中的数据对象
-        var checkRows = staffMainPageTable.checkStatus('staff_mainPage_grid');
-        //获取选中行的数据
-        var checkData = checkRows.data;
-        if (checkData.length > 0) {
-            $.each(checkData, function(index,element){
-                idsArray.push(element.id);
-            });
-            putData = {
-                'ids': JSON.stringify(idsArray),
-                'status' : status,
-            }
-        }
-        if (putData != null) {
-            var title = "你确定要将员工信息展示在官网吗?";
-            if (status == 1) {
-                title = "你确定要将员工信息在官网取消展示吗?";
-            }
-            //询问框
-            layer.confirm(title, {
-                shade: [0.3, 'rgb(230, 230, 230)'],
-                btn: ['确定','取消'] //按钮
-            }, function(index, layero){   //按钮【按钮一】的回调
-                layer.close(index);
-                BaseUtils.pageMsgBlock();
-                $putAjax({
-                    url: ajaxPutUrl,
-                    data: putData,
-                    headers: BaseUtils.serverHeaders()
-                }, function (response) {
-                    if (response.success) {
-                        staffMainPageRefreshGrid();
-                    }
-                }, function (data) {
-                    BaseUtils.htmPageUnblock();
-                });
-            }, function () {  //按钮【按钮二】的回调
 
             });
         }
@@ -1016,19 +879,19 @@ var SnippetMainPageStaff = function() {
             var orgzTree = $.fn.zTree.getZTreeObj("staffOrgTree");
             // 取消当前所有被选中节点的选中状态
             orgzTree.cancelSelectedNode();
-            var ztreeNode = null;
+            var positionzTree = $.fn.zTree.getZTreeObj("staffOrgTree");
+            // 取消当前所有被选中节点的选中状态
+            positionzTree.cancelSelectedNode();
+            var deptZtreeNode = null;
+            var positionNode = null;
             if (staffMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(staffMainPageSubmitFormId);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
-                var ztreeNodes = orgzTree.getNodes();
-                if (ztreeNodes.length > 0) {
-                    ztreeNode = ztreeNodes[0]; //注：只有当树的根节点只有一个时，才可以这样取，否则会获取到多个节点
-                }
-                $('#skill').val([0,1]).trigger("change");
                 $("input:radio[name=\"tempStaffSex\"][value='0']").click();
             }
             if (staffMainPageMark == 2) {
-                ztreeNode = orgzTree.getNodeByParam("id",$("#staffOrgId").val());
+                deptZtreeNode = orgzTree.getNodeByParam("id",$("#staffOrgId").val());
+                positionNode = positionzTree.getNodeByParam("id",$("#staffPosition").val());
                 modalDialogTitle = "修改员工信息";
                 BaseUtils.cleanFormReadonly(staffMainPageSubmitFormId);
                 $("#staff_mainPage_dataSubmit_form_staff_number").addClass("m-input--solid");
@@ -1045,8 +908,8 @@ var SnippetMainPageStaff = function() {
                 $(".has-danger-error").hide();
                 $("#staff_mainPage_dataSubmit_form_submit").hide();
             }
-            if (ztreeNode != null) {
-                orgzTree.selectNode(ztreeNode);
+            if (deptZtreeNode != null) {
+                orgzTree.selectNode(deptZtreeNode);
                 // 选中的节点
                 var selectedNodes = orgzTree.getSelectedNodes();
                 if (selectedNodes.length > 0) {
@@ -1058,7 +921,16 @@ var SnippetMainPageStaff = function() {
                     $("#staff_full_parent").attr("value", otherAttributes.fullParent);
                     $("#staff_org_number").attr("value", otherAttributes.orgNumber);
                 }
-
+            }
+            if (positionNode != null) {
+                positionzTree.selectNode(positionNode);
+                // 选中的节点
+                var selectedNodes = positionzTree.getSelectedNodes();
+                if (selectedNodes.length > 0) {
+                    var selectedNode = selectedNodes[0];
+                    $("#userPositionName").attr("value", selectedNode.name);
+                    $("#staffPosition").attr("value", selectedNode.id);
+                }
             }
             var modalDialog = $(this);
             modalDialog.find('.modal-title').text(modalDialogTitle);
@@ -1106,30 +978,6 @@ var SnippetMainPageStaff = function() {
                 staffMainPageMark = 1;
                 // 显示 dialog
                 staffMainPageFormModal.modal('show');
-                return false;
-            });
-            $('#staff_mainPage_show_btn').click(function(e) {
-                e.preventDefault();
-                if (BaseUtils.checkLoginTimeoutStatus()) {
-                    return;
-                }
-                staffMainPageUpdateDataShowStatus(0);
-                return false;
-            });
-            $('#staff_mainPage_hiden_btn').click(function(e) {
-                e.preventDefault();
-                if (BaseUtils.checkLoginTimeoutStatus()) {
-                    return;
-                }
-                staffMainPageUpdateDataShowStatus(1);
-                return false;
-            });
-            $('#staff_mainPage_searchNode_btn').click(function(e) {
-                e.preventDefault();
-                if (BaseUtils.checkLoginTimeoutStatus()) {
-                    return;
-                }
-                staffMainPageSearchZtreeNode();
                 return false;
             });
 

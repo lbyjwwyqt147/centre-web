@@ -64,6 +64,7 @@
     }
 
    #orgTreeContent ul.ztree {margin-top: 5px;padding-left: 0px; border: 1px solid #ebedf2;background: #fff;width:100%; min-height: 200px;overflow:auto;}
+   #positionTreeFormContent ul.ztree {margin-top: 5px;padding-left: 0px; border: 1px solid #ebedf2;background: #fff;width:100%; min-height: 200px;overflow:auto;}
 
     #staff-page-grid-query-form  .col-lg-1 {
         -webkit-box-flex: 0;
@@ -103,29 +104,22 @@
                                             <div class="form-group m-form__group row" style="padding-top: 5px; padding-bottom: 5px;">
                                                 <label class="col-lg-1 col-form-label">姓名:</label>
                                                 <div class="col-lg-2">
-                                                    <input type="text" class="form-control m-input" name="staffName" placeholder="姓名">
+                                                    <input type="text" class="form-control m-input" name="userFullName" placeholder="姓名">
                                                 </div>
                                                 <label class="col-lg-1 col-form-label">手机号:</label>
                                                 <div class="col-lg-2">
                                                     <input type="text" class="form-control m-input" name="mobilePhone" placeholder="手机号">
                                                 </div>
-                                                <label class="col-lg-1 col-form-label" >职务:</label>
+                                                <label class="col-lg-1 col-form-label" >职位:</label>
                                                 <div class="col-lg-2" >
-                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="staffPosition" id="query_staffPosition"  placeholder="职务" autocomplete="off" >
+                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="userPosition" id="query_staffPosition"  placeholder="职务" autocomplete="off" >
 
                                                     </select>
                                                 </div>
-                                              <!--  <label class="col-lg-1 col-form-label" >试用状态:</label>
-                                                <div class="col-lg-2" >
-                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="probationStatus"   placeholder="试用状态" autocomplete="off">
-                                                        <option value="">&#45;&#45;请选择&#45;&#45;</option>
-                                                        <option value="1">试用期</option>
-                                                        <option value="2">已转正</option>
-                                                    </select>
-                                                </div>-->
+
                                                 <label class="col-lg-1 col-form-label" >状态:</label>
                                                 <div class="col-lg-2"  id="staff-status">
-                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="staffStatus" id="query-staffStatus"   placeholder="状态" autocomplete="off">
+                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="userStatus" id="query-staffStatus"   placeholder="状态" autocomplete="off">
                                                         <option value="0">在职</option>
                                                         <option value="1">禁用</option>
                                                         <option value="2">离职</option>
@@ -177,7 +171,7 @@
                                     <div class="form-group m-form__group row">
                                         <label class="col-lg-2 col-form-label">工号:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="staffNumber" class="form-control m-input" placeholder="只能输入字母和数字" autocomplete="off" >
+                                            <input type="text" name="userNumber" class="form-control m-input" placeholder="只能输入字母和数字" autocomplete="off" >
                                         </div>
                                         <label class="col-lg-2 col-form-label">昵称:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
@@ -189,7 +183,7 @@
                                     <div class="form-group m-form__group row">
                                         <label class="col-lg-2 col-form-label">姓名:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="staffName" id="staff-name" class="form-control m-input" placeholder="姓名" autocomplete="off" >
+                                            <input type="text" name="userFullName" id="staff-name" class="form-control m-input" placeholder="姓名" autocomplete="off" >
                                         </div>
                                         <label class="col-lg-2 col-form-label">手机号:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
@@ -201,7 +195,7 @@
                                     <div class="form-group m-form__group row">
                                         <label class="col-lg-2 col-form-label">电子邮箱:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="staffEmail" class="form-control m-input" placeholder="电子邮箱" autocomplete="off" >
+                                            <input type="text" name="userEmail" class="form-control m-input" placeholder="电子邮箱" autocomplete="off" >
                                         </div>
                                         <label class="col-lg-2 col-form-label">入职日期:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
@@ -209,41 +203,33 @@
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group row">
-                                        <label class="col-lg-2 col-form-label">所属部门:</label>
+                                        <label class="col-lg-2 col-form-label">所属部门:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
                                             <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" name="staffOrgName" id="staffOrgName" class="form-control m-input" placeholder="所属部门" autocomplete="off" >
-                                                <input type="text" name="staffOrgId" id="staffOrgId" class="form-control m-input" placeholder="所属部门" autocomplete="off" style="display: none" >
-                                                <input type="text" name="staffFullParent" id="staff_full_parent" class="form-control m-input" placeholder="所属部门父id" autocomplete="off" style="display: none" >
-                                                <input type="text" name="staffOrgNumber" id="staff_org_number" class="form-control m-input" placeholder="所属部门编号" autocomplete="off" style="display: none" >
+                                                <input type="text" id="staffOrgName" class="form-control m-input" readonly placeholder="所属部门" autocomplete="off" >
+                                                <input type="text" name="orgId" id="staffOrgId" class="form-control m-input" placeholder="所属部门" autocomplete="off" style="display: none" >
+                                                <input type="text" name="orgParentId" id="staff_full_parent" class="form-control m-input" placeholder="所属部门父id" autocomplete="off" style="display: none" >
+                                                <input type="text" name="orgNumber" id="staff_org_number" class="form-control m-input" placeholder="所属部门编号" autocomplete="off" style="display: none" >
                                             </div>
-                                        </div>
-                                        <label class="col-lg-2 col-form-label">试用状态:</label>
-                                        <div class="col-lg-4">
-                                            <select class="form-control m-bootstrap-select m_selectpicker" name="probationStatus" id="probationStatus"  placeholder="试用状态" autocomplete="off">
-                                                <option value="1">试用期</option>
-                                                <option value="2" selected>已转正</option>
-                                            </select>
                                         </div>
                                         <div id="orgTreeContent" style="display:none; position: absolute;  z-index: 51;">
                                             <ul id="staffOrgTree" class="ztree" style="margin-top:0; "></ul>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-lg-2 col-form-label">职务:</label>
+                                        <label class="col-lg-2 col-form-label">职位:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
-                                            <select class="form-control m-bootstrap-select m_selectpicker" name="staffPosition" id="staffPosition"  placeholder="职务" autocomplete="off" >
-
-                                            </select>
+                                            <div class="m-input-icon m-input-icon--right">
+                                                <input type="text" id="userPositionName" class="form-control m-input" readonly placeholder="职务" autocomplete="off" >
+                                                <input type="text" name="userPosition" id="staffPosition"  class="form-control m-input" placeholder="职务" autocomplete="off" style="display: none" >
+                                            </div>
                                         </div>
-                                        <label class="col-lg-2 col-form-label">技能(特长):</label>
-                                        <div class="col-lg-4 col-md-9 col-sm-12">
-                                            <select class="form-control m-select2" multiple="multiple"   id="skill"  placeholder="技能(特长)" autocomplete="off">
-
-                                            </select>
+                                        <div id="positionTreeFormContent" style="display:none; position: absolute;  z-index: 51;">
+                                            <ul id="staffPositionTreeForm" class="ztree" style="margin-top:0; "></ul>
                                         </div>
+
                                     </div>
+
+
                                     <div class="form-group m-form__group row">
                                         <label class="col-lg-2 col-form-label">身份证号:</label>
                                         <div class="col-lg-4">
@@ -251,30 +237,13 @@
                                                 <input type="text" name="staffIdentiyCard" id="staffIdentiyCard" class="form-control m-input" placeholder="身份证号" autocomplete="off" >
                                             </div>
                                         </div>
-                                        <label class="col-lg-2 col-form-label"><span class="has-danger-error">*</span>出生日期:</label>
+                                        <label class="col-lg-2 col-form-label">出生日期:</label>
                                         <div class="col-lg-4">
                                             <input type="text" class="layui-input" name="birthday" id="birthday" placeholder="出生日期" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group row">
-                                        <label class="col-lg-2 col-form-label">QQ号:</label>
-                                        <div class="col-lg-4">
-                                            <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" name="staffQq" class="form-control m-input" placeholder="QQ号" autocomplete="off" >
-                                            </div>
-                                        </div>
-                                        <label class="col-lg-2 col-form-label">微信号:</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="staffWechat" class="form-control m-input" placeholder="微信号" autocomplete="off" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-lg-2 col-form-label">微博:</label>
-                                        <div class="col-lg-4">
-                                            <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" name="staffWeiBo" class="form-control m-input" placeholder="微博" autocomplete="off" >
-                                            </div>
-                                        </div>
+
                                         <label class="col-lg-2 col-form-label">性别:</label>
                                         <div class="col-lg-4">
                                             <div class="m-radio-inline">
@@ -311,38 +280,26 @@
                                         </div>
 
                                     </div>
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-lg-2 col-form-label">器材装备:</label>
-                                        <div class="col-lg-10">
-                                            <div class="m-input-icon m-input-icon--right">
-                                                <textarea style="resize:none" rows="3"  class="form-control" id="staffEquipment-text" name="staffEquipment"  autocomplete="off"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div class="form-group m-form__group row">
                                         <label class="col-lg-2 col-form-label">个人简介:</label>
                                         <div class="col-lg-10">
                                             <div class="m-input-icon m-input-icon--right">
-                                                <textarea style="resize:none" rows="8" class="form-control" id="staffIntro-text" name="staffIntro"  autocomplete="off"></textarea>
+                                                <textarea style="resize:none" rows="8" class="form-control" id="staffIntro-text" name="userIntro"  autocomplete="off"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div style="display: none">
-                                        <input type="hidden" class="form-control" name="systemCode" placeholder="systemCode" autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="id" id="staff-id" placeholder="id" autocomplete="off">
-                                        <input type="hidden" class="form-control" name="credential" placeholder="credential" autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="status" placeholder="status" value="0" autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userStatus" placeholder="status" value="0" autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="createTime" placeholder="createTime"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="createUserId" placeholder="createUserId"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="dataVersion" placeholder="dataVersion"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="staffPortraitId" id="staffPortraitId" placeholder="staffPortraitId"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="staffCategory" id="staffCategory" placeholder="staffCategory"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="lessee" id="staff-lessee" placeholder="lessee"  autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userPortraitId" id="userPortraitId" placeholder="userPortraitId"  autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userCategory" id="userCategory" placeholder="userCategory"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="userId" placeholder="userId"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="staffAccountsId" placeholder="staffAccountsId"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="staffSex" id="staff-sex" placeholder="staffSex"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="skill" id="staff-skill" placeholder="staffSex"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="display" id="display" value="1" placeholder="display"  autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userAccountsId" placeholder="userAccountsId"  autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userSex" id="staff-sex" placeholder="staffSex"  autocomplete="off">
                                 </div>
                             </form>
                             <!--end::Form-->
@@ -375,7 +332,7 @@
 </div>
 
 <script type="text/html" id="staff_mainPage_table_toolbar">
-    <input type="checkbox" name="lock" title="禁用" value="{{d.id}}" dataversion="{{d.dataVersion}}" userid="{{d.userId}}" lay-filter="lock" {{ d.staffStatus == 1 ? 'checked' : '' }}>
+    <input type="checkbox" name="lock" title="禁用" value="{{d.id}}" dataversion="{{d.dataVersion}}" userid="{{d.userId}}" lay-filter="lock" {{ d.userStatus == 1 ? 'checked' : '' }}>
 </script>
 
 <script type="text/javascript" src="../../assets/custom/plugins/zTree/js/jquery.ztree.core.js"></script>

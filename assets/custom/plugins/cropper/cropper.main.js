@@ -282,7 +282,7 @@ $(function () {
       switch (businessType) {
         case "1":
           // 员工头像处理
-          _url =  _url + "v1/verify/staff/s/portrait"
+          _url =  _url + "v1/ignore/staff/p/portrait"
           break;
         case "2":
           // 顾客头像处理
