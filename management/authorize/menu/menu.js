@@ -273,7 +273,7 @@ var SnippetMainPageMenu = function() {
     var initStaffSelected = function (obj) {
         $('#button-category').selectpicker('val', obj.buttonCategory);
         $('#menu-classify').selectpicker('val', obj.menuClassify);
-        $("#menu_mainPage_dataSubmit_form_position_seq").val(obj.serialNumber);
+        $("#menu_mainPage_dataSubmit_form_menu_seq").val(obj.serialNumber);
     };
 
     /**
@@ -696,7 +696,7 @@ var SnippetMainPageMenu = function() {
             var modalDialogTitle = "新增资源";
             if (menuMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(menuMainPageSubmitFormId);
-                $("#menu_mainPage_dataSubmit_form_position_seq").val(10);
+                $("#menu_mainPage_dataSubmit_form_menu_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $menuParentName.val(menuMainPageParentName);

@@ -609,7 +609,6 @@ var SnippetMainPageRole = function() {
             var modalDialogTitle = "新增角色";
             if (roleMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(roleMainPageSubmitFormId);
-                $("#role_mainPage_dataSubmit_form_position_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $roleParentName.val(roleMainPageParentName);

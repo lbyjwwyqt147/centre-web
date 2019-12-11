@@ -62,11 +62,17 @@
                         <div class="m-widget1" >
                             <div class="input-group" style="margin-left: 17px; margin-top: 5px; ">
                                 <input type="text" class="form-control form-control-danger" id="dict-mainPage-nodeName-search" placeholder="输入名称搜索" autocomplete="off" style="height: 41px;">
-                                <div class="input-group-append" style="cursor: pointer" id="dict_mainPage_searchNode_btn">
-                            <span class="input-group-text" >
-                                <i class="la la-search"></i>
-                            </span>
+                                <div class="input-group-append" style="cursor: pointer" id="dict_mainPage_searchNode_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="搜索节点">
+                                    <span class="btn btn-secondary" >
+                                        <i class="la la-search"></i>
+                                    </span>
                                 </div>
+                                <div class="input-group-append" style="cursor: pointer" id="dict_mainPage_reload_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="重新加载数据">
+                                    <span class="btn btn-secondary" >
+                                        <i class="la la-refresh"></i>
+                                    </span>
+                                </div>
+
                             </div>
                             <ul id="dict_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px;" ></ul>
                         </div>
@@ -83,21 +89,6 @@
                                 </div>
                                 <div class="m-portlet__head-tools">
                                     <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" id="dict-mainPage-grid-head-tools" role="tablist">
-                                     <!--   <li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="新增数据字典">
-                                            <a href="javascript:;" class="btn btn-success m-btn m-btn&#45;&#45;icon btn-sm m-btn&#45;&#45;icon-only" id="dict_mainPage_add_btn" >
-                                                <i class="la la-plus"></i>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="删除数据字典">
-                                            <a href="javascript:;" class="btn btn-danger m-btn m-btn&#45;&#45;icon btn-sm m-btn&#45;&#45;icon-only" id="dict_mainPage_delete_btn">
-                                                <i class="la la-trash-o"></i>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item m-tabs__item" data-container="body" data-toggle="m-tooltip" data-placement="top" title="同步数据">
-                                            <a href="javascript:;" class="btn btn-accent m-btn m-btn&#45;&#45;icon btn-sm m-btn&#45;&#45;icon-only" id="dict_mainPage_sync_btn">
-                                                <i class="la la-rotate-right"></i>
-                                            </a>
-                                        </li>-->
 
                                     </ul>
                                 </div>
@@ -146,7 +137,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group m-form__group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12">优先级:</label>
+                                            <label class="col-form-label col-lg-3 col-sm-12">排序值:</label>
                                             <div class="col-lg-9 col-md-9 col-sm-12">
                                                 <input type="text" class="form-control bootstrap-touchspin-vertical-btn" id="dict_mainPage_dataSubmit_form_dict_seq"  name="priority" placeholder="默认10 数值越小越靠前展示"  autocomplete="off" >
                                             </div>
@@ -158,20 +149,16 @@
                                             </div>
                                         </div>
                                         <div style="display: none">
-                                            <input type="hidden" class="form-control" name="systemCode" placeholder="systemCode" autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="id" placeholder="id" autocomplete="off">
-                                            <input type="hidden" class="form-control" name="credential" placeholder="credential" autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="status" placeholder="status" value="0" autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="pid" placeholder="pid" value="0" autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="createTime" placeholder="createTime"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="createUserId" placeholder="createUserId"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="fullParent" placeholder="fullParent"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="fullParentCode" placeholder="fullParentCode"  autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="fullDictParent" placeholder="fullDictParent"  autocomplete="off">
+                                            <input type="hidden" class="form-control  m-input" name="fullDictParentCode" placeholder="fullDictParentCode"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="dictLevel" placeholder="dictLevel"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="leaf" placeholder="leaf"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="fullDictCode" placeholder="fullDictCode"  autocomplete="off">
                                             <input type="hidden" class="form-control  m-input" name="dataVersion" placeholder="dataVersion"  autocomplete="off">
-                                            <input type="hidden" class="form-control  m-input" name="lessee" id="lessee-id" placeholder="lessee"  autocomplete="off">
                                         </div>
                                     </div>
                                 </form>

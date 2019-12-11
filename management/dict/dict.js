@@ -3,7 +3,7 @@
  * @type {{init}}
  */
 var SnippetMainPageDict = function() {
-    var serverUrl = BaseUtils.cloudServerAddress;
+    var serverUrl = BaseUtils.serverAddress;
     var dictMainPageTable;
     var dictMainPageFormModal = $('#dict_mainPage_dataSubmit_form_modal');
     var dictMainPageSubmitForm = $("#dict_mainPage_dataSubmit_form");
@@ -12,7 +12,7 @@ var SnippetMainPageDict = function() {
     var dictMainPagePid = 0;
     var dictMainPageParentName = "";
     var dictMainPageZtreeNodeList = [];
-    var dictMainPageModuleCode = '1010';
+    var dictMainPageModuleCode = '10011';
     var dictPageLeffTree;
 
     /**
@@ -22,8 +22,8 @@ var SnippetMainPageDict = function() {
     var dictMainPageZtreeSetting = BaseUtils.ztree.settingZtreeProperty({
         "selectedMulti":false,
         "enable":false,
-        "url":serverUrl + "v1/tree/dict/all/z?systemCode=" + BaseUtils.systemCode + "&credential=" +  BaseUtils.credential + "&lessee=" + BaseUtils.lessee,
-        "headers":BaseUtils.cloudHeaders()
+        "url":serverUrl + "v1/tree/dict/all/z",
+        "headers":BaseUtils.serverHeaders()
     });
     dictMainPageZtreeSetting.view = {
             selectedMulti:false,
@@ -97,12 +97,9 @@ var SnippetMainPageDict = function() {
         $getAjax({
             url: serverUrl + "v1/tree/dict/all/z",
             data: {
-                id:id,
-                systemCode:BaseUtils.systemCode,
-                credential:BaseUtils.credential,
-                lessee: BaseUtils.getLesseeId()
+                id:id
             },
-            headers: BaseUtils.cloudHeaders()
+            headers: BaseUtils.serverHeaders()
         }, function (data) {
             //获取指定父节点
             dictPageLeffTree = $.fn.zTree.getZTreeObj("dict_mainPage_tree");
@@ -239,12 +236,9 @@ var SnippetMainPageDict = function() {
                 url: serverUrl + 'v1/table/dict/g',
                 method:"get",
                 where: {   //传递额外参数
-                    'pid' : dictMainPagePid,
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode,
-                    'lessee': BaseUtils.getLesseeId()
+                    'pid' : dictMainPagePid
                 },
-                headers: BaseUtils.cloudHeaders(),
+                headers: BaseUtils.serverHeaders(),
                 title: '数据字典列表',
                 height: 'full-150',
                 initSort: {
@@ -256,8 +250,8 @@ var SnippetMainPageDict = function() {
                     {field:'id', title:'ID', unresize:true, hide:true },
                     {field:'dictCode', title:'字典代码'},
                     {field:'dictName', title:'字段名称'},
-                    {field:'priority', title:'优先级'},
-                    {field:'fullParentCode', title:'完整父级代码'},
+                    {field:'priority', title:'排序值'},
+                    {field:'fullDictParentCode', title:'完整父级代码'},
                     {field:'description', title:'描述'},
                     {field:'status', title:'状态', align: 'center', fixed: 'right', unresize:true,
                         templet : function (row) {
@@ -286,7 +280,6 @@ var SnippetMainPageDict = function() {
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                BaseUtils.checkIsLoginTimeOut(res.status);
             });
 
             //监听行工具事件
@@ -346,9 +339,7 @@ var SnippetMainPageDict = function() {
     var dictMainPageRefreshGrid = function () {
         dictMainPageTable.reload('dict_mainPage_grid',{
             where: {   //传递额外参数
-                'pid' : dictMainPagePid,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
+                'pid' : dictMainPagePid
             },
             page: {
                  curr: 1 //重新从第 1 页开始
@@ -428,15 +419,12 @@ var SnippetMainPageDict = function() {
                 return;
             }
             BaseUtils.modalBlock("#dict_mainPage_dataSubmit_form_modal");
-            $("#dict_mainPage_dataSubmit_form input[name='systemCode']").val(BaseUtils.systemCode);
-            $("#dict_mainPage_dataSubmit_form input[name='credential']").val(BaseUtils.credential);
             $("#dict_mainPage_dataSubmit_form input[name='pid']").val(dictMainPagePid);
-            $("#dict_mainPage_dataSubmit_form input[name='lessee']").val(BaseUtils.lessee);
             $("#lessee-id").val(BaseUtils.lessee);
             $encryptPostAjax({
                 url:serverUrl + "v1/verify/dict/s",
                 data:dictMainPageSubmitForm.serializeJSON(),
-                headers: BaseUtils.cloudHeaders()
+                headers: BaseUtils.serverHeaders()
             }, function (response) {
                 BaseUtils.modalUnblock("#dict_mainPage_dataSubmit_form_modal");
                 if (response.success) {
@@ -469,16 +457,12 @@ var SnippetMainPageDict = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxDelUrl = serverUrl + "v1/verify/dict/d";
+        var ajaxDelUrl = serverUrl + "v1/verify/dict/d/b";
         var delData = null;
+        var idsArray = [];
         if (obj != null) {
-            delData = {
-                'id' : obj.data.id,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
-            }
+            idsArray.push(obj.data.id);
         } else {
-            var idsArray = [];
             // 获取选中的数据对象
             var checkRows = dictMainPageTable.checkStatus('dict_mainPage_grid');
             //获取选中行的数据
@@ -487,15 +471,12 @@ var SnippetMainPageDict = function() {
                 $.each(checkData, function(index,element){
                     idsArray.push(element.id);
                 });
-                ajaxDelUrl = serverUrl + "v1/verify/dict/d/b";
-                delData = {
-                    'ids' : JSON.stringify(idsArray),
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode
-                }
             }
         }
-        if (delData != null) {
+        delData = {
+            'ids' : JSON.stringify(idsArray)
+        }
+        if (idsArray.length > 0) {
             //询问框
             layer.confirm('你确定要删除?', {
                 shade: [0.3, 'rgb(230, 230, 230)'],
@@ -506,7 +487,7 @@ var SnippetMainPageDict = function() {
                 $encrypDeleteAjax({
                     url:ajaxDelUrl,
                     data: delData,
-                    headers: BaseUtils.cloudHeaders()
+                    headers: BaseUtils.serverHeaders()
                 }, function (response) {
                     if (response.success) {
                         if (obj != null) {
@@ -532,20 +513,19 @@ var SnippetMainPageDict = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxPutUrl = serverUrl + "v1/verify/dict/p";
+        var ajaxPutUrl = serverUrl + "v1/verify/dict/p/b";
         var putData = null;
+        var idsArray = [];
+        var putParams = [];
         if (obj != null) {
             var dataVersion = $(obj.elem.outerHTML).attr("dataversion");
-            putData = {
-                'id' : obj.value,
-                'status' : status,
-                'dataVersion':dataVersion,
-                'credential': BaseUtils.credential,
-                'systemCode': BaseUtils.systemCode
+            var curDataParam = {
+                "id":obj.value,
+                "dataVersion":dataVersion
             }
+            putParams.push(curDataParam);
+            idsArray.push(obj.value);
         } else {
-            var idsArray = [];
-            var putParams = [];
             // 获取选中的数据对象
             var checkRows = dictMainPageTable.checkStatus('dict_mainPage_grid');
             //获取选中行的数据
@@ -559,23 +539,19 @@ var SnippetMainPageDict = function() {
                     putParams.push(curDataParam);
                     idsArray.push(element.id);
                 });
-
-                ajaxPutUrl = serverUrl + "v1/verify/dict/p/b";
-                putData = {
-                    'putParams' : JSON.stringify(idsArray),
-                    'ids': JSON.stringify(idsArray),
-                    'status' : status,
-                    'credential': BaseUtils.credential,
-                    'systemCode': BaseUtils.systemCode
-                }
             }
         }
-        if (putData != null) {
+        putData = {
+            'putParams' : JSON.stringify(putParams),
+            'ids': JSON.stringify(idsArray),
+            'status' : status
+        }
+        if (idsArray.length > 0) {
             BaseUtils.pageMsgBlock();
             $encrypPutAjax({
                 url: ajaxPutUrl,
                 data: putData,
-                headers: BaseUtils.cloudHeaders()
+                headers: BaseUtils.serverHeaders()
             }, function (response) {
                   if (response.success) {
                     dictMainPageRefreshGridAndTree();
@@ -597,7 +573,7 @@ var SnippetMainPageDict = function() {
                      } else {
                         obj.othis.addClass("layui-form-checked");
                      }
-                     if (response.status == 504) {
+                     if (response.status == 504 || response.status == 401) {
                          BaseUtils.LoginTimeOutHandler();
                      } else {
                          layer.tips(response.message, obj.othis,  {
@@ -622,7 +598,7 @@ var SnippetMainPageDict = function() {
         BaseUtils.pageMsgBlock();
         $postAjax({
             url: serverUrl + "v1/verify/dict/sync?lessee="+ BaseUtils.getLesseeId(),
-            headers: BaseUtils.cloudHeaders()
+            headers: BaseUtils.serverHeaders()
         }, function (response) {
             BaseUtils.htmPageUnblock();
             if (response.success) {
@@ -649,6 +625,7 @@ var SnippetMainPageDict = function() {
             var modalDialogTitle = "新增数据字典";
             if (dictMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(dictMainPageSubmitFormId);
+                $("#dict_mainPage_dataSubmit_form_dict_seq").val(10);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
             }
             $("#dict_mainPage_dataSubmit_form_parent_name").val(dictMainPageParentName);
@@ -723,7 +700,16 @@ var SnippetMainPageDict = function() {
                 dictMainPageSearchZtreeNode();
                 return false;
             });
-
+            $('#dict_mainPage_reload_btn').click(function(e) {
+                e.preventDefault();
+                if (BaseUtils.checkLoginTimeoutStatus()) {
+                    return;
+                }
+                dictMainPagePid = 0;
+                $("#dict_mainPage_dataSubmit_form_parent_name").val("");
+                dictMainPageRefreshGridAndTree();
+                return false;
+            });
             $('#dict_mainPage_sync_btn').click(function(e) {
                 e.preventDefault();
                 if (BaseUtils.checkLoginTimeoutStatus()) {
