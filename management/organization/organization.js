@@ -36,9 +36,16 @@ var SnippetMainPageOrganization = function() {
             organizationMainPageParentName = treeNode.name;
             organizationMainPageRefreshGrid();
         },
-        onAsyncSuccess:function(event, treeId, msg){ //异步加载完成后执行
+        onAsyncSuccess:function(event, treeId, treeNode, msg){ //异步加载完成后执行
             if ("undefined" == $("#organization_mainPage_tree_1_a").attr("title")) {
                 $("#organization_mainPage_tree_1").remove();
+            }
+            var treeObj = $.fn.zTree.getZTreeObj(treeId);
+            var nodes = treeObj.getNodes();
+            if (nodes.length>0) {
+                for(var i=0;i<nodes.length;i++){
+                    treeObj.expandNode(nodes[i], true, false, false);//默认展开第一级节点
+                }
             }
         },
         onAsyncError:function(){ //异步加载出现异常执行
@@ -161,8 +168,10 @@ var SnippetMainPageOrganization = function() {
      * 设置 tree 最大高度样式
      */
     function organizationMainPageZtreeMaxHeight() {
-         var layGridHeight = $(".layui-form.layui-border-box.layui-table-view").outerHeight();
+         var layGridHeight = $(".layui-form.layui-border-box.layui-table-view").height() + 2;
+        $("#organization_mainPage_tree").css("min-height", layGridHeight);
         $("#organization_mainPage_tree").css("max-height", layGridHeight);
+        $("#organization_mainPage_tree").css("border-bottom", "1px solid #e6e6e6");
     }
 
     /**

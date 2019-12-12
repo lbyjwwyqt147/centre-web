@@ -161,8 +161,10 @@ var SnippetMainPageDict = function() {
      * 设置 tree 最大高度样式
      */
     function dictMainPageZtreeMaxHeight() {
-         var layGridHeight = $(".layui-form.layui-border-box.layui-table-view").outerHeight();
+         var layGridHeight = $(".layui-form.layui-border-box.layui-table-view").height() + 2;
+        $("#dict_mainPage_tree").css("min-height", layGridHeight);
         $("#dict_mainPage_tree").css("max-height", layGridHeight);
+        $("#dict_mainPage_tree").css("border-bottom", "1px solid #e6e6e6");
     }
 
     /**

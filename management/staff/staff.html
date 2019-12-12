@@ -176,7 +176,7 @@
                                         <label class="col-lg-2 col-form-label">昵称:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
                                             <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" name="staffNickName" class="form-control m-input" placeholder="昵称" autocomplete="off" >
+                                                <input type="text" name="userNickName" class="form-control m-input" placeholder="昵称" autocomplete="off" >
                                             </div>
                                         </div>
                                     </div>
@@ -206,7 +206,7 @@
                                         <label class="col-lg-2 col-form-label">所属部门:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
                                             <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" id="staffOrgName" class="form-control m-input" readonly placeholder="所属部门" autocomplete="off" >
+                                                <input type="text" id="staffOrgName" name="staffOrgName" class="form-control m-input" readonly placeholder="所属部门" autocomplete="off" >
                                                 <input type="text" name="orgId" id="staffOrgId" class="form-control m-input" placeholder="所属部门" autocomplete="off" style="display: none" >
                                                 <input type="text" name="orgParentId" id="staff_full_parent" class="form-control m-input" placeholder="所属部门父id" autocomplete="off" style="display: none" >
                                                 <input type="text" name="orgNumber" id="staff_org_number" class="form-control m-input" placeholder="所属部门编号" autocomplete="off" style="display: none" >
@@ -219,7 +219,7 @@
                                         <label class="col-lg-2 col-form-label">职位:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-4">
                                             <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" id="userPositionName" class="form-control m-input" readonly placeholder="职务" autocomplete="off" >
+                                                <input type="text" id="userPositionName" name="userPositionName"  class="form-control m-input" readonly placeholder="职务" autocomplete="off" >
                                                 <input type="text" name="userPosition" id="staffPosition"  class="form-control m-input" placeholder="职务" autocomplete="off" style="display: none" >
                                             </div>
                                         </div>
@@ -234,7 +234,7 @@
                                         <label class="col-lg-2 col-form-label">身份证号:</label>
                                         <div class="col-lg-4">
                                             <div class="m-input-icon m-input-icon--right">
-                                                <input type="text" name="staffIdentiyCard" id="staffIdentiyCard" class="form-control m-input" placeholder="身份证号" autocomplete="off" >
+                                                <input type="text" name="userIdentiyCard" id="staffIdentiyCard" class="form-control m-input" placeholder="身份证号" autocomplete="off" >
                                             </div>
                                         </div>
                                         <label class="col-lg-2 col-form-label">出生日期:</label>
@@ -295,8 +295,8 @@
                                         <input type="hidden" class="form-control  m-input" name="createTime" placeholder="createTime"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="createUserId" placeholder="createUserId"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="dataVersion" placeholder="dataVersion"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="userPortraitId" id="userPortraitId" placeholder="userPortraitId"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="userCategory" id="userCategory" placeholder="userCategory"  autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userPortraitId" id="staffPortraitId" placeholder="userPortraitId"  autocomplete="off">
+                                        <input type="hidden" class="form-control  m-input" name="userCategory" id="userCategory" value="2" placeholder="userCategory"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="userId" placeholder="userId"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="userAccountsId" placeholder="userAccountsId"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="userSex" id="staff-sex" placeholder="staffSex"  autocomplete="off">

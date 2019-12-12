@@ -28,12 +28,14 @@ var SnippetMainPageStaff = function() {
     };
     staffOrgZtreeSetting.callback = {
         onClick: function (event, treeId, treeNode) {   //点击节点执行事件
-            var staffOrgObj = $("#staffOrgName");
-            staffOrgObj.attr("value", treeNode.name);
-            $("#staffOrgId").attr("value", treeNode.id);
             var otherAttributes = treeNode.otherAttributes;
-            $("#staff_full_parent").attr("value", otherAttributes.fullParent);
-            $("#staff_org_number").attr("value", otherAttributes.orgNumber);
+            if (otherAttributes.fullParent != 0) {
+                var staffOrgObj = $("#staffOrgName");
+                staffOrgObj.attr("value", treeNode.name);
+                $("#staffOrgId").attr("value", treeNode.id);
+                $("#staff_full_parent").attr("value", otherAttributes.fullParent);
+                $("#staff_org_number").attr("value", otherAttributes.orgNumber);
+            }
         },
         onAsyncSuccess:function(event, treeId, treeNode, msg){ //异步加载完成后执行
             if ("undefined" == $("#staffOrgTree_1_a").attr("title")) {
@@ -69,9 +71,12 @@ var SnippetMainPageStaff = function() {
     };
     staffPositionZtreeSetting.callback = {
         onClick: function (event, treeId, treeNode) {   //点击节点执行事件
-            var $userPositionName = $("#userPositionName");
-            $userPositionName.attr("value", treeNode.name);
-            $("#staffPosition").attr("value", treeNode.id);
+            var otherAttributes = treeNode.otherAttributes;
+            if (otherAttributes.fullParent != 0) {
+                var $userPositionName = $("#userPositionName");
+                $userPositionName.attr("value", treeNode.name);
+                $("#staffPosition").attr("value", treeNode.id);
+            }
         },
         onAsyncSuccess:function(event, treeId, treeNode, msg){ //异步加载完成后执行
             if ("undefined" == $("#staffPositionTreeForm_1_a").attr("title")) {
@@ -138,7 +143,13 @@ var SnippetMainPageStaff = function() {
     function showDeptMenu() {
         var staffOrgObj = $("#staffOrgName");
         var staffOrgOffset = staffOrgObj.offset();
-        $("#orgTreeContent").css({left: staffOrgObj.outerWidth() - $(".col-lg-2").width()+30 + "px", top:staffOrgOffset.top /2 + 40 + "px", width:staffOrgObj.outerWidth() + "px"}).slideDown("fast");
+        var errorHeight = $(".form-control-feedback").height();
+        if (errorHeight == undefined) {
+            errorHeight = 0;
+        } else {
+            errorHeight = errorHeight + 12;
+        }
+        $("#orgTreeContent").css({left: staffOrgObj.outerWidth() - $(".col-lg-2").width()+30 + "px", top:staffOrgOffset.top /2 + 40 + errorHeight + "px", width:staffOrgObj.outerWidth() + "px"}).slideDown("fast");
 
         $("body").bind("mousedown", onBodyDeptDown);
     }
@@ -148,7 +159,13 @@ var SnippetMainPageStaff = function() {
     function showPositionMenu() {
         var userPositionNameObj = $("#userPositionName");
         var userPositionOffset = userPositionNameObj.offset();
-        $("#positionTreeFormContent").css({left: userPositionNameObj.outerWidth() + $(".col-lg-2").width()*2 -15 + "px", top:userPositionOffset.top /2 + 40  + "px", width:userPositionNameObj.outerWidth() + "px"}).slideDown("fast");
+        var errorHeight = $(".form-control-feedback").height();
+        if (errorHeight == undefined) {
+            errorHeight = 0;
+        } else {
+            errorHeight = errorHeight + 12;
+        }
+        $("#positionTreeFormContent").css({left: userPositionNameObj.outerWidth() + $(".col-lg-2").width()*2 -15 + "px", top:userPositionOffset.top /2 + 40 + errorHeight + "px", width:userPositionNameObj.outerWidth() + "px"}).slideDown("fast");
 
         $("body").bind("mousedown", onBodyPositionDown);
     }
@@ -253,13 +270,14 @@ var SnippetMainPageStaff = function() {
                 url: serverUrl + 'v1/table/staff/g',
                 method:"get",
                 where: {   //传递额外参数
-                    staffStatus : 0
+                    staffStatus : 0,
+                    userCategory: 2
                 },
                 headers: BaseUtils.serverHeaders(),
                 title: '员工信息列表',
                 initSort: {
-                    field: 'entryDate', //排序字段，对应 cols 设定的各字段名
-                    type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                    field: 'userNumber', //排序字段，对应 cols 设定的各字段名
+                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
                 },
                 cols: [[
                     {checkbox: true},
@@ -280,11 +298,9 @@ var SnippetMainPageStaff = function() {
                     },
                     {field:'userNickName', title:'昵称'},
                     {field:'mobilePhone', title:'手机号'},
-                    {field:'userPositionText', title:'职位'},
-                    {field:'entryDate', title:'入职日期', sort:true},
                     {field:'userSex', title:'性别',
                         templet : function (row) {
-                            var value = row.staffSex;
+                            var value = row.userSex;
                             var curSexText = "男";
                             switch (value) {
                                 case 1:
@@ -297,11 +313,13 @@ var SnippetMainPageStaff = function() {
                         }
                     },
                     {field:'userEmail', title:'电子邮箱'},
-                    {field:'staffOrgName', title:'组织机构'},
+                    {field:'staffOrgName', title:'所属部门'},
+                    {field:'userPositionText', title:'职位'},
+                    {field:'entryDate', title:'入职日期', sort:true},
                     {field:'workingYears', title:'在职年限', sort:true, unresize:true},
                     {field:'userStatus', title:'状态', align: 'center',  unresize:true,
                         templet : function (row) {
-                            var value = row.staffStatus;
+                            var value = row.userStatus;
                             var spanCss = "m-badge--success";
                             var curStatusText = "在职";
                             switch (value) {
@@ -559,10 +577,8 @@ var SnippetMainPageStaff = function() {
             e.preventDefault();
             var curSex = $("input:radio[name=\"tempStaffSex\"]:checked").val();
             $("#staffIntro-text").val(BaseUtils.textareaTo( $("#staffIntro-text").val()));
-            $("#staffEquipment-text").val(BaseUtils.textareaTo( $("#staffEquipment-text").val()));
             BaseUtils.formInputTrim(staffMainPageSubmitFormId);
             $("#staff-sex").val(curSex);
-            $("#staff-lessee").val(BaseUtils.lessee);
             staffMainPageSubmitForm.validate({
                 rules: {
                     userNumber: {
@@ -583,6 +599,12 @@ var SnippetMainPageStaff = function() {
                     mobilePhone: {
                         required: true,
                         isMobile:true
+                    },
+                    userPositionName: {
+                        required: true
+                    },
+                    staffOrgName: {
+                        required: true
                     },
                     userIdentiyCard: {
                         required: false,
@@ -637,9 +659,6 @@ var SnippetMainPageStaff = function() {
             }
             if (BaseUtils.checkLoginTimeoutStatus()) {
                 return;
-            }
-            if ($("#staff-id").val() == null || $("#staff-id").val() == "") {
-                $("#staffCategory").val(1);
             }
             BaseUtils.modalBlock("#staff_mainPage_dataSubmit_form_modal");
             $postAjax({
@@ -879,13 +898,14 @@ var SnippetMainPageStaff = function() {
             var orgzTree = $.fn.zTree.getZTreeObj("staffOrgTree");
             // 取消当前所有被选中节点的选中状态
             orgzTree.cancelSelectedNode();
-            var positionzTree = $.fn.zTree.getZTreeObj("staffOrgTree");
+            var positionzTree = $.fn.zTree.getZTreeObj("staffPositionTreeForm");
             // 取消当前所有被选中节点的选中状态
             positionzTree.cancelSelectedNode();
             var deptZtreeNode = null;
             var positionNode = null;
             if (staffMainPageMark == 1) {
                 BaseUtils.cleanFormReadonly(staffMainPageSubmitFormId);
+                $("#userCategory").val(2);
                 $(".glyphicon.glyphicon-remove.form-control-feedback").show();
                 $("input:radio[name=\"tempStaffSex\"][value='0']").click();
             }
