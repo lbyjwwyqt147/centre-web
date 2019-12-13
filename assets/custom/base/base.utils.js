@@ -33,7 +33,9 @@ var BaseUtils = {
         settingZtreeProperty: function (params) {
             var setting = {
                 check: {
-                    enable: params.check
+                    enable: params.selectedMulti,
+                    chkStyle: "checkbox",
+                    chkboxType: params.chkboxType
                 },
                 data: {
                     simpleData: {

@@ -270,7 +270,7 @@ var SnippetMainPageStaff = function() {
                 url: serverUrl + 'v1/table/staff/g',
                 method:"get",
                 where: {   //传递额外参数
-                    staffStatus : 0,
+                    userStatus : 0,
                     userCategory: 2
                 },
                 headers: BaseUtils.serverHeaders(),
