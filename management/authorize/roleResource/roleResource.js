@@ -6,7 +6,7 @@ var SnippetMainPageroleResource = function() {
     var serverUrl = BaseUtils.serverAddress;
     var roleResourceMainPageTable;
     var roleResourceMainPagePid = 0;
-    var roleResourceMainPageModuleCode = '10024';
+    var roleResourceMainPageModuleCode = '10025';
     var roleResourcePageLeffTree;
     var roleId = 0;
     var mark = 0;
@@ -166,7 +166,7 @@ var SnippetMainPageroleResource = function() {
                 },
                 headers: BaseUtils.serverHeaders(),
                 title: '角色列表',
-                height: 'full-150',
+                height: 'full-170',
                 initSort: {
                     field: 'id', //排序字段，对应 cols 设定的各字段名
                     type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
@@ -230,11 +230,9 @@ var SnippetMainPageroleResource = function() {
                 console.log(roleId);
                 if (mark == 1) {
                     $("#role-resource_mainPage_dataSubmit_form_submit").show();
-                    $("#role-resource_mainPage_tree").css("margin-top", "4px");
                     mark = 0;
                 } else {
                     $("#role-resource_mainPage_dataSubmit_form_submit").hide();
-                    $("#role-resource_mainPage_tree").css("margin-top", "44px");
                 }
                 roleResourceMainPageRereshTree();
             });
@@ -296,7 +294,6 @@ var SnippetMainPageroleResource = function() {
                 BaseUtils.htmPageUnblock();
                 if (response.success) {
                     $("#role-resource_mainPage_dataSubmit_form_submit").hide();
-                    $("#role-resource_mainPage_tree").css("margin-top", "44px");
                     mark == 0
                 } else if (response.status == 409) {
 
@@ -326,7 +323,6 @@ var SnippetMainPageroleResource = function() {
                 roleId = 0;
                 roleResourceMainPageRefreshGridAndTree();
                 $("#role-resource_mainPage_dataSubmit_form_submit").hide();
-                $("#role-resource_mainPage_tree").css("margin-top", "44px");
                 mark == 0
             }
         },function (response) {

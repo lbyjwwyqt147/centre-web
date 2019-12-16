@@ -16,12 +16,19 @@
     }
 
     #role-resource-page-frame .ztree {
-        margin: 4px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
         padding: 5px 5px 5px 21px;
         color: #333;
         border: 1px solid #e6e6e6;
+        border-left: none;
+    }
+    #role-resource-page-frame .m-portlet--bordered .m-portlet__body {
+        padding: 0rem 0rem 0rem 1.1em;
     }
 
+    #role-resource-page-frame .col-xl-4 .m-portlet--bordered .m-portlet__body {
+        padding: 0rem 0rem 0rem 0em;
+    }
     /** tree 滚动条样式 开始 */
 
     #role-resource-page-frame .m-scroller::-webkit-scrollbar {/*滚动条整体样式*/
@@ -61,51 +68,68 @@
 
                     <div class="col-xl-8">
 
-                        <!--begin:: grid -->
-                        <div class="m-widget1">
-                            <div class="m-portlet__head" style="height: 41px; margin-bottom: 6px;">
+                        <!--begin:: role grid -->
+                        <div class="m-portlet m-portlet--bordered m-portlet--rounded m-portlet--unair">
+                            <div class="m-portlet__head">
                                 <div class="m-portlet__head-caption">
-                                    <div class="input-group" style="margin-top: 5px; ">
+                                    <div class="m-portlet__head-title">
+                                        <h3 class="m-portlet__head-text">
+                                            角色列表
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="row col-lg-3" style="padding-top: 13px;">
+                                    <div class="input-group" >
                                         <input type="text" class="form-control form-control-danger" id="role-resource-mainPage-nodeName-search" placeholder="输入名称搜索" autocomplete="off" style="height: 41px;">
-                                        <div class="input-group-append" style="cursor: pointer" id="role-resource_mainPage_searchNode_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="搜索角色">
+                                        <div class="input-group-append" style="cursor: pointer; max-height: 41px;" id="role-resource_mainPage_searchNode_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="搜索角色">
                                             <span class="btn btn-secondary" >
                                                 <i class="la la-search"></i>
                                             </span>
                                         </div>
-                                        <div class="input-group-append" style="cursor: pointer" id="role-resource_mainPage_sync_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="同步数据">
+                                        <div class="input-group-append" style="cursor: pointer;max-height: 41px;" id="role-resource_mainPage_sync_btn"  data-container="body" data-toggle="m-tooltip" data-placement="top" title="同步数据">
                                             <span class="btn btn-secondary" >
                                                 <i class="la la-rotate-left"></i>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="m-portlet__head-tools">
-                                    <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" id="role-resource-mainPage-grid-head-tools" role-resource="tablist">
-                                    </ul>
-                                </div>
                             </div>
-                            <table class="layui-hide" id="role-resource_mainPage_grid"  lay-filter="role-resource_mainPage_grid"></table>
-
+                            <div class="m-portlet__body">
+                                <table class="layui-hide" id="role-resource_mainPage_grid"  lay-filter="role-resource_mainPage_grid"></table>
+                            </div>
                         </div>
-
-                        <!--end:: grid -->
+                        <!--end:: role grid -->
                     </div>
 
                     <div class="col-xl-4">
-                        <!--begin:: ztree -->
-                        <div class="m-widget1" >
-                            <div class="input-group" style="margin-top: 3px; ">
-                                <a href="javascript:;" style="margin-left: 82%; display: none" class="btn btn-success m-btn m-btn--icon" id="role-resource_mainPage_dataSubmit_form_submit">
-                                    <span>
-                                        <i class="la la-check"></i>
-                                        <span>保存</span>
-                                    </span>
-                                </a>
+                        <!--begin:: 资源 tree -->
+                        <div class="m-portlet m-portlet--bordered m-portlet--rounded m-portlet--unair" style="border-left: none;">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <h3 class="m-portlet__head-text">
+                                            资源
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="m-portlet__head-tools">
+                                    <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" id="user-role-mainPage-grid-head-tools" role="tablist">
+                                        <li>
+                                            <a href="javascript:;" style="display: none" class="btn btn-success m-btn m-btn--icon" id="role-resource_mainPage_dataSubmit_form_submit">
+                                                <span>
+                                                    <i class="la la-check"></i>
+                                                    <span>保存</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <ul id="role-resource_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px; margin-top: 44px;" ></ul>
+                            <div class="m-portlet__body">
+                                <ul id="role-resource_mainPage_tree" class="ztree m-scroller" style="overflow:auto;min-height: 400px;" ></ul>
+                            </div>
                         </div>
-
-                        <!--end:: ztree -->
+                        <!--end:: 资源 tree -->
                     </div>
                 </div>
             </div>
