@@ -6,16 +6,20 @@ var SnippetMainPageHomeIndex = function() {
      * 初始化菜单数据项
      */
     var  initHomeMenuData = function () {
+        var loginUserId = BaseUtils.getCurrentUser().userId;
         $.ajax({
             type: "GET",
-            url: "module.json",
-            data: {},
+           // url: "module.json",
+            url: serverUrl + "v1/tree/role/resource/menu",
+            data: {
+                userId: loginUserId
+            },
             dataType: "json",
             headers: BaseUtils.serverHeaders(),
             success:function (response) {
                 if (response.success) {
                     var $menuHtml = $("#home_menu_home_page");
-
+                    var ulHtml = "\n";
                     $.each(response.data, function (i, v) {
                         var root = v;
                         // 将页面功能按钮信息存放到本地
@@ -58,10 +62,14 @@ var SnippetMainPageHomeIndex = function() {
                             liRootHtml += liChildrenRootHtml;
                         }
                         liRootHtml += '</li>\n';
-                        $menuHtml.after(liRootHtml);
+                        ulHtml += liRootHtml + "\n";
                     });
+                    $menuHtml.after(ulHtml);
+                } else {
+
                 }
                 initHomeMenuEvent();
+                initHomeContentTab();
             },
             error:function () {
                 toastr.error(BaseUtils.networkErrorMsg);
@@ -211,7 +219,6 @@ var SnippetMainPageHomeIndex = function() {
         // public functions
         init: function() {
             initHomeMenuData();
-            initHomeContentTab();
         }
     };
 }();

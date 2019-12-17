@@ -100,7 +100,7 @@ var SnippetMainPageRoleUser = function() {
                 },
                 cols: [[
                     {checkbox: true},
-                    {field:'id', title:'ID', unresize:true, hide:true },
+                    {field:'userAccountsId', title:'ID', unresize:true, hide:true },
                     {field:'userNumber', title:'工号'},
                     {field:'userFullName', title:'姓名'},
                     {field:'userNickName', title:'昵称'},
@@ -154,7 +154,7 @@ var SnippetMainPageRoleUser = function() {
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
-                    userId = obj.data.id;
+                    userId = obj.data.userAccountsId;
                     userRoleMainPageRefreshGrid();
                     $('#role_user_mainPage_dataSubmit_form_modal').modal('show');
                 }
@@ -162,7 +162,7 @@ var SnippetMainPageRoleUser = function() {
                     if (BaseUtils.checkLoginTimeoutStatus()) {
                         return;
                     }
-                    userId = obj.data.id;
+                    userId = obj.data.userAccountsId;
                     userRoleMainPageInitDataGrid();
                 }
             });
@@ -347,7 +347,7 @@ var SnippetMainPageRoleUser = function() {
             var checkUserData = checkUserRows.data;
             if (checkUserData.length > 0) {
                 $.each(checkUserData, function(index,element){
-                    userIds.push(element.id);
+                    userIds.push(element.userAccountsId);
                 });
             } else {
                 if (userId != 0) {
@@ -540,8 +540,14 @@ var SnippetMainPageRoleUser = function() {
                 if (BaseUtils.checkLoginTimeoutStatus()) {
                     return;
                 }
-                if (userId != 0) {
+                // 获取选中的人员数据对象
+                var checkUserRows = userRoleMainPageTable.checkStatus('role-user_mainPage_grid');
+                var checkUserData = checkUserRows.data;
+                if (checkUserData.length > 0) {
                     $('#role_user_mainPage_dataSubmit_form_modal').modal('show');
+                }
+                if (userId != 0) {
+
                 }
                 return false;
             });

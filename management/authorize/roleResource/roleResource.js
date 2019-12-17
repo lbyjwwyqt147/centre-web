@@ -295,6 +295,7 @@ var SnippetMainPageroleResource = function() {
                 if (response.success) {
                     $("#role-resource_mainPage_dataSubmit_form_submit").hide();
                     mark == 0
+                    toastr.success("资源分配成功.");
                 } else if (response.status == 409) {
 
                 }

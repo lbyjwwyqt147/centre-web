@@ -416,6 +416,43 @@ jQuery(document).ready(function() {
         });
     };
 
+    /**
+     * 默认get 提交
+     * @param ajaxParam
+     * @param successCallback
+     * @param errorCallback
+     */
+    $getAjaxNotToastr = function (ajaxParam, successCallback, errorCallback) {
+        _url = ajaxParam.url;
+        _data = ajaxParam.data;
+        $.ajax({
+            url: _url,
+            dataType: "json",
+            cache: false,
+            async: true,
+            type: "GET",
+            data: _data,
+            headers:ajaxParam.headers,
+            crossDomain: true,
+            timeout: 60000,
+            success: function (response) {
+                successCallback(response);
+                if (response.success) {
+
+                } else if (response.status == 202) {
+
+                } else if (response.status == 504 || response.status == 401) {
+                    BaseUtils.LoginTimeOutHandler();
+                }  else {
+
+                }
+            },
+            error: function (data) {
+                errorCallback(data);
+                toastr.error(BaseUtils.networkErrorMsg);
+            }
+        });
+    };
 
     /**
      * 数据加密方式 get 提交
