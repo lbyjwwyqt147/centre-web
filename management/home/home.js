@@ -6,11 +6,12 @@ var SnippetMainPageHomeIndex = function() {
      * 初始化菜单数据项
      */
     var  initHomeMenuData = function () {
-        var loginUserId = BaseUtils.getCurrentUser().userId;
+        var userInfo = BaseUtils.getCurrentUser();
+        var loginUserId = userInfo.userId;
         $.ajax({
             type: "GET",
-           // url: "module.json",
-            url: serverUrl + "v1/tree/role/resource/menu",
+            url: "module.json",
+           // url: serverUrl + "v1/tree/role/resource/menu",
             data: {
                 userId: loginUserId
             },
@@ -75,6 +76,11 @@ var SnippetMainPageHomeIndex = function() {
                 toastr.error(BaseUtils.networkErrorMsg);
             }
         });
+        $("#home_m_card_user_name").html(userInfo.userName);
+        $("#home_m_card_user_phone").html(userInfo.mobilePhone);
+        if (userInfo.portrait != null && userInfo.portrait != '')  {
+            $("#m-user-img").attr("src", userInfo.portrait);
+        }
     };
 
     /**

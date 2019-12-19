@@ -172,7 +172,7 @@ var SnippetMainPageroleResource = function() {
                     type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
                 },
                 cols: [[
-                    {type: 'radio', width: 80},
+                    {type: 'radio', width: 70},
                     {field: 'id', title: 'ID', unresize: true, hide: true},
                     {field: 'roleNumber', title: '角色编号'},
                     {field: 'roleName', title: '角色名称'},
