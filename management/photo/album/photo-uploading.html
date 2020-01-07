@@ -146,18 +146,16 @@
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group row ">
-                                        <label class="col-form-label col-lg-3 col-sm-12">主题:<span class="has-danger-error">*</span></label>
+                                        <label class="col-form-label col-lg-3 col-sm-12">名称:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <input type="text" class="form-control m-input" name="albumName" id="album-name" placeholder="主题"    autocomplete="off">
+                                            <input type="text" class="form-control m-input" name="albumName" id="album-name" placeholder="名称"    autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group m-form__group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12">类型:<span class="has-danger-error">*</span></label>
+                                        <label class="col-form-label col-lg-3 col-sm-12">分类:<span class="has-danger-error">*</span></label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <select class="form-control m-bootstrap-select m_selectpicker" name="albumClassification" id="albumClassification"  placeholder="类型" autocomplete="off">
-                                                <option value="1" selected >样片</option>
-                                                <option value="2" >客片</option>
-                                                <option value="3" >商业</option>
+                                            <select class="form-control m-bootstrap-select m_selectpicker" name="albumClassify" id="album-classify"  placeholder="分类" autocomplete="off">
+
                                             </select>
                                         </div>
                                     </div>
@@ -169,61 +167,33 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12">标签:</label>
-                                        <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <input type="text" class="form-control m-input" name="albumLabel" placeholder="标签" autocomplete="off">
-                                        </div>
-                                    </div>
 
                                     <div class="form-group m-form__group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12">优先级:</label>
+                                        <label class="col-form-label col-lg-3 col-sm-12">排序值:</label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
                                             <input type="text" class="form-control bootstrap-touchspin-vertical-btn" id="photo_uploading_mainPage_dataSubmit_form_uploading_seq"  name="albumPriority" placeholder="默认10 数值越小越靠前展示" value="10" autocomplete="off" >
                                         </div>
                                     </div>
 
-                                <!--    <div class="form-group m-form__group row">
+                                   <div class="form-group m-form__group row">
                                         <label class="col-form-label col-lg-3 col-sm-12">背景音乐地址:</label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
                                             <input type="text" class="form-control m-input"  name="albumMusicAddress" placeholder="背景音乐地址" autocomplete="off" >
                                         </div>
-                                    </div>-->
+                                    </div>
 
 
                                     <div class="form-group m-form__group row">
                                         <label class="col-form-label col-lg-3 col-sm-12">摄影师:</label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <select  class="form-control m-select2" multiple="multiple"  id="albumPhotographyAuthor"  placeholder="摄影师" autocomplete="off">
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12">后期设计:</label>
-                                        <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <select class="form-control m-select2" multiple="multiple"  id="albumAnaphasisAuthor"  placeholder="后期设计" autocomplete="off">
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12">化妆师:</label>
-                                        <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <select  class="form-control m-select2" multiple="multiple"   id="albumDresser"  placeholder="化妆师" autocomplete="off">
-
-                                            </select>
+                                            <input type="text" class="form-control m-input"  name="albumPhotographyAuthor" placeholder="摄影师" autocomplete="off" >
                                         </div>
                                     </div>
 
                                     <div class="form-group m-form__group row">
                                         <label class="col-form-label col-lg-3 col-sm-12">拍摄地点:</label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <select class="form-control m-bootstrap-select m_selectpicker" name="spotForPhotography" id="spotForPhotography"  placeholder="拍摄地点" autocomplete="off">
-
-                                            </select>
+                                            <input type="text" class="form-control m-input"  name="spotForPhotography" placeholder="拍摄地点" autocomplete="off" >
                                         </div>
                                     </div>
 
@@ -231,16 +201,6 @@
                                         <label class="col-form-label col-lg-3 col-sm-12">拍摄时间:</label>
                                         <div class="col-lg-9 col-md-9 col-sm-12">
                                             <input type="text" class="layui-input" name="shootingsDate" id="shootingsDate" placeholder="拍摄时间" autocomplete="off">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group m-form__group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12">首页展示:</label>
-                                        <div class="col-lg-9 col-md-9 col-sm-12">
-                                            <select class="form-control m-bootstrap-select m_selectpicker" name="display" id="display"  placeholder="首页展示" autocomplete="off">
-                                                <option value="0"  id="home-show-option" >展示</option>
-                                                <option value="1" selected>不展示</option>
-                                            </select>
                                         </div>
                                     </div>
 
@@ -256,11 +216,6 @@
                                         <input type="hidden" class="form-control  m-input" name="createTime" placeholder="createTime"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="createUserId" placeholder="createUserId"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="dataVersion" placeholder="dataVersion"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="albumTitle" id="album_title" placeholder="albumTitle"  autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="albumAnaphasisAuthor" id="album-anaphasi-author" autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="albumDresser" id="album-dresser" autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="albumPhotographyAuthor" id="album-photography-author" autocomplete="off">
-                                        <input type="hidden" class="form-control  m-input" name="albumClassify" id="albumClassify" placeholder="albumClassify"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="pictures" id="photo-file-list" placeholder="file-list"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="albumNumber"  placeholder="albumNumber"  autocomplete="off">
                                         <input type="hidden" class="form-control  m-input" name="surfacePlot" id="surface-plot"  placeholder="surfacePlot"  autocomplete="off">
@@ -276,22 +231,22 @@
                                             </span>
                                             </a>-->
                                             <a href="javascript:;" class="btn btn-info m-btn m-btn--icon" id="photo_uploading_mainPage_dataSubmit_form_submit">
-                                            <span>
-                                                <i class="la la-check"></i>
-                                                <span>保存</span>
-                                            </span>
+                                                <span>
+                                                    <i class="la la-check"></i>
+                                                    <span>保存</span>
+                                                </span>
                                             </a>
                                             <a href="javascript:;" class="btn btn-success m-btn m-btn--icon" id="photo_uploading_mainPage_dataSubmit_form_publish">
-                                            <span>
-                                                <i class="la la-hand-o-right"></i>
-                                                <span>发布</span>
-                                            </span>
+                                                <span>
+                                                    <i class="la la-hand-o-right"></i>
+                                                    <span>发布</span>
+                                                </span>
                                             </a>
                                             <a href="javascript:;" class="btn btn-secondary m-btn m-btn--icon" id="photo_uploading_mainPage_dataSubmit_form_close">
-                                            <span>
-                                                <i class="la la-close"></i>
-                                                <span>关闭</span>
-                                            </span>
+                                                <span>
+                                                    <i class="la la-close"></i>
+                                                    <span>关闭</span>
+                                                </span>
                                             </a>
                                         </div>
                                     </div>
