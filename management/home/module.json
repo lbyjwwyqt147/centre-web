@@ -168,17 +168,7 @@
       "menuIcon": "la-outdent",
       "menuOpenUrl": "../photo/album/human-portrait/human-portrait.html",
       "moduleCode": "1020",
-      "moduleName": "写真馆",
-      "modulePid": 2,
-      "moduleType": 2,
-      "status": 0
-    }, {
-      "functionButtonGroup": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-      "id": 21,
-      "menuIcon": "la-outdent",
-      "menuOpenUrl": "../photo/album/wang/wang.html",
-      "moduleCode": "1021",
-      "moduleName": "婚纱馆",
+      "moduleName": "图像馆",
       "modulePid": 2,
       "moduleType": 2,
       "status": 0

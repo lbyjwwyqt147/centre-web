@@ -39,9 +39,9 @@ var SnippetMainPageUploading= function() {
             fileSizeLimit: 30*1024*1024*25,  // 总文件大小
             fileSingleSizeLimit: 1024*1024*25, // 单个文件大小
             //处理客户端新文件上传时，需要调用后台处理的地址, 必填
-            uploadUrl: cloudServerUrl + 'v1/verify/file/upload/batch',
+            uploadUrl: cloudServerUrl + 'v1/verify/file/oss/upload/batch',
             //处理客户端原有文件更新时的后台处理地址，必填
-            updateUrl: 'http://127.0.0.1:18080/api/v1/verify/file/upload/batch',
+            updateUrl: cloudServerUrl + 'v1/verify/file/oss/upload/batch',
             //当客户端原有文件删除时的后台处理地址，必填
             removeUrl: albumServerUrl + 'v1/verify/album/picture/d',
             //初始化客户端上传文件，从后台获取文件的地址, 可选，当此参数为空时，默认已上传的文件为空
@@ -53,7 +53,7 @@ var SnippetMainPageUploading= function() {
                 'uploaderId' : curUser.id,
                 'uploaderName': curUser.name,
                 'tenementId' : BaseUtils.lessee,
-                'lesseeName' : BaseUtils.lesseeName,
+                'tenementName' : BaseUtils.lesseeName,
                 'description' : '相册图片'
             },
             headers : BaseUtils.cloudHeaders()
@@ -64,6 +64,7 @@ var SnippetMainPageUploading= function() {
             var $ = layui.jquery
                 ,layuiUpload = layui.upload;
             var curUser = BaseUtils.getCurrentUser();
+            var $reuploadCoverBtn = $("#reupload-cover");
             //拖拽上传
             uploadInst =  layuiUpload.render({
                 elem: '#surfacePlot',
@@ -72,13 +73,13 @@ var SnippetMainPageUploading= function() {
                 accept: 'images', //只允许上传图片
                 acceptMime: 'image/*', //只筛选图片
                 size: 20*1024*1024, //限制文件大小，单位 KB
-                url: 'http://127.0.0.1:18080/api/v1/verify/file/upload/batch',
+                url: cloudServerUrl + 'v1/verify/file/oss/upload/batch',
                 data: {
                     'businessCode' : 10,
                     'uploaderId' : curUser.id,
                     'uploaderName': curUser.name,
                     'tenementId' : BaseUtils.lessee,
-                    'lesseeName' : BaseUtils.lesseeName,
+                    'tenementName' : BaseUtils.lesseeName,
                     'description' : '相册封面图片',
                     'businessField': 'surfacePlot'
                 },
@@ -101,9 +102,20 @@ var SnippetMainPageUploading= function() {
                         var imageObj = res.data[0];
                         $("#surface-plot").val(imageObj.fileCallAddress);
                         $("#surface-plot-id").val(imageObj.id);
+                    } else {
+                        $reuploadCoverBtn.show();
+                        var $surfacePlotBtn = $("#surfacePlot");
+                        $surfacePlotBtn.hide();
+                        toastr.error("上传封面图片失败,请重新上传.");
                     }
                 }
             });
+            $reuploadCoverBtn.click(function (e) {
+                e.preventDefault();
+                uploadInst.upload();
+                return false;
+            });
+
         });
     };
 
@@ -145,7 +157,7 @@ var SnippetMainPageUploading= function() {
      */
     var initSelectpicker = function () {
         var $albumClassification = $("#album-classify");
-        // 分类 multi select
+        // 分类
         BaseUtils.dictDataSelect("album_classify", function (data) {
             Object.keys(data).forEach(function(key){
                 $albumClassification.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
@@ -166,7 +178,7 @@ var SnippetMainPageUploading= function() {
                 elem: '#shootingsDate'
             });
         });
-        // 风格 multi select
+        // 风格
         BaseUtils.dictDataSelect("album_style", function (data) {
             var $albumStyle = $("#albumStyle");
             Object.keys(data).forEach(function(key){

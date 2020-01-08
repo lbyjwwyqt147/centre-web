@@ -24,7 +24,7 @@ var BaseUtils = {
     "encryption":true,
     "secretKey":"dO6+g3+08ELBKtx/1/WBYQ==",
     "lessee": 1,
-    "lesseeName": "休琴忘普",
+    "lesseeName": "休琴忘普摄影工作室",
 
 
     /**
@@ -407,14 +407,14 @@ var BaseUtils = {
     dictDataSelect : function(dictCode, successCallback) {
         $.ajax({
             type: "get",
-            url: BaseUtils.cloudServerAddress + 'v1/ignore/dict/combox',
+            url: BaseUtils.serverAddress + 'v1/ignore/dict/combox',
             data:{
                 systemCode : BaseUtils.systemCode,
                 parentCode : dictCode
             },
             async:false,
             dataType: "json",
-            headers: BaseUtils.cloudHeaders(),
+            headers: BaseUtils.serverHeaders(),
             success: function(data){
                 if (data != null) {
                     successCallback(data);

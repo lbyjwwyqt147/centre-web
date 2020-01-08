@@ -50,49 +50,35 @@
                         <!--begin:: grid -->
                         <div class="m-widget1">
                             <div class="m-portlet__head" style="height: 60px; padding-left: 0px; border-bottom: 1px solid #ebedf2; ">
-                                <div class="m-portlet__head-caption col-xl-11">
+
+                                <div class="m-portlet__head-caption col-xl-10">
                                     <!--begin::query Form-->
-                                    <form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed  col-xl-11" id="human-portrait-page-grid-query-form">
+                                    <form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed  col-xl-10" id="human-portrait-page-grid-query-form">
                                         <div class="m-portlet__body" style="padding: 0px;">
                                             <div class="form-group m-form__group row" style="padding-top: 5px; padding-bottom: 5px;">
+                                                <label class="col-lg-1 col-form-label">分类:</label>
+                                                <div class="col-lg-2">
+                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="album_classify" id="albumClassification"  placeholder="分类" autocomplete="off">
 
-                                                <label class="col-xl-1 col-form-label" style="width: 50%;" >类型:</label>
-                                                <div class="col-xl-2"  id="album-classification">
-                                                    <select class="form-control m-bootstrap-select m_selectpicker" name="albumClassification" id="albumClassification"  placeholder="类型" autocomplete="off">
-                                                        <option value="" >--请选择--</option>
-                                                        <option value="1" >样片</option>
-                                                        <option value="2" >客片</option>
-                                                        <option value="3" >商业</option>
                                                     </select>
                                                 </div>
-
-                                                <label class="col-xl-1 col-form-label" style="width: 50%;">风格:</label>
-                                                <div class="col-xl-3" >
-                                                    <select  class="form-control m-select2" multiple="multiple"   id="album-style"  placeholder="风格" autocomplete="off">
+                                                <label class="col-lg-1 col-form-label">风格:</label>
+                                                <div class="col-lg-2">
+                                                    <select  class="form-control m-select2" multiple="multiple" id="album-style"  placeholder="-请选择-" autocomplete="off">
 
                                                     </select>
                                                     <input type="hidden" name="albumStyle" id="album-style-query"  autocomplete="off">
                                                 </div>
 
-                                                <label class="col-xl-1 col-form-label" style="width: 50%;">状态:</label>
-                                                <div class="col-xl-1" >
+                                                <label class="col-lg-1 col-form-label" >状态:</label>
+                                                <div class="col-lg-2"  id="staff-status">
                                                     <select  class="form-control m-bootstrap-select m_selectpicker" name="albumStatus" id="album-status-query"  placeholder="状态" autocomplete="off">
-                                                        <option value="" >请选择</option>
-                                                        <option value="0" >已发布</option>
-                                                        <option value="1" >已下架</option>
+                                                        <option value="" >-请选择-</option>
+                                                        <option value="0" >正常</option>
+                                                        <option value="1" >禁用</option>
                                                         <option value="2" >草稿</option>
                                                     </select>
                                                 </div>
-
-                                                <label class="col-xl-1 col-form-label" style="width: 50%;">首页展示:</label>
-                                                <div class="col-xl-1" >
-                                                    <select  class="form-control m-bootstrap-select m_selectpicker" name="display" id="album-display-query"  placeholder="首页展示" autocomplete="off">
-                                                        <option value="">请选择</option>
-                                                        <option value="0" >展示</option>
-                                                        <option value="1" >不展示</option>
-                                                    </select>
-                                                </div>
-
                                                 <div style="padding-top: 5px; ">
                                                     <a href="#"  id="human-portrait-page-grid-query-btn" class="btn btn-success m-btn m-btn--icon btn-sm m-btn--icon-only" data-toggle="m-tooltip" title="搜索数据">
                                                         <i class="la la-search"></i>
@@ -106,6 +92,7 @@
                                     </form>
                                     <!--end:: query Form -->
                                 </div>
+
                                 <div class="m-portlet__head-tools">
                                     <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" id="human-portrait-mainPage-grid-head-tools" role="tablist">
 

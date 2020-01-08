@@ -4,6 +4,7 @@
  */
 var SnippetMainPageHumanPortrait = function() {
     var serverUrl = BaseUtils.serverAddress;
+    var albumServerUrl = BaseUtils.albumServerAddress;
     var humanPortraitMainPageMark = 1;
     var humanPortraitMainPageModuleCode = '1020';
     var humanGridPageSize = 20;
@@ -15,7 +16,6 @@ var SnippetMainPageHumanPortrait = function() {
         var functionButtonGroup = BaseUtils.getCurrentFunctionButtonGroup(humanPortraitMainPageModuleCode);
         if (functionButtonGroup != null) {
             var gridHeadToolsHtml = $("#human-portrait-mainPage-grid-head-tools");
-            var tableToolbarHtml = $("#human_portrait_mainPage_table_toolbar");
 
             var buttonGroup = functionButtonGroup.split(';');
             //如果arry数组里面存在"指定字符" 这个字符串则返回该字符串的数组下标，否则返回(不包含在数组中) -1
@@ -65,7 +65,7 @@ var SnippetMainPageHumanPortrait = function() {
                     // 追加数据
                     setTimeout(function(){
                         $getAjax({
-                            url:serverUrl + "v1/table/album/g",
+                            url:albumServerUrl + "v1/table/album/g",
                             data : params,
                             headers: BaseUtils.serverHeaders()
                         }, function (response) {
@@ -115,11 +115,9 @@ var SnippetMainPageHumanPortrait = function() {
         $albumClassification.selectpicker('refresh');
         var $albumStatusQuery = $("#album-status-query");
         $albumStatusQuery.selectpicker('refresh');
-        var $albumDisplayQuery = $("#album-display-query");
-        $albumDisplayQuery.selectpicker('refresh');
         var $albumStyle = $("#album-style");
         $albumStyle.select2({
-            placeholder: "风格",
+            placeholder: "-请选择-",
             allowClear: true
         });
         // 风格 multi select
@@ -127,6 +125,14 @@ var SnippetMainPageHumanPortrait = function() {
             Object.keys(data).forEach(function(key){
                 $albumStyle.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
             });
+            $albumStyle.selectpicker('refresh');
+        });
+        // 分类
+        BaseUtils.dictDataSelect("album_classify", function (data) {
+            Object.keys(data).forEach(function(key){
+                $albumClassification.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
+            });
+            $albumClassification .selectpicker('refresh');
         });
         // 类型选择事件绑定
         $albumClassification.on("changed.bs.select",function(e){
@@ -140,12 +146,7 @@ var SnippetMainPageHumanPortrait = function() {
             // var curSelectedValue = e.target.value;
             humanPortraitMainPageRefreshGrid();
         });
-        // 显示在首页选择事件绑定
-        $albumDisplayQuery.on("changed.bs.select",function(e){
-            // e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取
-            // var curSelectedValue = e.target.value;
-            humanPortraitMainPageRefreshGrid();
-        });
+
     }
 
     /**
@@ -167,7 +168,7 @@ var SnippetMainPageHumanPortrait = function() {
      */
     var lookPortaitImages = function (dataId) {
         $getAjax({
-            url: serverUrl + 'v1/table/album/picture',
+            url: albumServerUrl + 'v1/table/album/picture',
             data:{id: dataId},
             headers: BaseUtils.serverHeaders()
         }, function (response) {
@@ -204,7 +205,7 @@ var SnippetMainPageHumanPortrait = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         }
-        var ajaxDelUrl = serverUrl + "v1/verify/album/d";
+        var ajaxDelUrl = albumServerUrl + "v1/verify/album/d";
         var delData = {
             'id' : dataId
         };
@@ -239,7 +240,7 @@ var SnippetMainPageHumanPortrait = function() {
         if (BaseUtils.checkLoginTimeoutStatus()) {
             return;
         };
-        var ajaxPutUrl = serverUrl + "v1/verify/album/p";
+        var ajaxPutUrl = albumServerUrl + "v1/verify/album/p";
         var curDataParam = {
             "id" : obj.id,
             "dataVersion" : obj.dataVersion,
@@ -267,39 +268,6 @@ var SnippetMainPageHumanPortrait = function() {
 
 
     /**
-     *  修改首页展示图片状态
-     */
-    var humanPortraitMainPageUpdateShowStatus = function(obj) {
-        if (BaseUtils.checkLoginTimeoutStatus()) {
-            return;
-        };
-        var ajaxPutUrl = serverUrl + "v1/verify/album/p/show";
-        var curDataParam = {
-            "id" : obj.id,
-            "dataVersion" : obj.dataVersion,
-            'status' : obj.status
-        };
-        BaseUtils.pageMsgBlock();
-        $putAjax({
-            url: ajaxPutUrl,
-            data: curDataParam,
-            headers: BaseUtils.serverHeaders()
-        }, function (response) {
-            if (response.success) {
-                humanPortraitMainPageRefreshGrid();
-            }  else if (response.status == 202) {
-
-            } else if (response.status == 409) {
-                humanPortraitMainPageRefreshGrid();
-            } else if (response.status == 504) {
-                BaseUtils.LoginTimeOutHandler();
-            }
-        }, function (data) {
-
-        });
-    };
-
-    /**
      *  同步数据
      */
     var humanPortraitMainPageSyncData = function() {
@@ -308,7 +276,7 @@ var SnippetMainPageHumanPortrait = function() {
         }
         BaseUtils.pageMsgBlock();
         $postAjax({
-            url: serverUrl + "v1/verify/album/sync",
+            url: albumServerUrl + "v1/verify/album/sync",
             headers: BaseUtils.serverHeaders()
         }, function (response) {
             BaseUtils.htmPageUnblock();
