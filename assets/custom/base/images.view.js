@@ -61,11 +61,7 @@ var ImagesView = {
         images_col_div += '<div class="m-portlet__head-caption">\n';
         images_col_div += '<div class="m-portlet__head-action">\n';
         if (v.status === 0) {
-            if (v.display == 0) {
-                images_col_div += '<span class="m-badge m-badge--accent m-badge--wide">首页展示</span>\n';
-            } else {
-                images_col_div += '<span class="m-badge m-badge--success m-badge--wide">已发布</span>\n';
-            }
+            images_col_div += '<span class="m-badge m-badge--success m-badge--wide">已发布</span>\n';
         } else if (v.status === 1) {
             images_col_div += '<span class="m-badge m-badge--danger m-badge--wide">下架</span>\n';
         } else {
@@ -109,24 +105,6 @@ var ImagesView = {
             images_col_div += '</li>\n';
         }
 
-        if (v.display == 0) {
-            images_col_div += '<li class="m-nav__item">\n';
-            images_col_div += '<a href="#" class="'+rowId+'_hiden_btn m-nav__link"  value = "'+v.id+'" status = "'+v.status+'" dataVersion = "'+v.dataVersion+'">\n';
-            images_col_div += '<i class="m-nav__link-icon flaticon-circle"></i>\n';
-            images_col_div += '<span class="m-nav__link-text">取消在首页展示</span>\n';
-            images_col_div += '</a>\n';
-            images_col_div += '</li>\n';
-        }
-
-        if (v.display != 0) {
-            images_col_div += '<li class="m-nav__item">\n';
-            images_col_div += '<a href="#" class="'+rowId+'_show_btn m-nav__link"  value = "'+v.id+'" status = "'+v.status+'" dataVersion = "'+v.dataVersion+'">\n';
-            images_col_div += '<i class="m-nav__link-icon flaticon-star"></i>\n';
-            images_col_div += '<span class="m-nav__link-text">展示在首页</span>\n';
-            images_col_div += '</a>\n';
-            images_col_div += '</li>\n';
-        }
-
         images_col_div += '<li class="m-nav__item">\n';
         images_col_div += '<a href="#" class="'+rowId+'_del_btn m-nav__link"  value = "'+v.id+'" status = "'+v.status+'" dataVersion = "'+v.dataVersion+'">\n';
         images_col_div += '<i class="m-nav__link-icon flaticon-delete-2"></i>\n';
@@ -157,7 +135,7 @@ var ImagesView = {
         images_col_div += ' <div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides" style="min-height: 200px">\n';
         images_col_div += '<img src="'+v.cover+'" alt="" id="img-'+v.id+'"  >\n';
         images_col_div += '<h3 class="m-widget19__title m--font-light" style="padding-left: 1rem;padding-bottom:2.7rem;">\n';
-        images_col_div += v.title;
+        images_col_div += v.albumName;
         images_col_div += '\n</h3>\n';
         images_col_div += '<h3 class="m-widget19__title m--font-light" style="padding-left: 92%;padding-bottom: 2.7rem;">\n';
         images_col_div += v.total;

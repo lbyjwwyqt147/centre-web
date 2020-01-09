@@ -179,14 +179,13 @@ var SnippetMainPageUploading= function() {
             });
         });
         // 风格
-        BaseUtils.dictDataSelect("album_style", function (data) {
+        BaseUtils.dictDataSelect("image_style", function (data) {
             var $albumStyle = $("#albumStyle");
             Object.keys(data).forEach(function(key){
                 $albumStyle.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
             });
             $albumStyle .selectpicker('refresh');
         });
-
     }
 
     /**
