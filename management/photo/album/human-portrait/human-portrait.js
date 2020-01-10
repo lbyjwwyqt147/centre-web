@@ -70,22 +70,24 @@ var SnippetMainPageHumanPortrait = function() {
                             headers: BaseUtils.serverHeaders()
                         }, function (response) {
                             BaseUtils.htmPageUnblock();
-                            var datas =  response.data;
-                            var humanImagesArray = [];
-                            $.each(datas, function(i, v){
-                                var col_div = ImagesView.imagesListHtmlAppend("human_portrait_mainPage_grid", v);
-                                humanImagesArray.push(col_div);
-                            });
-                            //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-                            //curPageNumber总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-                            var rowCount = response.total;
-                            var curPageNumber = 1;
-                            if (rowCount != 0 ) {
-                                 curPageNumber =  (rowCount + humanGridPageSize - 1) / humanGridPageSize;
+                            if (response.status) {
+                                var datas =  response.data;
+                                var humanImagesArray = [];
+                                $.each(datas, function(i, v){
+                                    var col_div = ImagesView.imagesListHtmlAppend("human_portrait_mainPage_grid", v);
+                                    humanImagesArray.push(col_div);
+                                });
+                                //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                                //curPageNumber总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                                var rowCount = response.total;
+                                var curPageNumber = 1;
+                                if (rowCount != 0 ) {
+                                    curPageNumber =  (rowCount + humanGridPageSize - 1) / humanGridPageSize;
+                                }
+                                next(humanImagesArray.join(""), page < curPageNumber);
+                                //绑定事件
+                                initHumanPortraitImageEventBinding();
                             }
-                            next(humanImagesArray.join(""), page < curPageNumber);
-                            //绑定事件
-                            initHumanPortraitImageEventBinding();
                         });
 
                     }, 500);
@@ -260,6 +262,8 @@ var SnippetMainPageHumanPortrait = function() {
                   humanPortraitMainPageRefreshGrid();
               } else if (response.status == 504) {
                   BaseUtils.LoginTimeOutHandler();
+              } else {
+                  toastr.error(response.message);
               }
         }, function (data) {
 
@@ -361,36 +365,6 @@ var SnippetMainPageHumanPortrait = function() {
             return false;
         });
 
-        // 图片展示在官网按钮
-        $('.human_portrait_mainPage_grid_show_btn').click(function(e) {
-            e.preventDefault();
-            if (BaseUtils.checkLoginTimeoutStatus()) {
-                return;
-            }
-            var params = {
-                "id" : $(this).attr("value"),
-                "status" : 0,
-                "dataVersion" : $(this).attr("dataVersion")
-            };
-            humanPortraitMainPageUpdateShowStatus(params);
-            return false;
-        });
-
-
-        // 取消在官网展示按钮
-        $('.human_portrait_mainPage_grid_hiden_btn').click(function(e) {
-            e.preventDefault();
-            if (BaseUtils.checkLoginTimeoutStatus()) {
-                return;
-            }
-            var params = {
-                "id" : $(this).attr("value"),
-                "status" : 1,
-                "dataVersion" : $(this).attr("dataVersion")
-            };
-            humanPortraitMainPageUpdateShowStatus(params);
-            return false;
-        });
 
         // 查看图片
         $('.human_portrait_mainPage_grid_fancybox_btn').click(function(e) {
