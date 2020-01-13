@@ -140,6 +140,7 @@ var BaseUtils = {
             curUser =  $.parseJSON(item);
             curUser.id = curUser.userId;
             curUser.name = curUser.userName;
+            curUser.tenement = curUser.lessee
         }
         return curUser;
     },
@@ -224,7 +225,14 @@ var BaseUtils = {
      * 获取当前租户id
      */
     getLesseeId : function() {
-        return 1;
+        return this.getCurrentUser().lessee;
+    },
+
+    /**
+     * 获取当前用户ID
+     */
+    getCurrentUserId:function() {
+        return this.getCurrentUser().id;
     },
 
     /**
@@ -804,7 +812,8 @@ var BaseUtils = {
         }));
         var headers = {
             "sign":sign,
-            "tenement" :  BaseUtils.lessee
+            "tenement" :  BaseUtils.lessee,
+            "subscriber" : BaseUtils.getCurrentUserId()
         };
         return headers;
     },
@@ -824,7 +833,8 @@ var BaseUtils = {
         var headers = {
             "sign":sign,
             "Authorization" :  authorization,
-            "tenement" :  BaseUtils.lessee
+            "tenement" :  BaseUtils.lessee,
+            "subscriber" : BaseUtils.getCurrentUserId()
         };
         return headers;
     },

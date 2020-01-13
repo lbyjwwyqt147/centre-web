@@ -3,7 +3,7 @@
  * @type {{init}}
  */
 var SnippetMainPageCarousel = function() {
-    var serverUrl = BaseUtils.serverAddress;
+    var serverUrl = BaseUtils.albumServerAddress;
     var carouselMainPageTable;
     var carouselMainPageMark = 1;
     var carouselMainPageModuleCode = '1022';
@@ -254,7 +254,7 @@ var SnippetMainPageCarousel = function() {
 
         $("#query-carouselStatus").selectpicker('refresh');
         // 页面 select
-        BaseUtils.dictDataSelect("image_page", function (data) {
+        BaseUtils.dictDataSelect("page_code", function (data) {
             var $pageBusinessCode = $("#page-businessCode");
             $pageBusinessCode.append("<option value=''>--请选择--</option>");
             Object.keys(data).forEach(function(key){

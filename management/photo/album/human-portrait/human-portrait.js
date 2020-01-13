@@ -6,7 +6,7 @@ var SnippetMainPageHumanPortrait = function() {
     var serverUrl = BaseUtils.serverAddress;
     var albumServerUrl = BaseUtils.albumServerAddress;
     var humanPortraitMainPageMark = 1;
-    var humanPortraitMainPageModuleCode = '1020';
+    var humanPortraitMainPageModuleCode = '10071';
     var humanGridPageSize = 20;
 
     /**
@@ -54,6 +54,9 @@ var SnippetMainPageHumanPortrait = function() {
             params = {
                 'pageSize' : humanGridPageSize
             }
+        }
+        if (BaseUtils.checkLoginTimeoutStatus()) {
+            return;
         }
         layui.use('flow', function(){
             var flow = layui.flow;
@@ -245,7 +248,6 @@ var SnippetMainPageHumanPortrait = function() {
         var ajaxPutUrl = albumServerUrl + "v1/verify/album/p";
         var curDataParam = {
             "id" : obj.id,
-            "dataVersion" : obj.dataVersion,
             'status' : obj.status
         };
         BaseUtils.pageMsgBlock();
@@ -309,12 +311,12 @@ var SnippetMainPageHumanPortrait = function() {
             var dataId = $(this).attr("value");
             var photoIframContent = layer.open({
                 type: 2,
-                title: '写真图册',
+                title: '相册',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: layerArea,
-                content: '../../management/photo/album/photo-uploading.html?dataId='+dataId+'&albumClassify=1',
+                content: '../../management/photo/album/photo-uploading.html?dataId='+dataId,
                 end : function () {
                     humanPortraitMainPageRefreshGridQueryCondition();
                     humanPortraitMainPageRefreshGrid();
@@ -389,12 +391,12 @@ var SnippetMainPageHumanPortrait = function() {
             var dataId = $(this).attr("value");
             var lookPhotoIframContent = layer.open({
                 type: 2,
-                title: '写真图册',
+                title: '相册',
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: layerArea,
-                content: '../../management/photo/album/photo-uploading-look.html?dataId='+dataId+'&albumClassify=1',
+                content: '../../management/photo/album/photo-uploading-look.html?dataId='+dataId,
                 end : function () {
 
                 }

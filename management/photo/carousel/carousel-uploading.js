@@ -3,7 +3,7 @@
  * @type {{init}}
  */
 var SnippetMainPageCarouselUploading= function() {
-    var serverUrl = BaseUtils.serverAddress;
+    var serverUrl = BaseUtils.albumServerAddress;
     var cloudServerUrl = BaseUtils.cloudServerAddress;
     var uploadingMainPageSubmitForm = $("#carousel_uploading_mainPage_dataSubmit_form");
     var uploadingMainPageSubmitFormId = "#carousel_uploading_mainPage_dataSubmit_form";
@@ -48,8 +48,8 @@ var SnippetMainPageCarouselUploading= function() {
                 'uploaderId' : curUser.id,
                 'uploaderName': curUser.name,
                 'lesseeId' : BaseUtils.lessee,
-                'lesseeName' : '青橙摄影工作室',
-                'description' : '轮播图片'
+                'tenementName' : BaseUtils.lesseeName,
+                'description' : '页面轮播图片'
             },
             headers : BaseUtils.cloudHeaders()
         });
@@ -62,12 +62,8 @@ var SnippetMainPageCarouselUploading= function() {
      */
     var initSelectpicker = function () {
         BootstrapTouchspin.initByteTouchSpin("#priority_form_uploading_seq");
-        var  $variety = $("#variety");
-        $variety.selectpicker('refresh');
-        $("#maniyerizm").selectpicker('refresh');
-
         // 页面 select
-        BaseUtils.dictDataSelect("image_page", function (data) {
+        BaseUtils.dictDataSelect("page_code", function (data) {
             var $pageBusinessCode = $("#businessCode");
             Object.keys(data).forEach(function(key){
                 if (data[key].id == "2") {
@@ -78,21 +74,6 @@ var SnippetMainPageCarouselUploading= function() {
             });
             //必须加，刷新select
             $pageBusinessCode .selectpicker('refresh');
-
-            $pageBusinessCode.on('changed.bs.select', function (clickedIndex,newValue,oldValue) {
-                newValue = $pageBusinessCode.val();
-                if (newValue == "1") {
-                    $variety.selectpicker('val', '4');
-                } else if (newValue == "2") {
-                    $variety.selectpicker('val', '1');
-                } else if (newValue == "3") {
-                    $variety.selectpicker('val', '2');
-                } else if (newValue == "4") {
-                    $variety.selectpicker('val', '3');
-                } else if (newValue == "5") {
-                    $variety.selectpicker('val', '2');
-                }
-            });
         });
 
         var businessDataUrl = serverUrl + 'v1/table/activities/comboBox';
@@ -107,36 +88,15 @@ var SnippetMainPageCarouselUploading= function() {
             //必须加，刷新select
             $businessSelect .selectpicker('refresh');
         });
-        $variety.on('changed.bs.select', function (clickedIndex,newValue,oldValue) {
-            newValue = $variety.val();
-            if (newValue == "1") {
-                businessDataUrl = serverUrl + 'v1/table/activities/comboBox'
-            } else if (newValue  == "2") {
-                businessDataUrl = serverUrl + 'v1/table/album/comboBox';
-                businessDataParams.albumClassification = 1;
-                businessDataParams.albumClassify = 1;
-            } else if (newValue  == "3") {
-                businessDataUrl = serverUrl + 'v1/table/album/comboBox';
-                businessDataParams.albumClassification = 1;
-                businessDataParams.albumClassify = 2;
-            } else if (newValue  == "3") {
-                businessDataUrl = serverUrl + 'v1/table/album/comboBox';
-                businessDataParams.albumClassification = 2;
-                businessDataParams.albumClassify = 2;
-            }
-            // 图片信息
-            BaseUtils.dropDownDataSelect(businessDataUrl, businessDataParams,  BaseUtils.serverHeaders(), function (data) {
-                $businessSelect.html("");
-                Object.keys(data).forEach(function(key){
-                    $businessSelect.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
-                });
-                //必须加，刷新select
-                $businessSelect .selectpicker('refresh');
+        // 图片信息
+        BaseUtils.dropDownDataSelect(businessDataUrl, businessDataParams,  BaseUtils.serverHeaders(), function (data) {
+            $businessSelect.html("");
+            Object.keys(data).forEach(function(key){
+                $businessSelect.append("<option value=" + data[key].id + ">" + data[key].text + "</option>");
             });
+            //必须加，刷新select
+            $businessSelect .selectpicker('refresh');
         });
-
-
-
 
         // 位置 select
         BaseUtils.dictDataSelect("page_position", function (data) {
@@ -157,25 +117,17 @@ var SnippetMainPageCarouselUploading= function() {
         BaseUtils.formInputTrim(uploadingMainPageSubmitFormId);
         uploadingMainPageSubmitForm.validate({
             rules: {
-                businessCode: {
+                pageCode: {
                     required: true,
                     maxlength: 10
                 },
-                position: {
+                pagePosition: {
                     required: true,
                     maxlength: 10
-                },
-                hrefLink: {
-                    required: false,
-                    maxlength: 255
                 },
                 priority: {
                     required: true,
                     range: [0,127]
-                },
-                description: {
-                    required: false,
-                    maxlength: 100
                 }
 
             },

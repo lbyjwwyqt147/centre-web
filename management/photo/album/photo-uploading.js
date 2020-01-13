@@ -10,8 +10,7 @@ var SnippetMainPageUploading= function() {
     var uploadingMainPageSubmitFormId = "#photo_uploading_mainPage_dataSubmit_form";
     var photoUploadingMainPageWebuploader;
     var businessId = 0;
-    var businessType = 0;
-    var albumClassify = 1;
+
     /**
      * 初始化上传组件
      */
@@ -23,9 +22,6 @@ var SnippetMainPageUploading= function() {
             var params = param.split("&");   //用&进行分隔 （如果只有一个参数 直接用等号进分隔； 如果有多个参数 要用&号分隔 再用等号进行分隔）
             var businessIdParams = params[0].split("=");
             businessId = businessIdParams[1];
-            var businessTypeParams = params[1].split("=");
-            businessType = businessTypeParams[1];
-            albumClassify = businessTypeParams[1];
         }
         var curUser = BaseUtils.getCurrentUser();
         photoUploadingMainPageWebuploader = window.webuploaderUtils.init({
@@ -43,7 +39,7 @@ var SnippetMainPageUploading= function() {
             //处理客户端原有文件更新时的后台处理地址，必填
             updateUrl: cloudServerUrl + 'v1/verify/file/oss/upload/batch',
             //当客户端原有文件删除时的后台处理地址，必填
-            removeUrl: albumServerUrl + 'v1/verify/album/picture/d',
+            removeUrl: albumServerUrl + 'v1/ignore/album/d/picture',
             //初始化客户端上传文件，从后台获取文件的地址, 可选，当此参数为空时，默认已上传的文件为空
             initServerFileUrl:  albumServerUrl + 'v1/table/album/picture',
             businessId : businessId,
@@ -140,15 +136,14 @@ var SnippetMainPageUploading= function() {
     var initPhotoUploadingSelected = function (obj) {
         $('#album-classify').selectpicker('val', obj.albumClassify);
         $('#albumStyle').selectpicker('val', obj.albumStyle);
-        $('#spotForPhotography').selectpicker('val', obj.spotForPhotography);
         $("#photo_uploading_mainPage_dataSubmit_form_uploading_seq").val(obj.albumPriority);
-        $("#albumDescription").val(BaseUtils.toTextarea( obj.albumDescription));
         if (obj.surfacePlot != null) {
             $('#surface-plot-image').attr('src', obj.surfacePlot); //图片链接
             $('#surface-plot-image').attr("onload", "BaseUtils.imageAutoSize(this,150,75)");
             $('#surface-plot-image').show();
             $('#surface-plot-image-href').attr('href', obj.surfacePlot);
         }
+        $("#album-description").val(BaseUtils.toTextarea(obj.albumDescription));
 
     };
 
@@ -192,6 +187,7 @@ var SnippetMainPageUploading= function() {
      * 初始化表单提交
      */
     var uploadingMainPageFormSubmitHandle = function() {
+        $("#album-description").val(BaseUtils.textareaTo( $("#album-description").val()));
         BaseUtils.formInputTrim(uploadingMainPageSubmitFormId);
         if ($("#surface-plot").val() == "") {
             toastr.error("请上传封面图.");

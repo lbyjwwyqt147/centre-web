@@ -3,13 +3,9 @@
  * @type {{init}}
  */
 var SnippetMainPageUploadingLook= function() {
-    var serverUrl = BaseUtils.serverAddress;
+    var serverUrl = BaseUtils.albumServerAddress;
     var uploadingMainPageSubmitForm = $("#photo_uploading_mainPage_look_form");
-    var uploadingMainPageSubmitFormId = "#photo_uploading_mainPage_look_form";
     var businessId = 0;
-    var businessType = 0;
-    var albumClassify = 1;
-
 
     /**
      * 初始化 form 数据
@@ -22,9 +18,6 @@ var SnippetMainPageUploadingLook= function() {
             var params = param.split("&");   //用&进行分隔 （如果只有一个参数 直接用等号进分隔； 如果有多个参数 要用&号分隔 再用等号进行分隔）
             var businessIdParams = params[0].split("=");
             businessId = businessIdParams[1];
-            var businessTypeParams = params[1].split("=");
-            businessType = businessTypeParams[1];
-            albumClassify = businessTypeParams[1];
         };
         if (businessId != 0) {
             $getAjax({
@@ -41,18 +34,13 @@ var SnippetMainPageUploadingLook= function() {
      * select 控件回显值
      */
     var initPhotoUploadingSelected = function (obj) {
-        $("#spotForPhotography").val(obj.spotForPhotographyText);
-        $("#albumDresser-name").val(obj.albumDresserText);
-        $("#albumAnaphasisAuthor-name").val(obj.albumAnaphasisAuthorText);
-        $("#albumPhotographyAuthor-name").val(obj.albumPhotographyAuthorText);
-        $("#albumStyle-name").val(obj.albumStyleText);
-        $("#albumClassification-name").val(obj.albumClassificationText);
         if (obj.surfacePlot != null) {
             $('#surface-plot-image').attr('src', obj.surfacePlot); //图片链接
             $('#surface-plot-image').attr("onload", "BaseUtils.imageAutoSize(this,150,75)");
             $('#surface-plot-image').show();
             $('#surface-plot-image-href').attr('href', obj.surfacePlot);
         }
+        $("#album-description").val(BaseUtils.toTextarea(obj.albumDescription));
     };
 
     /**
