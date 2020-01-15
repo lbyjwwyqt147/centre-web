@@ -6,7 +6,7 @@ var SnippetMainPageCarousel = function() {
     var serverUrl = BaseUtils.albumServerAddress;
     var carouselMainPageTable;
     var carouselMainPageMark = 1;
-    var carouselMainPageModuleCode = '1022';
+    var carouselMainPageModuleCode = '10072';
 
 
     /**
@@ -96,29 +96,6 @@ var SnippetMainPageCarousel = function() {
                     {field:'id', title:'ID', unresize:true, hide:true },
                     {field:'pageText', title:'所属页面'},
                     {field:'positionText', title:'页面位置'},
-                    {field:'variety', title:'图片类别',
-                        templet : function (row) {
-                            var value = row.variety;
-                            var curVarietyText = "活动图片";
-                            switch (value) {
-                                case "1":
-                                    curVarietyText = "活动图片";
-                                    break;
-                                case "2":
-                                    curVarietyText = "写真图片";
-                                    break;
-                                case "3":
-                                    curVarietyText = "婚纱图片";
-                                    break;
-                                case "4":
-                                    curVarietyText = "其他图片";
-                                    break;
-                                default:
-                                    break;
-                            }
-                            return curVarietyText;
-                        }
-                     },
                     {field:'pictureLocation', title:'照片', unresize:true,  align: 'center', width:120,
                         templet : function (row) {
                             var value = row.pictureLocation;

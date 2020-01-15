@@ -43,11 +43,10 @@ var SnippetMainPageCarouselUploading= function() {
             initServerFileUrl:  serverUrl + 'v1/table/carousel/picture',
             businessId : businessId,
             formData: {
-                'systemCode' : BaseUtils.systemCode,
                 'businessCode' : 20,
                 'uploaderId' : curUser.id,
                 'uploaderName': curUser.name,
-                'lesseeId' : BaseUtils.lessee,
+                'tenementId' : BaseUtils.lessee,
                 'tenementName' : BaseUtils.lesseeName,
                 'description' : '页面轮播图片'
             },
@@ -76,7 +75,7 @@ var SnippetMainPageCarouselUploading= function() {
             $pageBusinessCode .selectpicker('refresh');
         });
 
-        var businessDataUrl = serverUrl + 'v1/table/activities/comboBox';
+        var businessDataUrl = serverUrl + 'v1/table/album/comboBox';
         var businessDataParams = {};
         var $businessSelect = $("#business-select");
         // 图片信息
@@ -280,13 +279,13 @@ var SnippetMainPageCarouselUploading= function() {
             });
             $('#carousel_uploading_mainPage_dataSubmit_form_submit').click(function (e) {
                 e.preventDefault();
-                $("#album-status").val(2);
+                $("#status").val(1);
                 uploadingMainPageFormSubmitHandle();
                 return false;
             });
             $('#carousel_uploading_mainPage_dataSubmit_form_publish').click(function (e) {
                 e.preventDefault();
-                $("#album-status").val(0);
+                $("#status").val(0);
                 uploadingMainPageFormSubmitHandle();
                 return false;
             });

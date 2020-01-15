@@ -132,7 +132,7 @@ var ImagesView = {
         images_col_div += '<figure class="effect-chico">\n';
 
         images_col_div += '<div class="m-widget19">\n';
-        images_col_div += ' <div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides" style="min-height: 200px">\n';
+        images_col_div += ' <div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides" style="min-height: 300pxpx">\n';
         images_col_div += '<img src="'+v.cover+'" alt="" id="img-'+v.id+'"  >\n';
         images_col_div += '<h3 class="m-widget19__title m--font-light" style="padding-left: 1rem;">\n';
         images_col_div += v.albumName;
